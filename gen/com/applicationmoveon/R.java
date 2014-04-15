@@ -45,8 +45,9 @@ public final class R {
         public static final int user_password=0x7f090003;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
-        public static final int login_display=0x7f030001;
+        public static final int activity_add_event=0x7f030000;
+        public static final int activity_main=0x7f030001;
+        public static final int login_display=0x7f030002;
     }
     public static final class menu {
         public static final int main=0x7f080000;
@@ -54,19 +55,21 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f060002;
         public static final int app_name=0x7f060000;
-        public static final int connect=0x7f060009;
-        public static final int create_account=0x7f060006;
-        public static final int email=0x7f060007;
-        public static final int email_format_error=0x7f06000d;
-        public static final int email_or_password_empty=0x7f06000e;
+        public static final int connect=0x7f06000b;
+        public static final int create_account=0x7f060008;
+        public static final int email=0x7f060009;
+        public static final int email_format_error=0x7f06000f;
+        public static final int email_or_password_empty=0x7f060010;
         public static final int hello_world=0x7f060001;
-        public static final int hint_mail=0x7f06000b;
-        public static final int hint_pass=0x7f06000c;
-        public static final int image_content_description=0x7f060005;
+        public static final int hint_mail=0x7f06000d;
+        public static final int hint_pass=0x7f06000e;
+        public static final int image_content_description=0x7f060007;
         public static final int menu_settings=0x7f060003;
-        public static final int password=0x7f060008;
-        public static final int title_accueil_activity=0x7f06000a;
+        public static final int password=0x7f06000a;
+        public static final int title_accueil_activity=0x7f06000c;
         public static final int title_activity_main=0x7f060004;
+        public static final int title_add_event_activity=0x7f060005;
+        public static final int title_login_activity=0x7f060006;
     }
     public static final class style {
         /** 

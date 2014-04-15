@@ -23,7 +23,11 @@
         <activity
             android:name=".AccueilActivity"
             android:label="@string/title_accueil_activity" />
-        <activity android:name=".LoginDisplayActivity" />
+        <activity android:name=".LoginDisplayActivity" 
+            android:label="@string/title_login_activity" />
+         <activity
+            android:name=".AddEventActivity"
+            android:label="@string/title_add_event_activity" />
     </application>
 
 </manifest>
