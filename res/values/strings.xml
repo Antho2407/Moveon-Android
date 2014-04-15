@@ -16,5 +16,13 @@
     <string name="hint_pass">"Ici : Le mot de passe de l'utilisateur"</string>
     <string name="email_format_error">Format de l\'adresse mail incorrect</string>
     <string name="email_or_password_empty">Les deux champs doivent être remplis</string>
+    <string name="label_title">Titre :</string>
+    <string name="label_description">Description :</string>
+    <string name="label_hour">Heure :</string>
+    <string name="label_location">Lieu :</string>
+    <string name="label_picture">Image :</string>
+    <string name="label_date">Date :</string>
+    <string name="load_picture">Parcourir...</string>
+    <string name="load_location">Localiser...</string>
     
 </resources>
