@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/pref_user_localisation" >
+
+        <ListPreference
+            android:defaultValue="5"
+            android:entries="@array/km"
+            android:entryValues="@array/kmValues"
+            android:key="prefKm"
+            android:summary="@string/pref_km_summary"
+            android:title="@string/pref_km" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_event_display_settings" >
+
+        <ListPreference
+            android:defaultValue="30"
+            android:entries="@array/event_display"
+            android:entryValues="@array/event_displayValues"
+            android:key="event_display"
+            android:summary="@string/pref_event_display_summary"
+            android:title="@string/pref_event_display" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_notification_setting" >
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="prefNotification"
+            android:summary="@string/pref_notification_summary"
+            android:title="@string/pref_notification" >
+        </CheckBoxPreference>
+
+        <ListPreference
+            android:defaultValue="30"
+            android:entries="@array/notificationFrequency"
+            android:entryValues="@array/notificationFrequencyValues"
+            android:key="prefNotificationFrequency"
+            android:summary="@string/pref_notification_frequency_summary"
+            android:title="@string/pref_notification_frequency" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

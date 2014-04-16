@@ -76,8 +76,8 @@ public class AccueilActivity extends Activity{
 			startActivity(intent);
 			return true;
 		case R.id.menu_pref:
-			//TODO ALLER A PREFERENCES
-			return true;
+			intent = new Intent(AccueilActivity.this,UserSettingActivity.class);
+			startActivity(intent);			return true;
 		case android.R.id.home:
 			this.finish();
 			return true;

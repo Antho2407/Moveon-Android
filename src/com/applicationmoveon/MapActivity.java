@@ -8,12 +8,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.udem.videotracker.AideActivity;
-import com.udem.videotracker.PlaylistActivity;
-import com.udem.videotracker.PreferencesActivity;
-import com.udem.videotracker.ProposActivity;
-import com.udem.videotracker.R;
-import com.udem.videotracker.ResultActivity;
+
 
 import android.app.ActionBar;
 import android.content.Intent;

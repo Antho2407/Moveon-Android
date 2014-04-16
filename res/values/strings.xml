@@ -33,5 +33,16 @@
     <string name="label_find_txt">Adresse de l\'évènement</string>
     <string name="label_previous">Précédent</string>
     <string name="label_next">Suivant</string>
+    <string name="pref_user_localisation">Localisation</string>
+    <string name="pref_km_summary">Périmètre de recherche d\'evenements autour de vous (km)</string>
+    <string name="pref_km">Périmètre de recherche (km)</string>
+    <string name="pref_event_display_settings">Affichage des evenements</string>
+    <string name="pref_event_display">Nombre d\'evenements</string>
+    <string name="pref_event_display_summary">Nombre d\'evenements affichés</string>
+    <string name="pref_notification_setting">Notifications</string>
+    <string name="pref_notification">Recevoir les notifications</string>
+    <string name="pref_notification_summary">Recevoir les notifications concernant les evenements</string>
+    <string name="pref_notification_frequency_summary">Fréquence de vérification sur les evenements</string>
+    <string name="pref_notification_frequency">Fréquence des notifications</string>
 
 </resources>
