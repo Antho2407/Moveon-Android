@@ -5,12 +5,30 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="15" />
+        android:targetSdkVersion="16" />
+    
+    <permission
+        android:name="com.mapv2.demo.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature"/>
+     
+    <uses-permission android:name="com.mapv2.demo.permission.MAPS_RECEIVE"/>
+     
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    
+    <uses-feature
+          android:glEsVersion="0x00020000"
+          android:required="true"/>
 
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <uses-library
+        android:name="com.google.android.maps" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main" >
@@ -28,6 +46,13 @@
          <activity
             android:name=".AddEventActivity"
             android:label="@string/title_add_event_activity" />
+          <activity
+            android:name=".MapActivity"
+            android:label="@string/title_map_activity" />
+         
+         <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyDjTNVMd_VY2Tfmbx10mJUShbKhBgo5Yd8"/>
     </application>
 
 </manifest>
