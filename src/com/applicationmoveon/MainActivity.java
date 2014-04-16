@@ -56,9 +56,9 @@ public class MainActivity extends Activity {
 				}
 
 				Intent intent = new Intent(MainActivity.this,
-						LoginDisplayActivity.class);
-				intent.putExtra(EXTRA_LOGIN, loginTxt);
-				intent.putExtra(EXTRA_PASSWORD, passTxt);
+						AccueilActivity.class);
+				//intent.putExtra(EXTRA_LOGIN, loginTxt);
+				//intent.putExtra(EXTRA_PASSWORD, passTxt);
 				startActivity(intent);
 			}
 		});

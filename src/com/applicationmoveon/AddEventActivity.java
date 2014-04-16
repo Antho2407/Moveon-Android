@@ -1,6 +1,8 @@
 package com.applicationmoveon;
 
 import java.util.Calendar;
+
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -10,6 +12,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -17,14 +21,16 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TimePicker;
+import android.widget.SearchView.OnQueryTextListener;
 
 public class AddEventActivity extends Activity implements OnClickListener {
 
 	final String EXTRA_LOGIN = "user_login";
 	final String EXTRA_PASSWORD = "user_password";
 	final String EXTRA_LONG = "";
-    final String EXTRA_LAT = "";
+	final String EXTRA_LAT = "";
 
 	private ImageButton pictureCalendar;
 	private Calendar calendar;
@@ -44,11 +50,14 @@ public class AddEventActivity extends Activity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_event);
-		
+
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+
 		Intent intent = getIntent();
 		if (intent != null) {
-	    	   Log.i("ANTHO","long"+intent.getStringExtra(EXTRA_LONG));
-	       }
+			Log.i("ANTHO","long"+intent.getStringExtra(EXTRA_LONG));
+		}
 
 		title = (EditText) findViewById(R.id.title_event);
 		description = (EditText) findViewById(R.id.description_event);
@@ -106,14 +115,14 @@ public class AddEventActivity extends Activity implements OnClickListener {
 			DatePickerDialog dpd = new DatePickerDialog(this,
 					new DatePickerDialog.OnDateSetListener() {
 
-						@Override
-						public void onDateSet(DatePicker view, int y, int m,
-								int d) {
-							// Display Selected date in textbox
-							date_txt.setText(d + "/" + (m + 1) + "/" + y);
+				@Override
+				public void onDateSet(DatePicker view, int y, int m,
+						int d) {
+					// Display Selected date in textbox
+					date_txt.setText(d + "/" + (m + 1) + "/" + y);
 
-						}
-					}, year, month, day);
+				}
+			}, year, month, day);
 			dpd.show();
 		}
 		if (v == pictureButton) {
@@ -138,5 +147,45 @@ public class AddEventActivity extends Activity implements OnClickListener {
 			Intent i = new Intent(AddEventActivity.this, MapActivity.class);
 			startActivity(i);
 		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_add, menu);
+		MenuItem itemSearch = menu.findItem(R.id.menu_search);
+		SearchView mSearchView = (SearchView) itemSearch.getActionView();
+		mSearchView.setOnQueryTextListener(new OnQueryTextListener() {
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				//TODO RECHERCHE
+				return true;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				return false;
+			}
+		});
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent = null;
+		switch (item.getItemId()) {
+		case R.id.menu_locate:
+			//TODO lancer localisation
+			return true;
+		case R.id.menu_pref:
+			//TODO ALLER A PREFERENCES
+			return true;
+		case android.R.id.home:
+			this.finish();
+			return true;
+
+
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }

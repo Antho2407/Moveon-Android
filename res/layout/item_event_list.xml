@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/event"
+    android:layout_width="match_parent"
+    android:layout_height="150dp" >
+    
+	    <TextView
+	        android:id="@+id/event_title"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentTop="true"
+	        android:layout_marginLeft="3dp"
+	        android:layout_marginTop="3dp"
+	        android:text="Titre event"
+	        android:textColor="#000"
+	        android:textSize="25sp"
+	        android:textStyle="bold" />
+	
+	    <TextView
+	        android:id="@+id/event_date"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/event_title"
+	        android:layout_marginLeft="3dp"
+	        android:text="1 janvier 1970 à l'Allianz Riviera"
+	        android:textColor="#AAA"
+	        android:textSize="10sp" />
+	
+	    <TextView
+	        android:id="@+id/event_description"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/event_date"
+	        android:layout_margin="3dp"
+	        android:text="Un evenement de fouuuuuuu"
+	        android:textColor="#555"
+	        android:textSize="15sp" />
+	    
+	    <TextView
+	        android:id="@+id/event_participants"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+   	        android:layout_margin="3dp"
+	        android:layout_alignParentBottom="true"
+	        android:layout_alignParentRight="true"
+	        android:text="150000 participants"
+	        android:textColor="#888"
+	        android:textSize="10sp" />
+
+</RelativeLayout>

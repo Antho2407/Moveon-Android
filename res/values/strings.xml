@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">Application MoveOn</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -11,6 +12,9 @@
     <string name="email">Adresse email</string>
     <string name="password">Mot de passe</string>
     <string name="connect">Se connecter</string>
+    <string name="menu_search">Recherche</string>
+    <string name="menu_trier">Tri par</string>
+    <string name="menu_share">Partager via</string>
     <string name="title_accueil_activity">Page d\'accueil de moveon</string>
     <string name="title_map_activity">Localiser l\'évènement</string>
     <string name="hint_mail">"Ici : L'adresse email de l'utilisateur"</string>
@@ -29,5 +33,5 @@
     <string name="label_find_txt">Adresse de l\'évènement</string>
     <string name="label_previous">Précédent</string>
     <string name="label_next">Suivant</string>
-    
+
 </resources>
