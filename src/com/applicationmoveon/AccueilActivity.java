@@ -4,10 +4,15 @@ package com.applicationmoveon;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
@@ -61,7 +66,7 @@ public class AccueilActivity extends Activity{
 		});
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent = null;
@@ -76,9 +81,22 @@ public class AccueilActivity extends Activity{
 		case android.R.id.home:
 			this.finish();
 			return true;
-		
+
 
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void onResume() {
+		super.onResume();
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		int minutes = 1;//prefs.getInt("interval");
+		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+		Intent i = new Intent(this, NotificationService.class);
+		PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
+		am.cancel(pi);
+		if (minutes > 0) { 
+			am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + minutes*60*1000, minutes*60*1000, pi);
+		}
 	}
 }
