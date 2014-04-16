@@ -1,21 +1,30 @@
 package com.applicationmoveon;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.support.v4.app.NotificationCompat;
 
 public class NotificationService extends Service { 
 	private WakeLock mWakeLock; 
+	private Context context = this;
+	private NotificationManager notifManager;
 	/**
 	 * Simply return null, since our Service will not be communicating with 
 	 * any other components. It just does its work silently.
 	 **/
 	@Override
-	public IBinder onBind(Intent intent) { return null; }
+	public IBinder onBind(Intent intent) { 
+		return null;
+	}
 	/** 
 	 * This is where we initialize. We call this when onStart/onStartCommand is 
 	 * called by the system. We won't do anything with the intent here, and you 
@@ -45,7 +54,8 @@ public class NotificationService extends Service {
 		@Override
 		protected Void doInBackground(Void... params) {
 			/*do stuff!*/ 
-			return null; } 
+			return null; 
+		} 
 		/** 
 		 * In here you should interpret whatever you fetched in doInBackground 
 		 * and push any notifications you need to the status bar, using the 
@@ -61,7 +71,44 @@ public class NotificationService extends Service {
 		@Override
 		protected void onPostExecute(Void result) {  
 			/*handle your data*/
+			createNotification();
 			stopSelf(); 
+		}
+
+		public void createNotification() {
+
+			StringBuilder text = new StringBuilder();
+			StringBuilder longText = new StringBuilder();
+			String title = "titre notif";
+
+			Notification.Builder noti = null;
+			Notification notification;
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				noti = new Notification.Builder(context)
+				.setContentTitle(title).setContentText(text.toString())
+				.setSmallIcon(R.drawable.ic_launcher)
+				.setTicker("Des changements dans ton emploi du temps.");
+
+				if (!text.toString().equals(longText.toString())) {
+					noti.setStyle(new Notification.BigTextStyle().bigText(longText.toString()));
+				}
+				notification = noti.build();
+			}
+			else {//SI le sdk est plus ancien que honeycomb
+				NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+
+				mBuilder.setContentTitle(title)
+				.setContentText(longText.toString())
+				.setSmallIcon(R.drawable.ic_launcher);
+
+				notification = mBuilder.getNotification();
+			}
+
+			notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
+
+			if (!text.toString().equals("") && !text.toString().equals(null)) {
+				notifManager.notify(0, notification);
+			}
 		}
 	}
 
