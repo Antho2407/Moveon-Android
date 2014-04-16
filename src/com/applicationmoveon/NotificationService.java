@@ -71,7 +71,7 @@ public class NotificationService extends Service {
 		@Override
 		protected void onPostExecute(Void result) {  
 			/*handle your data*/
-			createNotification();
+			//createNotification();
 			stopSelf(); 
 		}
 
