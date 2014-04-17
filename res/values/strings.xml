@@ -33,5 +33,6 @@
     <string name="label_find_txt">Adresse de l\'évènement</string>
     <string name="label_previous">Précédent</string>
     <string name="label_next">Suivant</string>
+    <string name="add_event">Créer</string>
 
 </resources>

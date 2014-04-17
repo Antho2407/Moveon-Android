@@ -4,7 +4,9 @@ import java.util.Calendar;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
@@ -22,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.SearchView.OnQueryTextListener;
 
@@ -31,20 +34,38 @@ public class AddEventActivity extends Activity implements OnClickListener {
 	final String EXTRA_PASSWORD = "user_password";
 	final String EXTRA_LONG = "";
 	final String EXTRA_LAT = "";
+	final String EXTRA_ADDRESS = "";
 
 	private ImageButton pictureCalendar;
 	private Calendar calendar;
 	private int day;
 	private int month;
 	private int year;
+	private int hourofday;
+	private int minute;
+	
 	private EditText title;
 	private EditText description;
 	private EditText date_txt;
-	private TimePicker hour;
+	
+	private TextView hour_txt;
+	
 	private Button pictureButton;
 	private Button locationButton;
+	
 	private ImageButton calendarButton;
+	private ImageButton hourButton;
+	
 	private int RESULT_LOAD_IMAGE = 0;
+	private int RESULT_MAP = 0;
+	
+	private ImageView pictureCheckLocation;
+	private ImageView mainPicture;
+    
+	private String longitude = "";
+    private String latitude = "";
+    private String address = "";
+    private String picturePath = "";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,17 +74,30 @@ public class AddEventActivity extends Activity implements OnClickListener {
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		pictureCheckLocation = (ImageView)findViewById(R.id.picture_check_location);
 
 		Intent intent = getIntent();
+		
 		if (intent != null) {
-			Log.i("ANTHO","long"+intent.getStringExtra(EXTRA_LONG));
+			longitude = intent.getStringExtra(EXTRA_LONG);
+			latitude = intent.getStringExtra(EXTRA_LAT);
+			address = intent.getStringExtra(EXTRA_ADDRESS);
+			
+			if((longitude != null)&&(latitude != null)){
+				pictureCheckLocation.setImageResource(R.drawable.check);
+			}
 		}
 
 		title = (EditText) findViewById(R.id.title_event);
 		description = (EditText) findViewById(R.id.description_event);
 		date_txt = (EditText) findViewById(R.id.txt_date);
 		date_txt.setKeyListener(null);
-
+		
+		mainPicture = (ImageView)findViewById(R.id.sample_picture_event);
+		
+		hour_txt = (TextView)findViewById(R.id.txt_hour);
+		
 		calendar = Calendar.getInstance();
 		day = calendar.get(Calendar.DAY_OF_MONTH);
 		month = calendar.get(Calendar.MONTH) + 1;
@@ -71,16 +105,15 @@ public class AddEventActivity extends Activity implements OnClickListener {
 
 		date_txt.setText(day + "/" + month + "/" + year);
 
-		hour = (TimePicker) findViewById(R.id.hour_event);
-
 		pictureButton = (Button) findViewById(R.id.button_picture);
 		locationButton = (Button) findViewById(R.id.button_location);
 		calendarButton = (ImageButton) findViewById(R.id.calendarButton);
+		hourButton = (ImageButton) findViewById(R.id.hourButton);
 
 		pictureButton.setOnClickListener(this);
 		calendarButton.setOnClickListener(this);
+		hourButton.setOnClickListener(this);
 		locationButton.setOnClickListener(this);
-
 	}
 
 	@Override
@@ -97,32 +130,73 @@ public class AddEventActivity extends Activity implements OnClickListener {
 			cursor.moveToFirst();
 
 			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String picturePath = cursor.getString(columnIndex);
+			picturePath = cursor.getString(columnIndex);
 			cursor.close();
 
-			ImageView imageView = (ImageView) findViewById(R.id.sample_picture_event);
-			imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+			mainPicture.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
 		}
+//		if (requestCode == RESULT_MAP && resultCode == RESULT_OK
+//				&& null != data) {
+//			Log.i("ANTHO", data.getStringExtra(EXTRA_LAT));
+//			Log.i("ANTHO", data.getStringExtra(EXTRA_LONG));
+//		}
 
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle state) {
+		super.onSaveInstanceState(state);
+	    state.putString("title", title.getText().toString());
+	    state.putString("description", description.getText().toString());
+	    state.putString("date", date_txt.getText().toString());
+	    state.putString("hour", hour_txt.getText().toString());
+	    state.putString("picture", picturePath);
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+	    if (savedInstanceState != null){
+			title.setText(savedInstanceState.getString("title"));
+			description.setText(savedInstanceState.getString("description"));
+			hour_txt.setText(savedInstanceState.getString("hour"));
+			date_txt.setText(savedInstanceState.getString("date"));
+			picturePath = savedInstanceState.getString("picture");
+			if(picturePath!="")
+				mainPicture.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+		}
 	}
 
 	@Override
 	public void onClick(View v) {
 
 		if (v == calendarButton) {
-			// Launch Date Picker Dialog
-			DatePickerDialog dpd = new DatePickerDialog(this,
+			DatePickerDialog dpd = new DatePickerDialog(this,AlertDialog.THEME_HOLO_LIGHT,
 					new DatePickerDialog.OnDateSetListener() {
 
 				@Override
 				public void onDateSet(DatePicker view, int y, int m,
 						int d) {
-					// Display Selected date in textbox
 					date_txt.setText(d + "/" + (m + 1) + "/" + y);
 
 				}
 			}, year, month, day);
+			dpd.show();
+		}
+		if (v == hourButton) {
+			TimePickerDialog dpd = new TimePickerDialog(this,AlertDialog.THEME_HOLO_LIGHT,
+					new TimePickerDialog.OnTimeSetListener() {
+						@Override
+						public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+							String hourDisplay = "";
+							hourDisplay+=(hourOfDay<10)?"0"+hourOfDay:hourOfDay;
+							hourDisplay+=":";
+							hourDisplay+=(minute<10)?"0"+minute:minute;
+							hour_txt.setText(hourDisplay);
+						}
+					}
+			, hourofday, minute, true);
 			dpd.show();
 		}
 		if (v == pictureButton) {
@@ -145,28 +219,13 @@ public class AddEventActivity extends Activity implements OnClickListener {
 		}
 		if (v == locationButton) {
 			Intent i = new Intent(AddEventActivity.this, MapActivity.class);
-			startActivity(i);
+			startActivityForResult(i, RESULT_MAP);
 		}
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_add, menu);
-		MenuItem itemSearch = menu.findItem(R.id.menu_search);
-		SearchView mSearchView = (SearchView) itemSearch.getActionView();
-		mSearchView.setOnQueryTextListener(new OnQueryTextListener() {
-
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				//TODO RECHERCHE
-				return true;
-			}
-
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				return false;
-			}
-		});
 		return true;
 	}
 

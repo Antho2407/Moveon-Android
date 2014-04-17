@@ -8,14 +8,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.udem.videotracker.AideActivity;
-import com.udem.videotracker.PlaylistActivity;
-import com.udem.videotracker.PreferencesActivity;
-import com.udem.videotracker.ProposActivity;
-import com.udem.videotracker.R;
-import com.udem.videotracker.ResultActivity;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -34,7 +29,6 @@ import android.widget.SearchView;
 import android.widget.Toast;
 import android.widget.SearchView.OnQueryTextListener;
 
-
 public class MapActivity extends FragmentActivity {
 
 	private GoogleMap map;
@@ -48,8 +42,11 @@ public class MapActivity extends FragmentActivity {
 
 	private int cursor;
 	private LatLng finalResult;
+	private String finalAdressString;
+
 	final String EXTRA_LONG = "";
 	final String EXTRA_LAT = "";
+	final String EXTRA_ADDRESS = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +92,12 @@ public class MapActivity extends FragmentActivity {
 					cursor = addresses.size()-1;
 				Address adressTmp = addresses.get(cursor);
 				locationMap = new LatLng(adressTmp.getLatitude(), adressTmp.getLongitude());
-				map.animateCamera(CameraUpdateFactory.newLatLng(locationMap)); 
 				finalResult = locationMap;
+				finalAdressString = String.format("%s, %s",
+						adressTmp.getMaxAddressLineIndex() > 0 ? adressTmp.getAddressLine(0) : "",
+								adressTmp.getCountryName());
+				Log.i("ANTHO", "testadresse"+finalAdressString);
+				map.animateCamera(CameraUpdateFactory.newLatLng(locationMap)); 
 			}
 		};
 
@@ -106,19 +107,24 @@ public class MapActivity extends FragmentActivity {
 				cursor = (cursor + 1) % (addresses.size());
 				Address adressTmp = addresses.get(cursor);
 				locationMap = new LatLng(adressTmp.getLatitude(), adressTmp.getLongitude());
-				map.animateCamera(CameraUpdateFactory.newLatLng(locationMap));  
+				finalAdressString = String.format("%s, %s",
+						adressTmp.getMaxAddressLineIndex() > 0 ? adressTmp.getAddressLine(0) : "",
+								adressTmp.getCountryName());
+				locationMap = new LatLng(adressTmp.getLatitude(), adressTmp.getLongitude());
 				finalResult = locationMap;
+				
+				map.animateCamera(CameraUpdateFactory.newLatLng(locationMap));  
 			}
 		};
 
 		OnClickListener chooseClickListener = new OnClickListener() {            
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(MapActivity.this,
-						AddEventActivity
-						.class);
+				Intent intent = new Intent(MapActivity.this, AddEventActivity.class);
 				intent.putExtra(EXTRA_LONG, Integer.toString((int) finalResult.longitude));
 				intent.putExtra(EXTRA_LAT, Integer.toString((int) finalResult.latitude));
+				intent.putExtra(EXTRA_ADDRESS, finalAdressString);
+				//map.stopAnimation();
 				startActivity(intent);
 			}
 		};
@@ -127,11 +133,9 @@ public class MapActivity extends FragmentActivity {
 		btn_previous.setOnClickListener(previousClickListener); 
 		btn_next.setOnClickListener(nextClickListener); 
 		btn_choose.setOnClickListener(chooseClickListener); 
-
-
 	}
 
-	private class LocateTask extends AsyncTask<String, Void, List<Address>>{
+	private class LocateTask extends AsyncTask<String, Void, List<Address>> {
 
 		@Override
 		protected List<Address> doInBackground(String... locationName) {
@@ -148,36 +152,34 @@ public class MapActivity extends FragmentActivity {
 				addresses = geocoder.getFromLocationName(locationName[0], 5);
 			} catch (IOException e) {
 				e.printStackTrace();
-			}            
+			}
 			return addresses;
 		}
 
-
 		@Override
-		protected void onPostExecute(List<Address> addresses) {            
+		protected void onPostExecute(List<Address> addresses) {
 
-			if(addresses==null || addresses.size()==0){
-				Toast.makeText(getBaseContext(), "Pas d'adresse trouvée", Toast.LENGTH_SHORT).show();
+			if (addresses == null || addresses.size() == 0) {
+				Toast.makeText(getBaseContext(), "Pas d'adresse trouvée",
+						Toast.LENGTH_SHORT).show();
 			}
-
-			// Si des adresses sont trouvees les boutons apparaissent
-			btn_previous.setVisibility(View.VISIBLE);
-			btn_next.setVisibility(View.VISIBLE);
-			btn_choose.setVisibility(View.VISIBLE);
 
 			// Faire disparaitre les marqueurs de la map
 			map.clear();
 
 			// Ajouter un nouveau marqueur par adresse
-			for(int i=0;i<addresses.size();i++){                
+			for (int i = 0; i < addresses.size(); i++) {
 
 				Address address = (Address) addresses.get(i);
 
-				locationMap = new LatLng(address.getLatitude(), address.getLongitude());
+				locationMap = new LatLng(address.getLatitude(),
+						address.getLongitude());
 
-				String addressText = String.format("%s, %s",
-						address.getMaxAddressLineIndex() > 0 ? address.getAddressLine(0) : "",
-								address.getCountryName());
+				String addressText = String.format(
+						"%s, %s",
+						address.getMaxAddressLineIndex() > 0 ? address
+								.getAddressLine(0) : "", address
+								.getCountryName());
 
 				markerOptions = new MarkerOptions();
 				markerOptions.position(locationMap);
@@ -186,12 +188,19 @@ public class MapActivity extends FragmentActivity {
 				map.addMarker(markerOptions);
 
 				// Deplacer la map a la premiere adresse
-				if(i==0)                        
-					map.animateCamera(CameraUpdateFactory.newLatLng(locationMap)); 
+				if (i == 0)
+					map.animateCamera(CameraUpdateFactory
+							.newLatLng(locationMap));
 
 				finalResult = locationMap;
+				finalAdressString = addressText;
+
+				// Si des adresses sont trouvees les boutons apparaissent
+				btn_previous.setVisibility(View.VISIBLE);
+				btn_next.setVisibility(View.VISIBLE);
+				btn_choose.setVisibility(View.VISIBLE);
 			}
-		}        
+		}
 	}
 
 	@Override
@@ -203,7 +212,7 @@ public class MapActivity extends FragmentActivity {
 
 			@Override
 			public boolean onQueryTextSubmit(String query) {
-				//TODO RECHERCHE
+				// TODO RECHERCHE
 				return true;
 			}
 
@@ -220,22 +229,20 @@ public class MapActivity extends FragmentActivity {
 		Intent intent = null;
 		switch (item.getItemId()) {
 		case R.id.menu_locate:
-			//TODO lancer localisation
+			// TODO lancer localisation
 			return true;
 		case R.id.menu_add:
-			intent = new Intent(MapActivity.this,AddEventActivity.class);
+			intent = new Intent(MapActivity.this, AddEventActivity.class);
 			startActivity(intent);
 			return true;
 		case R.id.menu_pref:
-			//TODO ALLER A PREFERENCES
+			// TODO ALLER A PREFERENCES
 			return true;
 		case android.R.id.home:
 			this.finish();
 			return true;
 
-
 		}
 		return super.onOptionsItemSelected(item);
 	}
 }
-
