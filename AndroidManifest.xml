@@ -52,10 +52,13 @@
             android:label="@string/title_map_activity" />
         <activity
             android:name=".ListEventActivity"
-            android:label="@string/title_map_activity" />
+            android:label="" />
+                <activity
+            android:name=".ListUserActivity"
+            android:label="" />
         <activity
             android:name=".UserSettingActivity"
-            android:label="@string/title_map_activity" />
+            android:label="Préférences" />
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"

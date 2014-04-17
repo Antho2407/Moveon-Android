@@ -15,13 +15,45 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.SearchView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SearchView.OnQueryTextListener;
 
 
 
 public class AccueilActivity extends Activity{
+
+	private class GridOnItemClick implements OnItemClickListener
+	{
+		@Override
+		public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+			Intent intent = null;
+			switch(position){
+			case 0:
+				break;
+			case 1:
+				intent = new Intent(AccueilActivity.this,ListEventActivity.class);
+				startActivity(intent);
+				break;
+			case 2:
+				intent = new Intent(AccueilActivity.this,UserSettingActivity.class);
+				startActivity(intent);
+				break;
+			case 3:
+				break;
+			case 4:
+				intent = new Intent(AccueilActivity.this,ListUserActivity.class);
+				startActivity(intent);
+				break;
+			case 5:
+				break;
+			}
+			//startActivity(intent);
+		}
+	}
 	GridView gridView;
 	ArrayList<Item> gridArray = new ArrayList<Item>();
 	CustomGridViewAdapter customGridAdapter;
@@ -32,18 +64,23 @@ public class AccueilActivity extends Activity{
 
 		//set grid view item
 		Bitmap homeIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_action_collections_go_to_today);
-		Bitmap userIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_action_content_event);
+		Bitmap userIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_social_person);
+		Bitmap settingsIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_action_settings);
+		Bitmap eventIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_action_content_event);
+		Bitmap usersIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_social_group);
 
-		gridArray.add(new Item(homeIcon,"Profil"));
-		gridArray.add(new Item(userIcon,"My Events"));
-		gridArray.add(new Item(homeIcon,"Settings"));
-		gridArray.add(new Item(userIcon,"User?"));
-		gridArray.add(new Item(homeIcon,"menu 5"));
-		gridArray.add(new Item(userIcon,"menu 6"));
+
+		gridArray.add(new Item(userIcon,"Profil"));
+		gridArray.add(new Item(eventIcon,"My Events"));
+		gridArray.add(new Item(settingsIcon,"Settings"));
+		gridArray.add(new Item(homeIcon,"menu 4"));
+		gridArray.add(new Item(usersIcon,"Users followed"));
+		gridArray.add(new Item(homeIcon,"menu 6"));
 
 		gridView = (GridView) findViewById(R.id.gridView1);
 		customGridAdapter = new CustomGridViewAdapter(this, R.layout.row_grid, gridArray);
 		gridView.setAdapter(customGridAdapter);
+		gridView.setOnItemClickListener(new GridOnItemClick());
 	}
 
 	@Override
@@ -90,7 +127,10 @@ public class AccueilActivity extends Activity{
 	public void onResume() {
 		super.onResume();
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		int minutes = 1;//prefs.getInt("interval");
+		int minutes = 0;
+		if(prefs.getBoolean("prefNotification", false)){
+			minutes=Integer.parseInt(prefs.getString("prefNotificationFrequency", ""));
+		}
 		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 		Intent i = new Intent(this, NotificationService.class);
 		PendingIntent pi = PendingIntent.getService(this, 0, i, 0);

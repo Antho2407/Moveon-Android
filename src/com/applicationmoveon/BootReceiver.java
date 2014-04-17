@@ -14,7 +14,10 @@ public class BootReceiver extends BroadcastReceiver{
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context); 
-		int minutes = 1;//prefs.getInt("interval"); 
+		int minutes = 0;
+		if(prefs.getBoolean("prefNotification", false)){
+			minutes=Integer.parseInt(prefs.getString("prefNotificationFrequency", ""));
+		}
 		AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE); 
 		Intent i = new Intent(context, NotificationService.class); 
 		PendingIntent pi = PendingIntent.getService(context, 0, i, 0); 

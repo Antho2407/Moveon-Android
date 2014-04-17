@@ -20,7 +20,7 @@
         android:id="@+id/button_locate"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:background="@android:color/holo_orange_dark"
+        android:background="@android:color/holo_orange_light"
         android:src="@drawable/ic_action_device_access_location_found" />
 
 </LinearLayout>

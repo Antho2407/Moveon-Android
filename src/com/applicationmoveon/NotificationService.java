@@ -30,6 +30,7 @@ public class NotificationService extends Service {
 	 * called by the system. We won't do anything with the intent here, and you 
 	 * probably won't, either. 
 	 **/ 
+	@SuppressWarnings("deprecation")
 	private void handleIntent(Intent intent) {  
 		//obtain the wake lock
 		PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE); 
@@ -75,6 +76,7 @@ public class NotificationService extends Service {
 			stopSelf(); 
 		}
 
+		@SuppressWarnings("deprecation")
 		public void createNotification() {
 
 			StringBuilder text = new StringBuilder();
