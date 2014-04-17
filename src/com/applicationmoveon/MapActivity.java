@@ -8,6 +8,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+<<<<<<< HEAD
+=======
+
+>>>>>>> abec3668dcc50abc5e370f815300b001cbdbabf6
 
 import android.app.ActionBar;
 import android.app.Activity;

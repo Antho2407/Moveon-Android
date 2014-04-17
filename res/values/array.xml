@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="kmValues">
+        <item name="1">1</item>
+        <item name="5">5</item>
+        <item name="10">10</item>
+        <item name="15">15</item>
+        <item name="20">20</item>
+    </string-array>
+    <string-array name="notificationFrequencyValues">
+        <item name="30">30</item>
+        <item name="1">60</item>
+        <item name="2">120</item>
+        <item name="3">180</item>
+        <item name="12">720</item>
+    </string-array>
+    <string-array name="event_displayValues">
+        <item name="20">20</item>
+        <item name="30">30</item>
+        <item name="40">40</item>
+        <item name="50">50</item>
+        <item name="75">75</item>
+    </string-array>
+    <string-array name="km">
+        <item name="1">1 km</item>
+        <item name="5">5 km</item>
+        <item name="10">10 km</item>
+        <item name="15">15 km</item>
+        <item name="20">20 km</item>
+    </string-array>
+    <string-array name="notificationFrequency">
+        <item name="30">30 minutes</item>
+        <item name="1">1 heure</item>
+        <item name="2">2 heures</item>
+        <item name="3">3 heures</item>
+        <item name="12">12 heures</item>
+    </string-array>
+    <string-array name="event_display">
+        <item name="20">20 evenements</item>
+        <item name="30">30 evenements</item>
+        <item name="40">40 evenements</item>
+        <item name="50">50 evenements</item>
+        <item name="75">75 evenements</item>
+    </string-array>
+
+</resources>

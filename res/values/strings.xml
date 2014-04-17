@@ -15,7 +15,7 @@
     <string name="menu_search">Recherche</string>
     <string name="menu_trier">Tri par</string>
     <string name="menu_share">Partager via</string>
-    <string name="title_accueil_activity">Page d\'accueil de moveon</string>
+    <string name="title_accueil_activity">Accueil</string>
     <string name="title_map_activity">Localiser l\'évènement</string>
     <string name="hint_mail">"Ici : L'adresse email de l'utilisateur"</string>
     <string name="hint_pass">"Ici : Le mot de passe de l'utilisateur"</string>
@@ -33,6 +33,20 @@
     <string name="label_find_txt">Adresse de l\'évènement</string>
     <string name="label_previous">Précédent</string>
     <string name="label_next">Suivant</string>
+<<<<<<< HEAD
     <string name="add_event">Créer</string>
+=======
+    <string name="pref_user_localisation">Localisation</string>
+    <string name="pref_km_summary">Périmètre de recherche d\'evenements autour de vous (km)</string>
+    <string name="pref_km">Périmètre de recherche (km)</string>
+    <string name="pref_event_display_settings">Affichage des evenements</string>
+    <string name="pref_event_display">Nombre d\'evenements</string>
+    <string name="pref_event_display_summary">Nombre d\'evenements affichés</string>
+    <string name="pref_notification_setting">Notifications</string>
+    <string name="pref_notification">Recevoir les notifications</string>
+    <string name="pref_notification_summary">Recevoir les notifications concernant les evenements</string>
+    <string name="pref_notification_frequency_summary">Fréquence de vérification sur les evenements</string>
+    <string name="pref_notification_frequency">Fréquence des notifications</string>
+>>>>>>> abec3668dcc50abc5e370f815300b001cbdbabf6
 
 </resources>

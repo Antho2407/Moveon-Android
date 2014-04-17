@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -97,7 +98,7 @@ public class EventAdapter extends BaseAdapter {
 		TextView description = (TextView)view.findViewById(R.id.event_description);
 		TextView part = (TextView)view.findViewById(R.id.event_participants);
 
-		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy",Locale.FRANCE);
 
 		title.setText(data.eventTitle);
 		date.setText("Le "+dateFormat.format(data.eventDateStart.getTime())+" ра "+ data.eventLocation + " de "+data.eventHourStart+" р "+data.eventHourFinish);
