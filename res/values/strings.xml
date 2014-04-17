@@ -33,9 +33,7 @@
     <string name="label_find_txt">Adresse de l\'évènement</string>
     <string name="label_previous">Précédent</string>
     <string name="label_next">Suivant</string>
-<<<<<<< HEAD
     <string name="add_event">Créer</string>
-=======
     <string name="pref_user_localisation">Localisation</string>
     <string name="pref_km_summary">Périmètre de recherche d\'evenements autour de vous (km)</string>
     <string name="pref_km">Périmètre de recherche (km)</string>
@@ -47,6 +45,5 @@
     <string name="pref_notification_summary">Recevoir les notifications concernant les evenements</string>
     <string name="pref_notification_frequency_summary">Fréquence de vérification sur les evenements</string>
     <string name="pref_notification_frequency">Fréquence des notifications</string>
->>>>>>> abec3668dcc50abc5e370f815300b001cbdbabf6
 
 </resources>
