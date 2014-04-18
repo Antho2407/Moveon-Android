@@ -1,4 +1,4 @@
-package com.example.movebdd;
+package com.applicationmoveon.database;
 import java.util.HashMap;
 
 import org.json.JSONArray;

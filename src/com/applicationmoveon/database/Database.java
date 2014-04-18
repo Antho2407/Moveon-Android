@@ -1,4 +1,4 @@
-package com.example.movebdd;
+package com.applicationmoveon.database;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -20,12 +20,6 @@ import org.json.JSONObject;
 import android.util.Log;
 
 public class Database {
-	
-	
-	public Database() {
-		
-	
-	}
 	
 	public void addUser(String prenom, String nom, String email, String password){
 		//the year data to send
