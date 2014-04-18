@@ -36,11 +36,6 @@ public class RequestTask extends AsyncTask<HashMap<String,String>, String, JSONA
 			
 		}
 		
-		protected JSONArray AddUser(HashMap<String,String> request){
-			
-			return null;
-			
-		}
 		
 		/*
 		 * Cette méthode est appelée dans le thread

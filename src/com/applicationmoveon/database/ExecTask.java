@@ -38,9 +38,11 @@ public class ExecTask extends AsyncTask<HashMap<String,String>, String, Boolean>
 			String query = request.get("Request");
 			
 			if(query.equals("AddEvent")){
-				return AddEvent(request);
+				return addEvent(request);
 			}else if(query.equals("isValidCombination")){
 				return isValidCombination(request);
+			}else if(query.equals("addUser")){
+				return addUser(request);
 			}
 			
 			return false;
@@ -76,7 +78,7 @@ public class ExecTask extends AsyncTask<HashMap<String,String>, String, Boolean>
 			return false;
 		}
 		
-		protected Boolean AddEvent(HashMap<String,String> request){
+		protected Boolean addEvent(HashMap<String,String> request){
 			
 			if(request.containsKey("title") && request.containsKey("description")&& request.containsKey("location")&& request.containsKey("date_debut")&& request.containsKey("heure_debut")&& request.containsKey("heure_fin")&& request.containsKey("date_fin")
 			&& request.containsKey("participants")&& request.containsKey("id_createur")&& request.containsKey("date_creation")&& request.containsKey("state")
@@ -87,6 +89,14 @@ public class ExecTask extends AsyncTask<HashMap<String,String>, String, Boolean>
 			}
 			return false;
 			
+			
+		}
+
+		protected Boolean addUser(HashMap<String,String> request){
+			if(request.containsKey("firstname")&&request.containsKey("lastname")&&request.containsKey("email")&&request.containsKey("password")&&request.containsKey("urlimage")){
+				db.addUser(request.get("firstname"), request.get("lastname"), request.get("email"), request.get("password"), request.get("urlimage"));
+			}
+			return true;
 			
 		}
 		

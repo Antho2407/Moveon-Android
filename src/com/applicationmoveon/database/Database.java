@@ -21,13 +21,14 @@ import android.util.Log;
 
 public class Database {
 	
-	public void addUser(String prenom, String nom, String email, String password){
+	public void addUser(String prenom, String nom, String email, String password, String urlimage){
 		//the year data to send
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-		nameValuePairs.add(new BasicNameValuePair("prenom",prenom));
-		nameValuePairs.add(new BasicNameValuePair("nom",nom));
+		nameValuePairs.add(new BasicNameValuePair("firstname",prenom));
+		nameValuePairs.add(new BasicNameValuePair("lastname",nom));
 		nameValuePairs.add(new BasicNameValuePair("email",email));
 		nameValuePairs.add(new BasicNameValuePair("password",password));
+		nameValuePairs.add(new BasicNameValuePair("imageprofile",urlimage));
 		 
 		//http post
 		try{
