@@ -1,0 +1,169 @@
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" 
+    android:id="@+id/RelativeLayout1" >
+<ScrollView 
+    android:id="@+id/Scrollview1"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+	
+	<GridLayout
+    android:id="@+id/GridLayout1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/padding_large"
+    android:columnCount="3"
+    android:layout_gravity="center_horizontal"
+    android:rowCount="6" >
+
+		<TextView
+		    android:id="@+id/txt_name"
+		    android:textStyle="bold|italic"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="@dimen/normal_padding"
+	        android:text="@string/label_name"
+	        android:textSize="@dimen/normal_text_size"
+	        android:layout_column="0"
+	        android:layout_row="0"
+	        android:layout_columnSpan="2"
+	        android:textColor="@color/black_color" />
+		<EditText
+	        android:id="@+id/name_user"
+	        android:layout_width="@dimen/large_padding"
+	        android:layout_height="wrap_content"
+	        android:layout_column="2"
+	        android:layout_row="0"
+	        android:background="@drawable/text_edit_style"
+	        android:inputType="text"/>
+
+	<TextView
+		    android:id="@+id/txt_firstname"
+		    android:textStyle="bold|italic"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="@dimen/normal_padding"
+	        android:text="@string/label_firstname"
+	        android:textSize="@dimen/normal_text_size"
+	        android:layout_column="0"
+	        android:layout_row="1"
+	        android:layout_columnSpan="2"
+	        android:textColor="@color/black_color" />
+		<EditText
+	        android:id="@+id/firstname_user"
+	        android:layout_width="@dimen/large_padding"
+	        android:layout_height="wrap_content"
+	        android:layout_column="2"
+	        android:layout_row="1"
+	        android:background="@drawable/text_edit_style"
+	        android:inputType="text"/>
+		
+		<TextView
+		    android:id="@+id/txt_picture"
+		    android:layout_gravity="center_vertical"
+		    android:textStyle="bold|italic"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="@dimen/normal_padding"
+	        android:text="@string/label_picture"
+	        android:textSize="@dimen/normal_text_size"
+	        android:layout_column="0"
+	        android:layout_row="2"
+	        android:textColor="@color/black_color" />
+		<ImageView
+	        android:id="@+id/sample_picture_user"
+	        android:layout_gravity="center_vertical"
+	        android:layout_width="wrap_content"  
+			android:layout_height="wrap_content"  
+			android:paddingTop="@dimen/normal_padding"
+			android:adjustViewBounds="true"  
+			android:maxWidth="42dp"  
+			android:maxHeight="42dp"  
+			android:scaleType="fitCenter" 
+			android:layout_column="1"
+	        android:layout_row="2"
+	        android:src="@drawable/picture_missing"
+	        android:contentDescription="@string/image_content_description" />
+		<Button
+	        android:id="@+id/button_picture_user"
+	        android:paddingTop="@dimen/normal_padding"
+	        android:layout_gravity="right"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_column="2"
+	        android:layout_row="2"
+	        android:text="@string/load_picture">
+		</Button>
+		
+		<TextView
+		    android:id="@+id/txt_email"
+		    android:textStyle="bold|italic"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="@dimen/normal_padding"
+	        android:text="@string/label_email"
+	        android:textSize="@dimen/normal_text_size"
+	        android:layout_column="0"
+	        android:layout_row="3"
+	        android:layout_columnSpan="2"
+	        android:textColor="@color/black_color" />
+		<EditText
+	        android:id="@+id/email_user"
+	        android:layout_width="@dimen/large_padding"
+	        android:layout_height="wrap_content"
+	        android:layout_column="2"
+	        android:layout_row="3"
+	        android:background="@drawable/text_edit_style"
+	        android:inputType="text"/>
+		
+		<TextView
+		    android:id="@+id/txt_password"
+		    android:textStyle="bold|italic"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="@dimen/normal_padding"
+	        android:text="@string/label_password"
+	        android:textSize="@dimen/normal_text_size"
+	        android:layout_column="0"
+	        android:layout_row="4"
+	        android:layout_columnSpan="2"
+	        android:textColor="@color/black_color" />
+		<EditText
+	        android:id="@+id/password_user"
+	        android:layout_width="@dimen/large_padding"
+	        android:layout_height="wrap_content"
+	        android:layout_column="2"
+	        android:layout_row="4"
+	        android:background="@drawable/text_edit_style"
+	        android:inputType="text"/>
+		<TextView
+		    android:id="@+id/txt_password_check"
+		    android:textStyle="bold|italic"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="@dimen/normal_padding"
+	        android:text="@string/label_password_check"
+	        android:textSize="@dimen/normal_text_size"
+	        android:layout_column="0"
+	        android:layout_row="5"
+	        android:layout_columnSpan="2"
+	        android:textColor="@color/black_color" />
+		<EditText
+	        android:id="@+id/password_user_check"
+	        android:layout_width="@dimen/large_padding"
+	        android:layout_height="wrap_content"
+	        android:layout_column="2"
+	        android:layout_row="5"
+	        android:background="@drawable/text_edit_style"
+	        android:inputType="text"/>
+</GridLayout>
+</ScrollView>
+<Button
+       android:id="@+id/button_add_user"
+       android:layout_gravity="center_vertical"
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+	   android:layout_alignParentBottom="true"  
+       android:text="@string/add_user">
+</Button>
+</RelativeLayout>
