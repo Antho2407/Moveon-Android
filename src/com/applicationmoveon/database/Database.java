@@ -40,14 +40,16 @@ public class Database {
 		}
 	}
 	
-	public void addEvent(String title, String location, String description, String date_debut, String date_fin, String participants, String id_createur, String date_creation, String state, String urlimage){
+	public void addEvent(String title, String location, String description, String date_debut,String heure_debut, String date_fin,String heure_fin, String participants, String id_createur, String date_creation, String state, String urlimage){
 		//the year data to send
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("title",title));
 		nameValuePairs.add(new BasicNameValuePair("location",location));
 		nameValuePairs.add(new BasicNameValuePair("description",description));
 		nameValuePairs.add(new BasicNameValuePair("date_debut",date_debut));
+		nameValuePairs.add(new BasicNameValuePair("date_debut",heure_debut));
 		nameValuePairs.add(new BasicNameValuePair("date_fin",date_fin));
+		nameValuePairs.add(new BasicNameValuePair("date_debut",heure_fin));
 		nameValuePairs.add(new BasicNameValuePair("participants",participants));
 		nameValuePairs.add(new BasicNameValuePair("id_createur",id_createur));
 		nameValuePairs.add(new BasicNameValuePair("date_creation",date_creation));
