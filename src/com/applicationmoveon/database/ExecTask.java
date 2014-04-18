@@ -37,7 +37,7 @@ public class ExecTask extends AsyncTask<HashMap<String,String>, String, Boolean>
 			HashMap<String, String> request = params[0];
 			String query = request.get("Request");
 			
-			if(query.equals("AddEvent")){
+			if(query.equals("addEvent")){
 				return addEvent(request);
 			}else if(query.equals("isValidCombination")){
 				return isValidCombination(request);
@@ -95,8 +95,9 @@ public class ExecTask extends AsyncTask<HashMap<String,String>, String, Boolean>
 		protected Boolean addUser(HashMap<String,String> request){
 			if(request.containsKey("firstname")&&request.containsKey("lastname")&&request.containsKey("email")&&request.containsKey("password")&&request.containsKey("urlimage")){
 				db.addUser(request.get("firstname"), request.get("lastname"), request.get("email"), request.get("password"), request.get("urlimage"));
+				return true;
 			}
-			return true;
+			return false;
 			
 		}
 		
