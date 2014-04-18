@@ -1,7 +1,9 @@
  <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content" 
+    android:id="@+id/RelativeLayout1" >
 <ScrollView 
+    android:id="@+id/Scrollview1"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
 	
@@ -12,7 +14,7 @@
     android:paddingTop="@dimen/padding_large"
     android:columnCount="3"
     android:layout_gravity="center_horizontal"
-    android:rowCount="6" >
+    android:rowCount="8" >
 	    
 		<TextView
 		    android:id="@+id/txt_title"
@@ -57,12 +59,12 @@
 	        android:inputType="text"/>
 	
 		<TextView
-		    android:id="@+id/txt_hour"
+		    android:id="@+id/txt_hour_beginning"
 		    android:layout_gravity="center_vertical"
 		    android:textStyle="bold|italic"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/label_hour"
+	        android:text="@string/label_hour_beginning"
 	        android:paddingTop="@dimen/normal_padding"
 	        android:textSize="@dimen/normal_text_size"
 	        android:layout_column="0"
@@ -70,7 +72,7 @@
 	        android:layout_columnSpan="2"
 	        android:textColor="@color/black_color" />
 		<ImageButton
-	         android:id="@+id/hourButton"
+	         android:id="@+id/hourBeginButton"
 	         android:layout_width="wrap_content"  
 			android:layout_height="wrap_content" 
 			android:paddingTop="@dimen/normal_padding" 
@@ -80,6 +82,32 @@
 			android:scaleType="fitCenter"
 			android:layout_column="2"
 	        android:layout_row="2" 
+	         android:src="@drawable/hour_icon" />
+		
+		<TextView
+		    android:id="@+id/txt_hour_end"
+		    android:layout_gravity="center_vertical"
+		    android:textStyle="bold|italic"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/label_hour_end"
+	        android:paddingTop="@dimen/normal_padding"
+	        android:textSize="@dimen/normal_text_size"
+	        android:layout_column="0"
+	        android:layout_row="3"
+	        android:layout_columnSpan="2"
+	        android:textColor="@color/black_color" />
+		<ImageButton
+	         android:id="@+id/hourEndButton"
+	         android:layout_width="wrap_content"  
+			android:layout_height="wrap_content" 
+			android:paddingTop="@dimen/normal_padding" 
+			android:adjustViewBounds="true"  
+			android:maxWidth="42dp"  
+			android:maxHeight="42dp"  
+			android:scaleType="fitCenter"
+			android:layout_column="2"
+	        android:layout_row="3" 
 	         android:src="@drawable/hour_icon" />
 	   
 		<TextView
@@ -92,7 +120,7 @@
 	        android:paddingTop="@dimen/normal_padding"
 	        android:textSize="@dimen/normal_text_size"
 	        android:layout_column="0"
-	        android:layout_row="3"
+	        android:layout_row="4"
 	        android:textColor="@color/black_color" />
 		<ImageView
 	        android:id="@+id/picture_check_location"
@@ -105,7 +133,7 @@
 			android:maxHeight="42dp"  
 			android:scaleType="fitCenter" 
 			android:layout_column="1"
-	        android:layout_row="3"
+	        android:layout_row="4"
 	        android:src="@drawable/cross" />
 		<Button
 	        android:id="@+id/button_location"
@@ -115,7 +143,7 @@
 	        android:paddingTop="@dimen/normal_padding"
 	        android:text="@string/load_location"
 	        android:layout_column="2"
-	        android:layout_row="3">
+	        android:layout_row="4">
 		</Button>
 	
 		<TextView
@@ -128,7 +156,7 @@
 	        android:text="@string/label_picture"
 	        android:textSize="@dimen/normal_text_size"
 	        android:layout_column="0"
-	        android:layout_row="4"
+	        android:layout_row="5"
 	        android:textColor="@color/black_color" />
 		<ImageView
 	        android:id="@+id/sample_picture_event"
@@ -141,7 +169,7 @@
 			android:maxHeight="42dp"  
 			android:scaleType="fitCenter" 
 			android:layout_column="1"
-	        android:layout_row="4"
+	        android:layout_row="5"
 	        android:src="@drawable/picture_missing"
 	        android:contentDescription="@string/image_content_description" />
 		<Button
@@ -151,24 +179,24 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_column="2"
-	        android:layout_row="4"
+	        android:layout_row="5"
 	        android:text="@string/load_picture">
 		</Button>
 		
 		<EditText
-		    android:id="@+id/txt_date"
+		    android:id="@+id/txt_date_beginning"
 		    android:textStyle="bold|italic"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:textSize="@dimen/normal_text_size"
 	        android:paddingTop="@dimen/normal_padding"
 	        android:layout_column="0"
-	        android:layout_row="5"
+	        android:layout_row="6"
 	        android:layout_columnSpan="2"
 	        android:background="@drawable/text_edit_style"
 	        android:textColor="@color/black_color"/>
 		<ImageButton
-	         android:id="@+id/calendarButton"
+	         android:id="@+id/calendarButtonBeginning"
 	         android:layout_width="wrap_content"  
 			android:layout_height="wrap_content"  
 			android:adjustViewBounds="true"  
@@ -177,7 +205,31 @@
 			android:maxHeight="42dp"  
 			android:scaleType="fitCenter" 
 			android:layout_column="2"
-	        android:layout_row="5"
+	        android:layout_row="6"
+	         android:src="@drawable/calendar_icon" />
+		<EditText
+		    android:id="@+id/txt_date_end"
+		    android:textStyle="bold|italic"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="@dimen/normal_text_size"
+	        android:paddingTop="@dimen/normal_padding"
+	        android:layout_column="0"
+	        android:layout_row="7"
+	        android:layout_columnSpan="2"
+	        android:background="@drawable/text_edit_style"
+	        android:textColor="@color/black_color"/>
+		<ImageButton
+	         android:id="@+id/calendarButtonEnd"
+	         android:layout_width="wrap_content"  
+			android:layout_height="wrap_content"  
+			android:adjustViewBounds="true"  
+			android:paddingTop="@dimen/normal_padding"
+			android:maxWidth="42dp"  
+			android:maxHeight="42dp"  
+			android:scaleType="fitCenter" 
+			android:layout_column="2"
+	        android:layout_row="7"
 	         android:src="@drawable/calendar_icon" />
 </GridLayout>
 </ScrollView>

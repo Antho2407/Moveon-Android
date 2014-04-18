@@ -47,9 +47,9 @@ public class Database {
 		nameValuePairs.add(new BasicNameValuePair("location",location));
 		nameValuePairs.add(new BasicNameValuePair("description",description));
 		nameValuePairs.add(new BasicNameValuePair("date_debut",date_debut));
-		nameValuePairs.add(new BasicNameValuePair("date_debut",heure_debut));
+		nameValuePairs.add(new BasicNameValuePair("heure_debut",heure_debut));
 		nameValuePairs.add(new BasicNameValuePair("date_fin",date_fin));
-		nameValuePairs.add(new BasicNameValuePair("date_debut",heure_fin));
+		nameValuePairs.add(new BasicNameValuePair("heure_fin",heure_fin));
 		nameValuePairs.add(new BasicNameValuePair("participants",participants));
 		nameValuePairs.add(new BasicNameValuePair("id_createur",id_createur));
 		nameValuePairs.add(new BasicNameValuePair("date_creation",date_creation));

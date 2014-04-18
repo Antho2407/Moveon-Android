@@ -8,17 +8,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-<<<<<<< HEAD
-=======
-
->>>>>>> abec3668dcc50abc5e370f815300b001cbdbabf6
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -45,12 +39,11 @@ public class MapActivity extends FragmentActivity {
 	private Button btn_choose;
 
 	private int cursor;
-	private LatLng finalResult;
-	private String finalAdressString;
+	private Double finalLatitude = 0.0;
+	private Double finalLongitude = 0.0;
+	private String finalAdressString = "";
 
-	final String EXTRA_LONG = "";
-	final String EXTRA_LAT = "";
-	final String EXTRA_ADDRESS = "";
+	private Address currentAddress;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,13 +87,8 @@ public class MapActivity extends FragmentActivity {
 				cursor = (cursor - 1);
 				if(cursor < 0)
 					cursor = addresses.size()-1;
-				Address adressTmp = addresses.get(cursor);
-				locationMap = new LatLng(adressTmp.getLatitude(), adressTmp.getLongitude());
-				finalResult = locationMap;
-				finalAdressString = String.format("%s, %s",
-						adressTmp.getMaxAddressLineIndex() > 0 ? adressTmp.getAddressLine(0) : "",
-								adressTmp.getCountryName());
-				Log.i("ANTHO", "testadresse"+finalAdressString);
+				currentAddress = addresses.get(cursor);
+				locationMap = new LatLng(currentAddress.getLatitude(), currentAddress.getLongitude());
 				map.animateCamera(CameraUpdateFactory.newLatLng(locationMap)); 
 			}
 		};
@@ -109,14 +97,8 @@ public class MapActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				cursor = (cursor + 1) % (addresses.size());
-				Address adressTmp = addresses.get(cursor);
-				locationMap = new LatLng(adressTmp.getLatitude(), adressTmp.getLongitude());
-				finalAdressString = String.format("%s, %s",
-						adressTmp.getMaxAddressLineIndex() > 0 ? adressTmp.getAddressLine(0) : "",
-								adressTmp.getCountryName());
-				locationMap = new LatLng(adressTmp.getLatitude(), adressTmp.getLongitude());
-				finalResult = locationMap;
-				
+				currentAddress = addresses.get(cursor);
+				locationMap = new LatLng(currentAddress.getLatitude(), currentAddress.getLongitude());
 				map.animateCamera(CameraUpdateFactory.newLatLng(locationMap));  
 			}
 		};
@@ -124,12 +106,18 @@ public class MapActivity extends FragmentActivity {
 		OnClickListener chooseClickListener = new OnClickListener() {            
 			@Override
 			public void onClick(View v) {
+				finalLatitude = currentAddress.getLatitude();
+				finalLongitude = currentAddress.getLongitude();
+				finalAdressString = String.format("%s, %s",
+						currentAddress.getMaxAddressLineIndex() > 0 ? currentAddress.getAddressLine(0) : "",
+								currentAddress.getCountryName());
 				Intent intent = new Intent(MapActivity.this, AddEventActivity.class);
-				intent.putExtra(EXTRA_LONG, Integer.toString((int) finalResult.longitude));
-				intent.putExtra(EXTRA_LAT, Integer.toString((int) finalResult.latitude));
-				intent.putExtra(EXTRA_ADDRESS, finalAdressString);
+				intent.putExtra("EXTRA_LONG", Double.toString(finalLongitude));
+				intent.putExtra("EXTRA_LAT", Double.toString(finalLatitude));
+				intent.putExtra("EXTRA_ADDRESS",finalAdressString);
+				setResult(1,intent);  
 				//map.stopAnimation();
-				startActivity(intent);
+				finish();
 			}
 		};
 
@@ -174,20 +162,20 @@ public class MapActivity extends FragmentActivity {
 			// Ajouter un nouveau marqueur par adresse
 			for (int i = 0; i < addresses.size(); i++) {
 
-				Address address = (Address) addresses.get(i);
+				currentAddress = (Address) addresses.get(i);
 
-				locationMap = new LatLng(address.getLatitude(),
-						address.getLongitude());
+				locationMap = new LatLng(currentAddress.getLatitude(),
+						currentAddress.getLongitude());
 
-				String addressText = String.format(
+				finalAdressString = String.format(
 						"%s, %s",
-						address.getMaxAddressLineIndex() > 0 ? address
-								.getAddressLine(0) : "", address
+						currentAddress.getMaxAddressLineIndex() > 0 ? currentAddress
+								.getAddressLine(0) : "", currentAddress
 								.getCountryName());
 
 				markerOptions = new MarkerOptions();
 				markerOptions.position(locationMap);
-				markerOptions.title(addressText);
+				markerOptions.title(finalAdressString);
 
 				map.addMarker(markerOptions);
 
@@ -195,10 +183,7 @@ public class MapActivity extends FragmentActivity {
 				if (i == 0)
 					map.animateCamera(CameraUpdateFactory
 							.newLatLng(locationMap));
-
-				finalResult = locationMap;
-				finalAdressString = addressText;
-
+				
 				// Si des adresses sont trouvees les boutons apparaissent
 				btn_previous.setVisibility(View.VISIBLE);
 				btn_next.setVisibility(View.VISIBLE);

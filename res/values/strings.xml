@@ -23,7 +23,8 @@
     <string name="email_or_password_empty">Les deux champs doivent être remplis</string>
     <string name="label_title">Titre :</string>
     <string name="label_description">Description :</string>
-    <string name="label_hour">Heure :</string>
+    <string name="label_hour_beginning">Heure de début :</string>
+    <string name="label_hour_end">Heure de fin :</string>
     <string name="label_location">Lieu :</string>
     <string name="label_picture">Image :</string>
     <string name="label_date">Date :</string>
