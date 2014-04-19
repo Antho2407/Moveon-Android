@@ -54,11 +54,9 @@ public class ExecTask extends AsyncTask<HashMap<String,String>, String, Boolean>
 			
 			if(request.containsKey("email") && request.containsKey("password")){
 				JSONArray result = db.SelectUserByMail(request.get("email"));
-<<<<<<< HEAD
+
 				if(result != null && result.length() == 1){
-=======
-				if(result != null){
->>>>>>> 0e10401396a072446d7c39940fe235eff99ba6af
+
 					JSONObject json_data = null;
 					 try {
 						 json_data = result.getJSONObject(0);
