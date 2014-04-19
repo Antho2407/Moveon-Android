@@ -54,7 +54,9 @@ public class ExecTask extends AsyncTask<HashMap<String,String>, String, Boolean>
 			
 			if(request.containsKey("email") && request.containsKey("password")){
 				JSONArray result = db.SelectUserByMail(request.get("email"));
-				if(result != null){
+
+				if(result != null && result.length() == 1){
+
 					JSONObject json_data = null;
 					 try {
 						 json_data = result.getJSONObject(0);
@@ -81,10 +83,10 @@ public class ExecTask extends AsyncTask<HashMap<String,String>, String, Boolean>
 		
 		protected Boolean addEvent(HashMap<String,String> request){
 			
-			if(request.containsKey("title") && request.containsKey("description")&& request.containsKey("location")&& request.containsKey("date_debut")&& request.containsKey("heure_debut")&& request.containsKey("heure_fin")&& request.containsKey("date_fin")
+			if(request.containsKey("title") && request.containsKey("description")&& request.containsKey("location")&& request.containsKey("latitude")&& request.containsKey("longitude")&& request.containsKey("date_debut")&& request.containsKey("heure_debut")&& request.containsKey("heure_fin")&& request.containsKey("date_fin")
 			&& request.containsKey("participants")&& request.containsKey("id_createur")&& request.containsKey("date_creation")&& request.containsKey("state")
 			&& request.containsKey("urlimage")){
-				db.addEvent(request.get("title"), request.get("location"), request.get("description"), request.get("date_debut"),request.get("heure_debut"), request.get("date_fin"), 
+				db.addEvent(request.get("title"), request.get("location"),request.get("latitude"),request.get("longitude"), request.get("description"), request.get("date_debut"),request.get("heure_debut"), request.get("date_fin"), 
 				request.get("heure_fin"),request.get("participants"), request.get("id_createur"), request.get("date_creation"), request.get("state"), request.get("urlimage"));
 				return true;
 			}
@@ -94,7 +96,7 @@ public class ExecTask extends AsyncTask<HashMap<String,String>, String, Boolean>
 		}
 
 		protected Boolean addUser(HashMap<String,String> request){
-			if(request.containsKey("firstname")&&request.containsKey("lastname")&&request.containsKey("email")&&request.containsKey("password")&&request.containsKey("urlimage")){
+			if(request.containsKey("firstname") && request.containsKey("lastname") && request.containsKey("email") && request.containsKey("password") && request.containsKey("urlimage")){
 				db.addUser(request.get("firstname"), request.get("lastname"), request.get("email"), request.get("password"), request.get("urlimage"));
 				return true;
 			}
