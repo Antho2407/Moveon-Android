@@ -18,6 +18,7 @@
     <string name="menu_share">Partager via</string>
     <string name="title_accueil_activity">Accueil</string>
     <string name="title_map_activity">Localiser l\'évènement</string>
+    <string name="title_map_locate_activity">Evènements les plus proches</string>
     <string name="hint_mail">"Ici : L'adresse email de l'utilisateur"</string>
     <string name="hint_pass">"Ici : Le mot de passe de l'utilisateur"</string>
     <string name="email_format_error">Format de l\'adresse mail incorrect</string>
