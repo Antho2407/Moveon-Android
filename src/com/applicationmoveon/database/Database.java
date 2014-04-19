@@ -142,7 +142,7 @@ public class Database {
 		//http post
 		try{
 		        HttpClient httpclient = new DefaultHttpClient();
-		        HttpPost httppost = new HttpPost("http://martinezhugo.com/moveon/select_user_by_mail.php");
+		        HttpPost httppost = new HttpPost("http://martinezhugo.com/moveon/select_user_by_email.php");
 		        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 		        HttpResponse response = httpclient.execute(httppost);
 		        HttpEntity entity = response.getEntity();
@@ -164,7 +164,7 @@ public class Database {
 		}catch(Exception e){
 		        Log.e("log_tag", "Error converting result "+e.toString());
 		}
-		 
+		
 		//parse json data
 		try{
 		        jArray = new JSONArray(result);
@@ -173,6 +173,7 @@ public class Database {
 		}catch(JSONException e){
 		        Log.e("log_tag", "Error parsing data "+e.toString());
 		}
+		Log.i("ANTHO",jArray.toString());
 		return jArray;
 		
 	}

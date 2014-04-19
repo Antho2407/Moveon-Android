@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class ExecTask extends AsyncTask<HashMap<String,String>, String, Boolean> {
 		/*
@@ -51,9 +52,13 @@ public class ExecTask extends AsyncTask<HashMap<String,String>, String, Boolean>
 		
 		protected Boolean isValidCombination(HashMap<String,String> request){
 			
-			if(request.containsKey("email") && request.containsKey("motdepasse")){
+			if(request.containsKey("email") && request.containsKey("password")){
 				JSONArray result = db.SelectUserByMail(request.get("email"));
+<<<<<<< HEAD
 				if(result != null && result.length() == 1){
+=======
+				if(result != null){
+>>>>>>> 0e10401396a072446d7c39940fe235eff99ba6af
 					JSONObject json_data = null;
 					 try {
 						 json_data = result.getJSONObject(0);
@@ -63,7 +68,7 @@ public class ExecTask extends AsyncTask<HashMap<String,String>, String, Boolean>
 						e.printStackTrace();
 					}
 					try {
-						if(json_data.getString("motdepasse").equals(request.get("motdepasse"))){
+						if(json_data.getString("password").equals(request.get("password"))){
 							return true;
 						}
 					} catch (JSONException e) {

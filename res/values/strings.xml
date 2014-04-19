@@ -7,6 +7,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_add_event_activity">Ajouter un évènement</string>
     <string name="title_login_activity">Se connecter</string>
+    <string name="add_user_activity">Inscription</string>
     <string name="image_content_description">Logo MoveOn</string>
     <string name="create_account">Créer un compte</string>
     <string name="email">Adresse email</string>
@@ -20,6 +21,7 @@
     <string name="hint_mail">"Ici : L'adresse email de l'utilisateur"</string>
     <string name="hint_pass">"Ici : Le mot de passe de l'utilisateur"</string>
     <string name="email_format_error">Format de l\'adresse mail incorrect</string>
+    <string name="existing_account_error">Compte inexistant</string>
     <string name="email_or_password_empty">Les deux champs doivent être remplis</string>
     <string name="label_title">Titre :</string>
     <string name="label_description">Description :</string>
@@ -28,6 +30,11 @@
     <string name="label_location">Lieu :</string>
     <string name="label_picture">Image :</string>
     <string name="label_date">Date :</string>
+    <string name="label_name">Nom :</string>
+    <string name="label_firstname">Prénom :</string>
+    <string name="label_email">Email :</string>
+    <string name="label_password">Mot de passe :</string>
+    <string name="label_password_check">Mot de passe (vérification) :</string>
     <string name="load_picture">Parcourir...</string>
     <string name="load_location">Localiser...</string>
     <string name="label_find">Valider!</string>
@@ -35,6 +42,7 @@
     <string name="label_previous">Précédent</string>
     <string name="label_next">Suivant</string>
     <string name="add_event">Créer</string>
+    <string name="add_user">S\'inscrire</string>
     <string name="pref_user_localisation">Localisation</string>
     <string name="pref_km_summary">Périmètre de recherche d\'evenements autour de vous (km)</string>
     <string name="pref_km">Périmètre de recherche (km)</string>
