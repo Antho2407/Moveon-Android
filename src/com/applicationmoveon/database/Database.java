@@ -171,7 +171,6 @@ public class Database {
 		}catch(JSONException e){
 		        Log.e("log_tag", "Error parsing data "+e.toString());
 		}
-		Log.i("ANTHO",jArray.toString());
 		return jArray;
 		
 	}
