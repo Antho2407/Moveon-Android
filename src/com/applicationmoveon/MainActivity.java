@@ -4,10 +4,12 @@ package com.applicationmoveon;
 import java.util.ArrayList;
 
 import com.applicationmoveon.session.SessionManager;
+import com.google.android.gms.plus.PlusClient;
 
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -26,10 +28,16 @@ import android.widget.SearchView.OnQueryTextListener;
 
 
 
-public class MainActivity extends Activity{
+
+
+
+public class MainActivity extends Activity {
 	
 	 // Session Manager Class
     SessionManager session;
+    
+  
+
     
 	private class GridOnItemClick implements OnItemClickListener
 	{
@@ -64,10 +72,14 @@ public class MainActivity extends Activity{
 	GridView gridView;
 	ArrayList<Item> gridArray = new ArrayList<Item>();
 	CustomGridViewAdapter customGridAdapter;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		
+		 
+		//Initialisation du session manager
 		session = new SessionManager(MainActivity.this);
 		session.checkLogin();
 		
@@ -125,6 +137,8 @@ public class MainActivity extends Activity{
 		case R.id.menu_pref:
 			intent = new Intent(MainActivity.this,UserSettingActivity.class);
 			startActivity(intent);			return true;
+		case R.id.menu_deco:
+			session.logoutUser();			return true;
 		case android.R.id.home:
 			this.finish();
 			return true;
@@ -149,4 +163,7 @@ public class MainActivity extends Activity{
 			am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + minutes*60*1000, minutes*60*1000, pi);
 		}
 	}
+	
+
+
 }
