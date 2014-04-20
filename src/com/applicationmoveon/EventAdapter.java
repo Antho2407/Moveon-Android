@@ -27,29 +27,53 @@ public class EventAdapter extends BaseAdapter {
 		public int eventState;
 		public String eventTitle;
 		public String eventLocation;
-		public Date eventDateStart;
+		public String eventDateStart;
+		public String eventDateEnd;
 		public String eventHourStart;
 		public String eventHourFinish;
 		public int numberOfParticipants;
 		public int numberOfPlaces;
-		public Date eventDateCreation;
+		public String eventDateCreation;
+		public float latitude;
+		public float longitude;
+		public float distance;
 
+//		public EventData(int eventId, String eventTitle, String eventLocation,
+//				String eventDescription, Date eventDateStart,
+//				String eventHourStart, String eventHourFinish,
+//				int numberOfParticipants, int numberOfPlaces, String eventOwner, int eventState, Date eventDateCreation) {
+//			this.eventId = eventId;
+//			this.eventDescription = eventDescription;	
+//			this.eventTitle = eventTitle;
+//			this.eventLocation = eventLocation;
+//			this.eventDateStart = eventDateStart;
+//			this.eventHourStart = eventHourStart;
+//			this.eventHourFinish = eventHourFinish;
+//			this.numberOfParticipants = numberOfParticipants;
+//			this.numberOfPlaces = numberOfPlaces;
+//			this.eventState = eventState;
+//			this.eventOwner = eventOwner;
+//			this.eventDateCreation = eventDateCreation;
+//		}
+		
 		public EventData(int eventId, String eventTitle, String eventLocation,
-				String eventDescription, Date eventDateStart,
+				String eventDescription, String eventDateStart,
 				String eventHourStart, String eventHourFinish,
-				int numberOfParticipants, int numberOfPlaces, String eventOwner, int eventState, Date eventDateCreation) {
+				int numberOfParticipants, String eventOwner, int eventState, String eventDateCreation, float latitude, float longitude) {
 			this.eventId = eventId;
 			this.eventDescription = eventDescription;	
 			this.eventTitle = eventTitle;
 			this.eventLocation = eventLocation;
 			this.eventDateStart = eventDateStart;
+			this.eventDateEnd = eventDateEnd;
 			this.eventHourStart = eventHourStart;
 			this.eventHourFinish = eventHourFinish;
 			this.numberOfParticipants = numberOfParticipants;
-			this.numberOfPlaces = numberOfPlaces;
 			this.eventState = eventState;
 			this.eventOwner = eventOwner;
 			this.eventDateCreation = eventDateCreation;
+			this.latitude = latitude;
+			this.longitude = longitude;
 		}
 
 	}
@@ -101,7 +125,7 @@ public class EventAdapter extends BaseAdapter {
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy",Locale.FRANCE);
 
 		title.setText(data.eventTitle);
-		date.setText("Le "+dateFormat.format(data.eventDateStart.getTime())+" ра "+ data.eventLocation + " de "+data.eventHourStart+" р "+data.eventHourFinish);
+		date.setText("Le "+ data.eventDateStart +" ра "+ data.eventLocation + " de "+data.eventHourStart+" р "+data.eventHourFinish);
 		description.setText(data.eventDescription);
 		part.setText(data.numberOfParticipants+" participants");
 
@@ -118,5 +142,5 @@ public class EventAdapter extends BaseAdapter {
 		_context = context;
 		_data = data;
 	}
-
+	
 }

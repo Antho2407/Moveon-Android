@@ -43,6 +43,8 @@ public class AccueilActivity extends Activity{
 				startActivity(intent);
 				break;
 			case 3:
+				intent = new Intent(AccueilActivity.this,MapLocateActivity.class);
+			startActivity(intent);
 				break;
 			case 4:
 				intent = new Intent(AccueilActivity.this,ListUserActivity.class);
@@ -69,11 +71,10 @@ public class AccueilActivity extends Activity{
 		Bitmap eventIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_action_content_event);
 		Bitmap usersIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_social_group);
 
-
 		gridArray.add(new Item(userIcon,"Profil"));
 		gridArray.add(new Item(eventIcon,"My Events"));
 		gridArray.add(new Item(settingsIcon,"Settings"));
-		gridArray.add(new Item(homeIcon,"menu 4"));
+		gridArray.add(new Item(homeIcon,"Locate"));
 		gridArray.add(new Item(usersIcon,"Users followed"));
 		gridArray.add(new Item(homeIcon,"menu 6"));
 
