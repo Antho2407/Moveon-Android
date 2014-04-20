@@ -125,6 +125,8 @@ public class MainActivity extends Activity{
 		case R.id.menu_pref:
 			intent = new Intent(MainActivity.this,UserSettingActivity.class);
 			startActivity(intent);			return true;
+		case R.id.menu_deco:
+			session.logoutUser();			return true;
 		case android.R.id.home:
 			this.finish();
 			return true;
