@@ -1,127 +1,152 @@
 package com.applicationmoveon;
 
-import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import com.applicationmoveon.database.ExecTask;
+import java.util.ArrayList;
+
 import com.applicationmoveon.session.SessionManager;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.res.Resources.NotFoundException;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.SystemClock;
+import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.SearchView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.SearchView.OnQueryTextListener;
 
-public class MainActivity extends Activity {
 
-	final String EXTRA_LOGIN = "user_login";
-	final String EXTRA_PASSWORD = "user_password";
+
+public class MainActivity extends Activity{
 	
-	private EditText login;
-	private EditText pass;
-	
-	// Session Manager Class
+	 // Session Manager Class
     SessionManager session;
-
+    
+	private class GridOnItemClick implements OnItemClickListener
+	{
+		@Override
+		public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+			Intent intent = null;
+			switch(position){
+			case 0:
+				break;
+			case 1:
+				intent = new Intent(MainActivity.this,ListEventActivity.class);
+				startActivity(intent);
+				break;
+			case 2:
+				intent = new Intent(MainActivity.this,UserSettingActivity.class);
+				startActivity(intent);
+				break;
+			case 3:
+				intent = new Intent(MainActivity.this,MapLocateActivity.class);
+			startActivity(intent);
+				break;
+			case 4:
+				intent = new Intent(MainActivity.this,ListUserActivity.class);
+				startActivity(intent);
+				break;
+			case 5:
+				break;
+			}
+			//startActivity(intent);
+		}
+	}
+	GridView gridView;
+	ArrayList<Item> gridArray = new ArrayList<Item>();
+	CustomGridViewAdapter customGridAdapter;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
 		
-		// Session Manager
-        session = new SessionManager(MainActivity.this);
-        
-		login = (EditText) findViewById(R.id.user_email);
-		pass = (EditText) findViewById(R.id.user_password);
-		final Button loginButton = (Button) findViewById(R.id.connect);
-		final Button subscribeButton = (Button) findViewById(R.id.create_account);
+		session = new SessionManager(MainActivity.this);
+		session.checkLogin();
 		
-		subscribeButton.setOnClickListener(new OnClickListener() {
+		setContentView(R.layout.activity_accueil);
 
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this,
-						AddUserActivity.class);
-				startActivity(intent);
-			}
-		});
-		
-		loginButton.setOnClickListener(new OnClickListener() {
+		//set grid view item
+		Bitmap homeIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_action_collections_go_to_today);
+		Bitmap userIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_social_person);
+		Bitmap settingsIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_action_settings);
+		Bitmap eventIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_action_content_event);
+		Bitmap usersIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_social_group);
 
-			@Override
-			public void onClick(View v) {
-				final String loginTxt = login.getText().toString();
-				final String passTxt = pass.getText().toString();
+		gridArray.add(new Item(userIcon,"Profil"));
+		gridArray.add(new Item(eventIcon,"My Events"));
+		gridArray.add(new Item(settingsIcon,"Settings"));
+		gridArray.add(new Item(homeIcon,"Locate"));
+		gridArray.add(new Item(usersIcon,"Users followed"));
+		gridArray.add(new Item(homeIcon,"menu 6"));
 
-				// Vérifier si l'un des deux champs est vide
-				if (loginTxt.equals("") || passTxt.equals("")) {
-					Toast.makeText(MainActivity.this,
-							R.string.email_or_password_empty,
-							Toast.LENGTH_SHORT).show();
-					return;
-				}
-
-				// On déclare le pattern que l’on doit vérifier
-				Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
-				
-				// On déclare un matcher, qui comparera le pattern avec la
-				// string passée en argument
-				Matcher m = p.matcher(loginTxt);
-				
-				// Si l’adresse mail saisie ne correspond au format d’une
-				// adresse mail on un affiche un message à l'utilisateur
-				if (!m.matches()) {
-					Toast.makeText(MainActivity.this,
-							R.string.email_format_error, Toast.LENGTH_SHORT)
-							.show();
-					return;
-				}
-				
-				try {
-					if(!checkUser()){
-						Toast.makeText(MainActivity.this,
-								R.string.existing_account_error, Toast.LENGTH_SHORT)
-								.show();
-						return;
-					}
-				} catch (NotFoundException e) {
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				}
-				
-				session.createLoginSession(login.getText().toString());
-
-				Intent intent = new Intent(MainActivity.this,
-						AccueilActivity.class);
-				
-				intent.putExtra(EXTRA_LOGIN, loginTxt);
-				intent.putExtra(EXTRA_PASSWORD, passTxt);
-				startActivity(intent);
-			}
-		});
+		gridView = (GridView) findViewById(R.id.gridView1);
+		customGridAdapter = new CustomGridViewAdapter(this, R.layout.row_grid, gridArray);
+		gridView.setAdapter(customGridAdapter);
+		gridView.setOnItemClickListener(new GridOnItemClick());
 	}
-	
-	public boolean checkUser() throws InterruptedException, ExecutionException{
-		HashMap<String, String> hm = new HashMap<String,String>();
-		hm.put("Request","isValidCombination");
-		hm.put("email", login.getText().toString());
-		hm.put("password", pass.getText().toString());
-		Log.i("ANTHO",login.getText().toString());
-		Log.i("ANTHO",pass.getText().toString());
-		
-		//Execution de la requête
-		ExecTask rt = new ExecTask();
-		rt.execute(hm);
-		return rt.get();
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_accueil, menu);
+		MenuItem itemSearch = menu.findItem(R.id.menu_search);
+		SearchView mSearchView = (SearchView) itemSearch.getActionView();
+		mSearchView.setOnQueryTextListener(new OnQueryTextListener() {
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				//TODO RECHERCHE
+				return true;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				return false;
+			}
+		});
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent = null;
+		switch (item.getItemId()) {
+		case R.id.menu_add:
+			intent = new Intent(MainActivity.this,AddEventActivity.class);
+			startActivity(intent);
+			return true;
+		case R.id.menu_pref:
+			intent = new Intent(MainActivity.this,UserSettingActivity.class);
+			startActivity(intent);			return true;
+		case android.R.id.home:
+			this.finish();
+			return true;
+
+
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	public void onResume() {
+		super.onResume();
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		int minutes = 0;
+		if(prefs.getBoolean("prefNotification", false)){
+			minutes=Integer.parseInt(prefs.getString("prefNotificationFrequency", ""));
+		}
+		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+		Intent i = new Intent(this, NotificationService.class);
+		PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
+		am.cancel(pi);
+		if (minutes > 0) { 
+			am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + minutes*60*1000, minutes*60*1000, pi);
+		}
 	}
 }

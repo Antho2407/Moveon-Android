@@ -3,7 +3,7 @@ package com.applicationmoveon.session;
 import java.util.HashMap;
 
 import com.applicationmoveon.LoginDisplayActivity;
-import com.applicationmoveon.MainActivity;
+import com.applicationmoveon.LoginActivity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -62,7 +62,7 @@ public class SessionManager {
         // Check login status
         if(!this.isLoggedIn()){
             // user is not logged in redirect him to Login Activity
-            Intent i = new Intent(_context, MainActivity.class);
+            Intent i = new Intent(_context, LoginActivity.class);
             // Closing all the Activities
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
              
@@ -99,7 +99,7 @@ public class SessionManager {
         editor.commit();
          
         // After logout redirect user to Loing Activity
-        Intent i = new Intent(_context, MainActivity.class);
+        Intent i = new Intent(_context, LoginActivity.class);
         
         // Closing all the Activities
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
