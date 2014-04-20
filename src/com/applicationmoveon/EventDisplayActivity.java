@@ -28,6 +28,7 @@ public class EventDisplayActivity extends Activity{
 
 
 	private EventAdapter.EventData event;
+	private UserAdapter.UserData user;
 	private String id;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,7 @@ public class EventDisplayActivity extends Activity{
 		 try {
 			try {
 				getEvent(id);
+				//getUser(event.eventOwner);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -71,7 +73,7 @@ public class EventDisplayActivity extends Activity{
 
 		//TODO Image prendre picture
 		title.setText(event.eventTitle);
-		owner.setText(event.eventOwner);
+		owner.setText(user.userFirstname+ " "+user.userName);
 		desc.setText(event.eventDescription);
 		date.setText("Le "+event.eventDateStart+" de "+event.eventHourStart+" à "+event.eventHourFinish+" à "+event.eventLocation);
 		participate.setOnClickListener(new View.OnClickListener()
@@ -189,5 +191,41 @@ public class EventDisplayActivity extends Activity{
 		return 1;
 
 
+	}
+	
+	public int getUser(String mail) throws InterruptedException, ExecutionException, JSONException{
+
+		HashMap<String, String> hm = new HashMap<String, String>();
+		hm.put("Request", "SelectUserByMail");
+		
+		// Execution de la requête
+		RequestTask rt = new RequestTask();
+		rt.execute(hm);
+		
+		JSONArray result = rt.get();
+
+		if(result == null)
+			return -1;
+		
+		int length = result.length();
+		
+		if(length == 0)
+			return 0;
+
+		if(length == 1) {
+
+			JSONObject row_item = result.getJSONObject(1);
+			String prenom = row_item.getString("firstname");
+			String nom = row_item.getString("lastname");
+			String email = row_item.getString("email");
+			String mdp = row_item.getString("password");
+			//Drawable picture = row_item.getString("imageprofile");
+			
+			UserAdapter.UserData newUser = new UserAdapter.UserData(prenom, nom, 0,getResources().getDrawable(R.drawable.ic_action_content_event) , false);
+			user = newUser;
+		}
+		return 1;
+		
+		
 	}
 }

@@ -1,6 +1,14 @@
 package com.applicationmoveon;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.applicationmoveon.database.RequestTask;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -32,6 +40,7 @@ public class ListUserActivity extends Activity{
 
 	private ListView userList;
 	private UserAdapter mainAdapter;
+	private ArrayList<UserAdapter.UserData> userData;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,15 +48,26 @@ public class ListUserActivity extends Activity{
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		ArrayList<UserAdapter.UserData> userData = new ArrayList<UserAdapter.UserData>();
-		for (int i=0;i<20;i++){
-		userData.add(new UserAdapter.UserData(0, "John Doe", "", 69, getResources().getDrawable(R.drawable.ic_social_person), false));
-		}
+		userData = new ArrayList<UserAdapter.UserData>();
 		mainAdapter = new UserAdapter(getApplicationContext(), userData);
 
 		userList = (ListView)findViewById(R.id.userList);
 		userList.setAdapter(mainAdapter);
 		userList.setOnItemClickListener(new EventListOnItemClick());
+		
+		/*try {
+			try {
+				getUsers();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
 	}
 
 	@Override
@@ -93,5 +113,41 @@ public class ListUserActivity extends Activity{
 
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public int getUsers() throws InterruptedException, ExecutionException, JSONException{
+
+		HashMap<String, String> hm = new HashMap<String, String>();
+		hm.put("Request", "SelectUser");
+		
+		// Execution de la requête
+		RequestTask rt = new RequestTask();
+		rt.execute(hm);
+		
+		JSONArray result = rt.get();
+
+		if(result == null)
+			return -1;
+		
+		int length = result.length();
+		
+		if(length == 0)
+			return 0;
+
+		for (int i = 0; i < length; i++) {
+
+			JSONObject row_item = result.getJSONObject(i);
+			String prenom = row_item.getString("firstname");
+			String nom = row_item.getString("lastname");
+			String email = row_item.getString("email");
+			String mdp = row_item.getString("password");
+			//Drawable picture = row_item.getString("imageprofile");
+			
+			UserAdapter.UserData newUser = new UserAdapter.UserData(prenom,nom, 0,getResources().getDrawable(R.drawable.ic_action_content_event) , false);
+			userData.add(newUser);
+		}
+		return 1;
+		
+		
 	}
 }

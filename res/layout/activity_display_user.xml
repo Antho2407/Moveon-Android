@@ -52,22 +52,6 @@
             android:layout_centerVertical="true"
             android:layout_margin="3dp" />
 
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_below="@+id/user_nb_event"
-            android:layout_toRightOf="@id/user_pic" >
-
-            <TextView
-                android:id="@+id/user_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="Description:\n\n\zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzn\n\n\n\n\n\n\nzufaezkfgfkaejfh\n\n\n\n\ndjzhfkefgaekfgeafjah"
-                android:textColor="#555"
-                android:textSize="12sp" />
-        </ScrollView>
     </RelativeLayout>
 
     <View

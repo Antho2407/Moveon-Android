@@ -90,14 +90,12 @@ public class UserDisplayActivity extends Activity{
 		TextView login = (TextView) findViewById(R.id.user_login);
 		TextView eventNb = (TextView) findViewById(R.id.user_nb_event);
 		CheckBox followed = (CheckBox) findViewById(R.id.user_followed);
-		TextView desc = (TextView) findViewById(R.id.user_description);
 
 		
 		picture.setImageDrawable(user.picture);
-		login.setText(user.userLogin);
+		login.setText(user.userFirstname+ " "+user.userName);
 		eventNb.setText("Nombres d'evenements crées : "+user.eventOwned);
 		followed.setChecked(user.followed);
-		desc.setText(user.userDescription);
 
 	}
 
@@ -174,7 +172,7 @@ public class UserDisplayActivity extends Activity{
 			String mdp = row_item.getString("password");
 			//Drawable picture = row_item.getString("imageprofile");
 			
-			UserAdapter.UserData newUser = new UserAdapter.UserData(0, nom+" "+prenom, "", 0,getResources().getDrawable(R.drawable.ic_action_content_event) , false);
+			UserAdapter.UserData newUser = new UserAdapter.UserData(prenom,nom, 0,getResources().getDrawable(R.drawable.ic_action_content_event) , false);
 			user = newUser;
 		}
 		return 1;
