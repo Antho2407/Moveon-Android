@@ -1,5 +1,14 @@
 package com.applicationmoveon;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.applicationmoveon.database.ExecTask;
+import com.applicationmoveon.database.RequestTask;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -31,6 +40,7 @@ public class ListEventActivity extends Activity {
 
 	private ListView eventList;
 	private EventAdapter mainAdapter;
+	private ArrayList<EventAdapter.EventData> eventData;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,12 +48,26 @@ public class ListEventActivity extends Activity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		ArrayList<EventAdapter.EventData> eventData = new ArrayList<EventAdapter.EventData>();
+		eventData = new ArrayList<EventAdapter.EventData>();
 		mainAdapter = new EventAdapter(getApplicationContext(), eventData);
 
 		eventList = (ListView)findViewById(R.id.eventList);
 		eventList.setAdapter(mainAdapter);
 		eventList.setOnItemClickListener(new EventListOnItemClick());
+		
+		try {
+			try {
+				getEvents();
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -91,4 +115,47 @@ public class ListEventActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	public int getEvents() throws InterruptedException, ExecutionException, JSONException{
+
+		HashMap<String, String> hm = new HashMap<String, String>();
+		hm.put("Request", "SelectEvent");
+		
+		// Execution de la requête
+		RequestTask rt = new RequestTask();
+		rt.execute(hm);
+		
+		JSONArray result = rt.get();
+
+		if(result == null)
+			return -1;
+		
+		int length = result.length();
+		
+		if(length == 0)
+			return 0;
+
+		for (int i = 0; i < length; i++) {
+
+			JSONObject row_item = result.getJSONObject(i);
+			String title = row_item.getString("title");
+			String description = row_item.getString("description");
+			String dateStart = row_item.getString("date_debut");
+			String dateEnd = row_item.getString("date_fin");
+			String hourStart = row_item.getString("heure_debut");
+			String hourEnd = row_item.getString("heure_fin");
+			String location = row_item.getString("location");
+			int id = Integer.parseInt(row_item.getString("id_event"));
+			int latitude = Integer.parseInt(row_item.getString("latitude"));
+			int longitude= Integer.parseInt(row_item.getString("longitude"));
+			int state = Integer.parseInt(row_item.getString("state"));
+			String dateCreation = row_item.getString("date_creation");
+			int participants = Integer.parseInt(row_item.getString("participants"));
+			EventAdapter.EventData newEvent = new EventAdapter.EventData(id, title, location, description, dateStart,
+					hourStart, hourEnd, participants,"test",state,dateCreation, latitude, longitude);
+			eventData.add(newEvent);
+		}
+		return 1;
+		
+		
+	}
 }

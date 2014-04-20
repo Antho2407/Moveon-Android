@@ -148,7 +148,9 @@ public class AddEventActivity extends Activity implements OnClickListener {
 			picturePath = cursor.getString(columnIndex);
 			cursor.close();
 
-			mainPicture.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+			BitmapFactory.Options options=new BitmapFactory.Options();
+			options.inSampleSize = 8;
+			mainPicture.setImageBitmap(BitmapFactory.decodeFile(picturePath, options));
 
 		}
 		
@@ -276,7 +278,7 @@ public class AddEventActivity extends Activity implements OnClickListener {
 				alertUser("Champs manquants", message);
 			}else{
 				HashMap<String, String> hm = new HashMap<String,String>();
-				hm.put("Request","AddEvent");
+				hm.put("Request","addEvent");
 				hm.put("title", title.getText().toString());
 				hm.put("description", description.getText().toString());
 				hm.put("date_debut", date_txt_beginning.getText().toString());
@@ -285,6 +287,8 @@ public class AddEventActivity extends Activity implements OnClickListener {
 				hm.put("heure_fin", hour_txt_end.getText().toString()+":00");
 				hm.put("participants", Integer.toString(0));
 				hm.put("location", address);
+				hm.put("latitude", latitude);
+				hm.put("longitude", longitude);
 				hm.put("id_createur", Integer.toString(0));
 				hm.put("date_creation", year + "-" + month + "-" + day);
 				hm.put("state", Integer.toString(0));
@@ -328,7 +332,8 @@ public class AddEventActivity extends Activity implements OnClickListener {
 		Intent intent = null;
 		switch (item.getItemId()) {
 		case R.id.menu_locate:
-			//TODO lancer localisation
+			intent = new Intent(AddEventActivity.this, MapLocateActivity.class);
+			startActivity(intent);
 			return true;
 		case R.id.menu_pref:
 			//TODO ALLER A PREFERENCES
