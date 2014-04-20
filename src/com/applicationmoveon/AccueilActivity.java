@@ -3,6 +3,8 @@ package com.applicationmoveon;
 
 import java.util.ArrayList;
 
+import com.applicationmoveon.session.SessionManager;
+
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -25,7 +27,10 @@ import android.widget.SearchView.OnQueryTextListener;
 
 
 public class AccueilActivity extends Activity{
-
+	
+	 // Session Manager Class
+    SessionManager session;
+    
 	private class GridOnItemClick implements OnItemClickListener
 	{
 		@Override
@@ -60,6 +65,10 @@ public class AccueilActivity extends Activity{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		session = new SessionManager(AccueilActivity.this);
+		session.checkLogin();
+		
 		setContentView(R.layout.activity_accueil);
 
 		//set grid view item

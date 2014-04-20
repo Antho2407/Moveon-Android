@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.applicationmoveon.database.ExecTask;
+import com.applicationmoveon.session.SessionManager;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -25,12 +26,18 @@ public class MainActivity extends Activity {
 	
 	private EditText login;
 	private EditText pass;
+	
+	// Session Manager Class
+    SessionManager session;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		
+		// Session Manager
+        session = new SessionManager(MainActivity.this);
+        
 		login = (EditText) findViewById(R.id.user_email);
 		pass = (EditText) findViewById(R.id.user_password);
 		final Button loginButton = (Button) findViewById(R.id.connect);
@@ -91,6 +98,8 @@ public class MainActivity extends Activity {
 				} catch (ExecutionException e) {
 					e.printStackTrace();
 				}
+				
+				session.createLoginSession(login.getText().toString());
 
 				Intent intent = new Intent(MainActivity.this,
 						AccueilActivity.class);
