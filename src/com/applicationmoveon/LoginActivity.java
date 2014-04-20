@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
 import com.google.android.gms.plus.PlusClient;
@@ -55,6 +56,7 @@ ConnectionCallbacks, OnConnectionFailedListener {
         
         mPlusClient = new PlusClient.Builder(this, this, this)
         .setVisibleActivities("http://schemas.google.com/AddActivity", "http://schemas.google.com/BuyActivity")
+         .setScopes(Scopes.PLUS_LOGIN)
         .build();
         
         findViewById(R.id.sign_in_button).setOnClickListener(this);
