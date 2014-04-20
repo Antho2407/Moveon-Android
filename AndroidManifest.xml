@@ -72,11 +72,16 @@
         <activity
             android:name=".UserDisplayActivity"
             android:label="" />
+        <activity
+            android:name=".EventDisplayActivity"
+            android:label="" />
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyDjTNVMd_VY2Tfmbx10mJUShbKhBgo5Yd8" />
-        <meta-data android:name="com.google.android.gms.version" android:value="1" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="1" />
 
         <receiver android:name=".BootReceiver" >
             <intent-filter>

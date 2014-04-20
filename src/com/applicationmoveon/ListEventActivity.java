@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import com.applicationmoveon.database.ExecTask;
 import com.applicationmoveon.database.RequestTask;
 
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
@@ -33,8 +34,10 @@ public class ListEventActivity extends Activity {
 		public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 
 
-			Toast.makeText(getApplicationContext(), "Position " + position, Toast.LENGTH_SHORT).show();
-
+			Intent intent = new Intent(ListEventActivity.this,
+					EventDisplayActivity.class);
+			intent.putExtra("ID", eventData.get(position).eventId);
+			startActivity(intent);
 		}
 	}
 
@@ -151,7 +154,7 @@ public class ListEventActivity extends Activity {
 			String dateCreation = row_item.getString("date_creation");
 			int participants = Integer.parseInt(row_item.getString("participants"));
 			EventAdapter.EventData newEvent = new EventAdapter.EventData(id, title, location, description, dateStart,
-					hourStart, hourEnd, participants,"test",state,dateCreation, latitude, longitude);
+					hourStart, hourEnd, participants,"test",state,dateCreation, latitude, longitude,null);
 			eventData.add(newEvent);
 		}
 		return 1;

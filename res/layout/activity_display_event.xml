@@ -23,7 +23,7 @@
         android:layout_below="@id/event_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="6dp"
-        android:text="Créé par : toto"
+        android:text="Créé par :"
         android:textColor="#555"
         android:textSize="12sp" />
 
@@ -92,5 +92,18 @@
             </Button>
         </RelativeLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/event_owner_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/event_pic"
+        android:layout_alignRight="@+id/event_title"
+        android:layout_alignTop="@+id/event_owner"
+        android:layout_toRightOf="@+id/event_owner"
+        android:background="@android:color/transparent"
+        android:text="toto"
+        android:textColor="#555"
+        android:textSize="12sp" />
 
 </RelativeLayout>
