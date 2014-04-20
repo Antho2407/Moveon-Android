@@ -22,17 +22,17 @@ public class UserAdapter extends BaseAdapter{
 
 		public int userId;
 		public String userLogin;
-		public String eventDescription;
+		public String userDescription;
 		public int eventOwned;
 		public Drawable picture;
 		public boolean followed;
 
 
-		public UserData(int userId, String userLogin, String eventDescription,
+		public UserData(int userId, String userLogin, String userDescription,
 				int eventOwned, Drawable picture, boolean followed) {
 			this.userId = userId;
 			this.userLogin = userLogin;
-			this.eventDescription = eventDescription;
+			this.userDescription = userDescription;
 			this.eventOwned = eventOwned;
 			this.picture = picture;
 			this.followed=followed;

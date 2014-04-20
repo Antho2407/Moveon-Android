@@ -10,6 +10,13 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/small_padding"
         android:text="@string/create_account" />
+    
+    <com.google.android.gms.common.SignInButton
+    android:id="@+id/sign_in_button"
+    android:layout_gravity="center"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+    
 
     <TextView
         android:layout_width="wrap_content"

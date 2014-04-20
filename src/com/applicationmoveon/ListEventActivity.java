@@ -145,8 +145,8 @@ public class ListEventActivity extends Activity {
 			String hourEnd = row_item.getString("heure_fin");
 			String location = row_item.getString("location");
 			int id = Integer.parseInt(row_item.getString("id_event"));
-			int latitude = Integer.parseInt(row_item.getString("latitude"));
-			int longitude= Integer.parseInt(row_item.getString("longitude"));
+			float latitude = Float.parseFloat(row_item.getString("latitude"));
+			float longitude= Float.parseFloat(row_item.getString("longitude"));
 			int state = Integer.parseInt(row_item.getString("state"));
 			String dateCreation = row_item.getString("date_creation");
 			int participants = Integer.parseInt(row_item.getString("participants"));
