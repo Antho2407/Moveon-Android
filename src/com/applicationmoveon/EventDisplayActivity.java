@@ -1,6 +1,7 @@
 package com.applicationmoveon;
 
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
@@ -13,6 +14,8 @@ import com.applicationmoveon.database.RequestTask;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +33,7 @@ public class EventDisplayActivity extends Activity{
 	private EventAdapter.EventData event;
 	private UserAdapter.UserData user;
 	private String id;
+	private ToolBox tools;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,6 +42,8 @@ public class EventDisplayActivity extends Activity{
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 
+		tools = new ToolBox(this);
+		
 		//TODO Ajout de l'event à l'activité
 		Bundle extras;
 		if (savedInstanceState == null) {
@@ -71,7 +77,13 @@ public class EventDisplayActivity extends Activity{
 		TextView date = (TextView) findViewById(R.id.event_date);
 		Button participate = (Button) findViewById(R.id.event_participate);
 
-		//TODO Image prendre picture
+		File mydir = tools.createCacheFolder();
+		new FtpDownloadTask("test.jpg", mydir.getAbsolutePath() + "/" + event.url)
+				.execute();
+		Bitmap myBitmap = BitmapFactory.decodeFile(mydir.getAbsolutePath()
+				+ "/" + event.url);
+		picture.setImageBitmap(myBitmap);
+		
 		title.setText(event.eventTitle);
 		owner.setText(user.userFirstname+ " "+user.userName);
 		desc.setText(event.eventDescription);
