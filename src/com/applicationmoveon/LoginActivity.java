@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import com.applicationmoveon.database.ExecTask;
 import com.applicationmoveon.session.SessionManager;
+import com.applicationmoveon.user.AddUserActivity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

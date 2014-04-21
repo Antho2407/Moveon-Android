@@ -1,9 +1,14 @@
-package com.applicationmoveon;
+package com.applicationmoveon.user;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
+import com.applicationmoveon.R;
+import com.applicationmoveon.ToolBox;
+import com.applicationmoveon.R.id;
+import com.applicationmoveon.R.layout;
+import com.applicationmoveon.R.menu;
 import com.applicationmoveon.database.ExecTask;
 import android.app.ActionBar;
 import android.app.Activity;

@@ -44,7 +44,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddUserActivity"
+            android:name="com.applicationmoveon.user.AddUserActivity"
             android:label="@string/add_user_activity" />
         <activity
             android:name=".LoginActivity"
@@ -53,28 +53,26 @@
             android:name=".LoginDisplayActivity"
             android:label="@string/title_login_activity" />
         <activity
-            android:name=".AddEventActivity"
+            android:name="com.applicationmoveon.event.AddEventActivity"
             android:label="@string/title_add_event_activity" />
         <activity
-            android:name=".MapActivity"
+            android:name="com.applicationmoveon.localisation.MapActivity"
             android:label="@string/title_map_activity" />
         <activity
-            android:name=".MapLocateActivity"
+            android:name="com.applicationmoveon.localisation.MapLocateActivity"
             android:label="@string/title_map_locate_activity" />
         <activity
-            android:name=".ListEventActivity"
+            android:name="com.applicationmoveon.event.ListEventActivity"
             android:label="" />
         <activity
-            android:name=".ListUserActivity"
+com.applicationmoveon.user.ListUserActivityid:name=".ListUserActivity"
             android:label="" />
         <activity
             android:name=".UserSettingActivity"
-            android:label="Préférences" />
-        <activity
+            android:label="Préférencecom.applicationmoveon.user.UserDisplayActivityvity
             android:name=".UserDisplayActivity"
             android:label="" />
-        <activity
-            android:name=".EventDisplayActivity"
+        <activitycom.applicationmoveon.event.EventDisplayActivityname=".EventDisplayActivity"
             android:label="" />
 
         <meta-data

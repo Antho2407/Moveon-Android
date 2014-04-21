@@ -1,4 +1,4 @@
-package com.applicationmoveon;
+package com.applicationmoveon.ftp;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

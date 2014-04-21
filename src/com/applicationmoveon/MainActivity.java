@@ -3,7 +3,11 @@ package com.applicationmoveon;
 
 import java.util.ArrayList;
 
+import com.applicationmoveon.event.AddEventActivity;
+import com.applicationmoveon.event.ListEventActivity;
+import com.applicationmoveon.localisation.MapLocateActivity;
 import com.applicationmoveon.session.SessionManager;
+import com.applicationmoveon.user.ListUserActivity;
 import com.google.android.gms.plus.PlusClient;
 
 import android.app.Activity;
