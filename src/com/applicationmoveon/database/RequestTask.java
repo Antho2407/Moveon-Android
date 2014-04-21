@@ -6,6 +6,12 @@ import org.json.JSONArray;
 import android.os.AsyncTask;
 
 public class RequestTask extends AsyncTask<HashMap<String,String>, String, JSONArray> {
+		
+		protected Database db;
+		
+		public RequestTask(){
+			db = new Database();
+		}
 		/*
 		 * Cette méthode s'exécute dans le thread
 		 * de l'interface. C'est le bon endroit
@@ -28,14 +34,40 @@ public class RequestTask extends AsyncTask<HashMap<String,String>, String, JSONA
 		 */
 		protected JSONArray doInBackground(HashMap<String,String>... params) {
 			HashMap<String, String> request = params[0];
-			Database web=new Database();
-			if(request.get("Request").equals("SelectEvent")){
-				return web.SelectEvent();
+			String query = request.get("Request");
+			if(query.equals("SelectEvent")){
+				return db.SelectEvent();
+			}else if(query.equals("SelectEventById")){
+				return SelectEventById(request);
+			}else if(query.equals("SelectUserByEmail")){
+				return SelectUserByEmail(request);
+			}else if(query.equals("SelectEvenByUserMail")){
+				return SelectEventByUserMail(request);
 			}
 			return null;
 			
 		}
 		
+		protected JSONArray SelectEventById(HashMap<String,String> request){
+			if(request.containsKey("id_event")){
+				return db.SelectEventById(request.get("id_event"));
+			}
+			return null;
+		}
+		
+		protected JSONArray SelectUserByEmail(HashMap<String,String> request){
+			if(request.containsKey("email")){
+				return db.SelectUserByMail(request.get("email"));
+			}
+			return null;
+		}
+		
+		protected JSONArray SelectEventByUserMail(HashMap<String,String> request){
+			if(request.containsKey("email")){
+				return db.SelectUserByMail(request.get("email"));
+			}
+			return null;
+		}
 		
 		/*
 		 * Cette méthode est appelée dans le thread

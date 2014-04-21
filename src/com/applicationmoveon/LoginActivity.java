@@ -25,9 +25,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.plus.PlusClient;
 
-public class LoginActivity extends Activity implements View.OnClickListener,
+public class LoginActivity extends Activity implements
 ConnectionCallbacks, OnConnectionFailedListener {
 
     private static final String TAG = "LoginActivity";
@@ -56,16 +57,37 @@ ConnectionCallbacks, OnConnectionFailedListener {
         
         mPlusClient = new PlusClient.Builder(this, this, this)
         .setVisibleActivities("http://schemas.google.com/AddActivity", "http://schemas.google.com/BuyActivity")
-         .setScopes(Scopes.PLUS_LOGIN)
+        .setScopes(Scopes.PLUS_LOGIN)
         .build();
-        
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
         
 		login = (EditText) findViewById(R.id.user_email);
 		pass = (EditText) findViewById(R.id.user_password);
+		
 		final Button loginButton = (Button) findViewById(R.id.connect);
 		final Button subscribeButton = (Button) findViewById(R.id.create_account);
+		final SignInButton googleplusco = (SignInButton)findViewById(R.id.sign_in_button);
 		
+		googleplusco.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				 if (v.getId() == R.id.sign_in_button && !mPlusClient.isConnected()) {
+				        if (mConnectionResult == null) {
+				            mConnectionProgressDialog.show();
+				        } else {
+				            try {
+				                mConnectionResult.startResolutionForResult(LoginActivity.this, REQUEST_CODE_RESOLVE_ERR);
+				            } catch (SendIntentException e) {
+				                // Nouvelle tentative de connexion
+				                mConnectionResult = null;
+				                mPlusClient.connect();
+				            }
+				        }
+				    }
+				
+			}
+			
+		});
 		subscribeButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -151,7 +173,6 @@ ConnectionCallbacks, OnConnectionFailedListener {
 	 @Override
 	 protected void onStart() {
 	        super.onStart();
-	        mPlusClient.connect();
 	}
 	
 	@Override
@@ -194,20 +215,4 @@ ConnectionCallbacks, OnConnectionFailedListener {
 			
 		}
 
-		@Override
-		public void onClick(View v) {
-			 if (v.getId() == R.id.sign_in_button && !mPlusClient.isConnected()) {
-			        if (mConnectionResult == null) {
-			            mConnectionProgressDialog.show();
-			        } else {
-			            try {
-			                mConnectionResult.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
-			            } catch (SendIntentException e) {
-			                // Nouvelle tentative de connexion
-			                mConnectionResult = null;
-			                mPlusClient.connect();
-			            }
-			        }
-			    }
-		}
 }

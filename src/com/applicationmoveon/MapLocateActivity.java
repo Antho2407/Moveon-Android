@@ -305,7 +305,7 @@ public class MapLocateActivity extends FragmentActivity implements
 			EventAdapter.EventData newEvent = new EventAdapter.EventData(id,
 					title, location, description, dateStart, hourStart,
 					hourEnd, participants, "test", state, dateCreation,
-					latitude, longitude);
+					latitude, longitude,null);
 
 			Location locationEvent = new Location("locationEvent");
 			locationEvent.setLatitude(latitude);
