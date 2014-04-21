@@ -20,19 +20,17 @@ public class UserAdapter extends BaseAdapter{
 	public static class UserData
 	{
 
-		public int userId;
-		public String userLogin;
-		public String userDescription;
+		public String userFirstname;
+		public String userName;
 		public int eventOwned;
 		public Drawable picture;
 		public boolean followed;
 
 
-		public UserData(int userId, String userLogin, String userDescription,
+		public UserData(String userFirstname, String userName,
 				int eventOwned, Drawable picture, boolean followed) {
-			this.userId = userId;
-			this.userLogin = userLogin;
-			this.userDescription = userDescription;
+			this.userFirstname = userFirstname;
+			this.userName = userName;
 			this.eventOwned = eventOwned;
 			this.picture = picture;
 			this.followed=followed;
@@ -86,7 +84,7 @@ public class UserAdapter extends BaseAdapter{
 		CheckBox followed = (CheckBox) view.findViewById(R.id.user_followed);
 		
 		picture.setImageDrawable(data.picture);
-		login.setText(data.userLogin);
+		login.setText(data.userFirstname+ " "+ data.userName);
 		eventNb.setText("Nombres d'evenements crées : "+data.eventOwned);
 		followed.setChecked(data.followed);
 

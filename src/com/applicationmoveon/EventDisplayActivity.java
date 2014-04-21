@@ -1,6 +1,15 @@
 package com.applicationmoveon;
 
 
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.applicationmoveon.database.RequestTask;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
@@ -19,6 +28,8 @@ public class EventDisplayActivity extends Activity{
 
 
 	private EventAdapter.EventData event;
+	private UserAdapter.UserData user;
+	private String id;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -26,19 +37,43 @@ public class EventDisplayActivity extends Activity{
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		
-		//TODO Ajout de l'event à l'activité	tache asynchrone? je pense que sans l'image pas besoin	
+
+		//TODO Ajout de l'event à l'activité
+		Bundle extras;
+		if (savedInstanceState == null) {
+			extras = getIntent().getExtras();
+			if (extras == null) {
+				id = null;
+			} else {
+				id = extras.getString("ID");
+			}
+		} else {
+			id = (String) savedInstanceState.getSerializable("SEARCH");
+		}
+		 try {
+			try {
+				getEvent(id);
+				//getUser(event.eventOwner);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		ImageView picture = (ImageView) findViewById(R.id.event_pic);
 		TextView title = (TextView) findViewById(R.id.event_title);
-		TextView owner = (TextView) findViewById(R.id.event_owner);
+		Button owner = (Button) findViewById(R.id.event_owner_button);
 		TextView desc = (TextView) findViewById(R.id.event_description);
 		TextView date = (TextView) findViewById(R.id.event_date);
 		Button participate = (Button) findViewById(R.id.event_participate);
 
-		//TODO Image?
-		//picture.setImageDrawable(event.);
+		//TODO Image prendre picture
 		title.setText(event.eventTitle);
-		owner.setText(event.eventOwner);
+		owner.setText(user.userFirstname+ " "+user.userName);
 		desc.setText(event.eventDescription);
 		date.setText("Le "+event.eventDateStart+" de "+event.eventHourStart+" à "+event.eventHourFinish+" à "+event.eventLocation);
 		participate.setOnClickListener(new View.OnClickListener()
@@ -47,11 +82,25 @@ public class EventDisplayActivity extends Activity{
 			public void onClick(View v) {
 				if (v.getId() == R.id.event_participate){
 					//TODO participer
-					
+
 				}
-				
+
 			}
-			});
+		});
+		owner.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v) {
+				/*if (v.getId() == R.id.event_owner_button){
+					Intent intent = new Intent(ListEventActivity.this,
+							EventDisplayActivity.class);
+					intent.putExtra("MAIL", eventData.get(position).eventId);
+					startActivity(intent);
+
+				}*/
+
+			}
+		});
 	}
 
 	@Override
@@ -97,5 +146,86 @@ public class EventDisplayActivity extends Activity{
 
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+
+	public int getEvent(String id_event) throws InterruptedException, ExecutionException, JSONException{
+
+		HashMap<String, String> hm = new HashMap<String, String>();
+		hm.put("Request", "SelectEvent");
+
+		// Execution de la requête
+		RequestTask rt = new RequestTask();
+		rt.execute(hm);
+
+		JSONArray result = rt.get();
+
+		if(result == null)
+			return -1;
+
+		int length = result.length();
+
+		if(length == 0)
+			return 0;
+
+		else {
+
+			JSONObject row_item = result.getJSONObject(1);
+			String title = row_item.getString("title");
+			String description = row_item.getString("description");
+			String dateStart = row_item.getString("date_debut");
+			String dateEnd = row_item.getString("date_fin");
+			String hourStart = row_item.getString("heure_debut");
+			String hourEnd = row_item.getString("heure_fin");
+			String location = row_item.getString("location");
+			int id = Integer.parseInt(row_item.getString("id_event"));
+			float latitude = Float.parseFloat(row_item.getString("latitude"));
+			float longitude= Float.parseFloat(row_item.getString("longitude"));
+			int state = Integer.parseInt(row_item.getString("state"));
+			String dateCreation = row_item.getString("date_creation");
+			String url = row_item.getString("urlimage");
+			int participants = Integer.parseInt(row_item.getString("participants"));
+			event = new EventAdapter.EventData(id, title, location, description, dateStart,
+					hourStart, hourEnd, participants,"test",state,dateCreation, latitude, longitude,url);
+		}
+		return 1;
+
+
+	}
+	
+	public int getUser(String mail) throws InterruptedException, ExecutionException, JSONException{
+
+		HashMap<String, String> hm = new HashMap<String, String>();
+		hm.put("Request", "SelectUserByMail");
+		
+		// Execution de la requête
+		RequestTask rt = new RequestTask();
+		rt.execute(hm);
+		
+		JSONArray result = rt.get();
+
+		if(result == null)
+			return -1;
+		
+		int length = result.length();
+		
+		if(length == 0)
+			return 0;
+
+		if(length == 1) {
+
+			JSONObject row_item = result.getJSONObject(1);
+			String prenom = row_item.getString("firstname");
+			String nom = row_item.getString("lastname");
+			String email = row_item.getString("email");
+			String mdp = row_item.getString("password");
+			//Drawable picture = row_item.getString("imageprofile");
+			
+			UserAdapter.UserData newUser = new UserAdapter.UserData(prenom, nom, 0,getResources().getDrawable(R.drawable.ic_action_content_event) , false);
+			user = newUser;
+		}
+		return 1;
+		
+		
 	}
 }

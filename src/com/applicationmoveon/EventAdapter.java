@@ -1,10 +1,8 @@
 package com.applicationmoveon;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.List;
-import java.util.Locale;
+
 
 import android.content.Context;
 import android.graphics.Color;
@@ -37,6 +35,7 @@ public class EventAdapter extends BaseAdapter {
 		public float latitude;
 		public float longitude;
 		public float distance;
+		public String url;
 
 //		public EventData(int eventId, String eventTitle, String eventLocation,
 //				String eventDescription, Date eventDateStart,
@@ -59,13 +58,12 @@ public class EventAdapter extends BaseAdapter {
 		public EventData(int eventId, String eventTitle, String eventLocation,
 				String eventDescription, String eventDateStart,
 				String eventHourStart, String eventHourFinish,
-				int numberOfParticipants, String eventOwner, int eventState, String eventDateCreation, float latitude, float longitude) {
+				int numberOfParticipants, String eventOwner, int eventState, String eventDateCreation, float latitude, float longitude,String url) {
 			this.eventId = eventId;
 			this.eventDescription = eventDescription;	
 			this.eventTitle = eventTitle;
 			this.eventLocation = eventLocation;
 			this.eventDateStart = eventDateStart;
-			this.eventDateEnd = eventDateEnd;
 			this.eventHourStart = eventHourStart;
 			this.eventHourFinish = eventHourFinish;
 			this.numberOfParticipants = numberOfParticipants;
@@ -74,6 +72,7 @@ public class EventAdapter extends BaseAdapter {
 			this.eventDateCreation = eventDateCreation;
 			this.latitude = latitude;
 			this.longitude = longitude;
+			this.url = url;
 		}
 
 	}
@@ -121,8 +120,6 @@ public class EventAdapter extends BaseAdapter {
 		TextView date = (TextView)view.findViewById(R.id.event_date);
 		TextView description = (TextView)view.findViewById(R.id.event_description);
 		TextView part = (TextView)view.findViewById(R.id.event_participants);
-
-		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy",Locale.FRANCE);
 
 		title.setText(data.eventTitle);
 		date.setText("Le "+ data.eventDateStart +" ра "+ data.eventLocation + " de "+data.eventHourStart+" р "+data.eventHourFinish);

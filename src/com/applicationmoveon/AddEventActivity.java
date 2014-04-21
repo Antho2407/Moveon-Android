@@ -9,7 +9,6 @@ import org.json.JSONArray;
 
 import com.applicationmoveon.database.Database;
 import com.applicationmoveon.database.ExecTask;
-import com.applicationmoveon.database.RequestTask;
 
 import android.app.ActionBar;
 import android.app.Activity;
