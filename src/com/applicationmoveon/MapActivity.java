@@ -69,6 +69,7 @@ public class MapActivity extends FragmentActivity {
 			public void onClick(View v) {
 
 				cursor = 0;
+				map.clear();
 
 				EditText etLocation = (EditText) findViewById(R.id.et_location);
 

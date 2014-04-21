@@ -45,7 +45,7 @@ public class MapLocateActivity extends FragmentActivity implements
 	private GoogleMap map;
 	private MarkerOptions markerOptions;
 	private LatLng locationMap;
-	private List<Address> addresses;
+	private List<Location> addresses;
 	private Button btn_next;
 	private Button btn_previous;
 	private Button btn_choose;
@@ -54,21 +54,26 @@ public class MapLocateActivity extends FragmentActivity implements
 
 	private int cursor;
 
-	private Address currentAddress;
+	private Location currentAddress;
 
 	private Geocoder geocoder;
 
 	private CircleOptions circle;
+	
+	private HashMap<Location,EventAdapter.EventData> listEvents;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+		
+		listEvents = new HashMap<Location,EventAdapter.EventData>();
 		setContentView(R.layout.activity_map_locate);
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		geocoder = new Geocoder(getBaseContext());
+		addresses = new ArrayList<Location>();
 
 		// Recuperer le fragment de la map
 		SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -155,6 +160,9 @@ public class MapLocateActivity extends FragmentActivity implements
 		OnClickListener chooseClickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				Intent i = new Intent(MapLocateActivity.this, EventDisplayActivity.class);
+				i.putExtra("KEY_ID_EVENT", listEvents.get(currentAddress).eventId);
+				startActivity(i);
 			}
 		};
 
@@ -295,6 +303,8 @@ public class MapLocateActivity extends FragmentActivity implements
 			String hourStart = row_item.getString("heure_debut");
 			String hourEnd = row_item.getString("heure_fin");
 			String location = row_item.getString("location");
+			String emailOwner = row_item.getString("id_createur");
+			String urlImage = row_item.getString("urlimage");
 			int id = Integer.parseInt(row_item.getString("id_event"));
 			float latitude = Float.parseFloat(row_item.getString("latitude"));
 			float longitude = Float.parseFloat(row_item.getString("longitude"));
@@ -302,18 +312,22 @@ public class MapLocateActivity extends FragmentActivity implements
 			String dateCreation = row_item.getString("date_creation");
 			int participants = Integer.parseInt(row_item
 					.getString("participants"));
+			
 			EventAdapter.EventData newEvent = new EventAdapter.EventData(id,
 					title, location, description, dateStart, hourStart,
-					hourEnd, participants, "test", state, dateCreation,
-					latitude, longitude,null);
+					hourEnd, participants, emailOwner, state, dateCreation,
+					latitude, longitude,urlImage);
 
 			Location locationEvent = new Location("locationEvent");
 			locationEvent.setLatitude(latitude);
 			locationEvent.setLongitude(longitude);
+			
 			newEvent.distance = (float) myLocation.distanceTo(locationEvent);
 
 			if (newEvent.distance < distanceMax)
 				result.add(newEvent);
+				addresses.add(locationEvent);
+				listEvents.put(locationEvent, newEvent);
 		}
 
 		Collections.sort(result, new Comparator<EventAdapter.EventData>() {
@@ -354,6 +368,7 @@ public class MapLocateActivity extends FragmentActivity implements
 				markerOptions.position(myLocationLatlng);
 				// marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
 				markerOptions.icon(bitmapDescriptor);
+				markerOptions.title(event.eventTitle+" ("+event.numberOfParticipants+" participants)");
 
 				map.addMarker(markerOptions);
 				map.animateCamera(CameraUpdateFactory.zoomTo(15));
