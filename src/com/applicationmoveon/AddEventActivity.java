@@ -10,6 +10,7 @@ import org.json.JSONArray;
 
 import com.applicationmoveon.database.Database;
 import com.applicationmoveon.database.ExecTask;
+import com.applicationmoveon.session.SessionManager;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -23,6 +24,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -85,9 +87,18 @@ public class AddEventActivity extends Activity implements OnClickListener {
     
     private ToolBox tools;
     
+    private SessionManager session;
+    private String userMail = "";
+    
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		// Session Manager
+        session = new SessionManager(AddEventActivity.this);
+        session.checkLogin();
+        userMail = session.getUserDetails().get(SessionManager.KEY_EMAIL);
+		
 		setContentView(R.layout.activity_add_event);
 		
 		tools = new ToolBox(this);
@@ -116,8 +127,8 @@ public class AddEventActivity extends Activity implements OnClickListener {
 		month = calendar.get(Calendar.MONTH) + 1;
 		year = calendar.get(Calendar.YEAR);
 
-		date_txt_beginning.setText(day + "/" + month + "/" + year);
-		date_txt_end.setText(day + "/" + month + "/" + year);
+		date_txt_beginning.setText(year + "-" + month + "-" + day);
+		date_txt_end.setText(year + "-" + month + "-" + day);
 
 		pictureButton = (Button) findViewById(R.id.button_picture);
 		locationButton = (Button) findViewById(R.id.button_location);
@@ -136,11 +147,6 @@ public class AddEventActivity extends Activity implements OnClickListener {
 		createButton.setOnClickListener(this);
 		
 		restoreActivity(savedInstanceState);
-		
-		//File mydir = tools.createCacheFolder();
-		//new FtpDownloadTask("test.jpg",mydir.getAbsolutePath()+"/test.jpg").execute();
-		//Bitmap myBitmap = BitmapFactory.decodeFile(mydir.getAbsolutePath()+"/test.jpg");
-		//mainPicture.setImageBitmap(myBitmap);
 	}
 
 	@Override
@@ -164,9 +170,9 @@ public class AddEventActivity extends Activity implements OnClickListener {
 			cursor.close();
 
 			BitmapFactory.Options options=new BitmapFactory.Options();
-			options.inSampleSize = 8;
+			options.outHeight = 8;
 			mainPicture.setImageBitmap(BitmapFactory.decodeFile(picturePath, options));
-			new FtpUploadTask(picturePath).execute();
+			new FtpUploadTask(picturePath, userMail, namePicture).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 		}
 		
@@ -305,10 +311,10 @@ public class AddEventActivity extends Activity implements OnClickListener {
 				hm.put("location", address);
 				hm.put("latitude", latitude);
 				hm.put("longitude", longitude);
-				hm.put("id_createur", Integer.toString(0));
+				hm.put("id_createur", userMail);
 				hm.put("date_creation", year + "-" + month + "-" + day);
 				hm.put("state", Integer.toString(0));
-				hm.put("urlimage", picturePath);
+				hm.put("urlimage", namePicture);
 				
 				//Execution de la requête
 				ExecTask rt = new ExecTask();
@@ -330,9 +336,7 @@ public class AddEventActivity extends Activity implements OnClickListener {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-					
-					
-			}
+ 			}
 			return;
 		}
 	}

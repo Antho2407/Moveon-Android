@@ -30,7 +30,6 @@ public class FtpDownloadTask extends AsyncTask<String, Void, FTPClient> {
 			mFTPClient.connect("ftp.martinezhugo.com", 21);
 
 			status = mFTPClient.login("martinezhugo", "dj$bG0u8v[");
-			Log.i("Connec","edfoijfj");
 		
 		} catch (SocketException e1) {
 			e1.printStackTrace();
@@ -40,7 +39,6 @@ public class FtpDownloadTask extends AsyncTask<String, Void, FTPClient> {
 
 		// now check the reply code, if positive mean connection success
 		if (FTPReply.isPositiveCompletion(mFTPClient.getReplyCode())) {
-			Log.i("Connec2","edfoijfj");
 			/*
 			 * Set File Transfer Mode
 			 * 
@@ -50,8 +48,7 @@ public class FtpDownloadTask extends AsyncTask<String, Void, FTPClient> {
 			 * and compressed files.
 			 */
 			try {
-				Log.i("Connec3","edfoijfj");
-				mFTPClient.setFileType(FTP.ASCII_FILE_TYPE);
+				mFTPClient.setFileType(FTP.BINARY_FILE_TYPE);
 				mFTPClient.enterLocalPassiveMode();
 				mFTPClient.changeWorkingDirectory("www/moveon/images");
 				FileOutputStream desFileStream = new FileOutputStream(
