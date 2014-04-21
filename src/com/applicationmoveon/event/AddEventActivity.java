@@ -157,6 +157,18 @@ public class AddEventActivity extends Activity implements OnClickListener {
 		
 		restoreActivity(savedInstanceState);
 	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		if(!tools.isOnline()){
+			Intent intent = new Intent(AddEventActivity.this,
+					com.applicationmoveon.InternetCheckActivity.class);
+			intent.putExtra("KEY_PREVIOUS_ACTIVITY", this.getClass().getName());
+			startActivity(intent);
+		}
+	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -15,10 +15,12 @@ import com.applicationmoveon.R;
 import com.applicationmoveon.R.id;
 import com.applicationmoveon.R.layout;
 import com.applicationmoveon.R.menu;
+import com.applicationmoveon.ToolBox;
 import com.applicationmoveon.database.RequestTask;
 import com.applicationmoveon.event.AddEventActivity;
 import com.applicationmoveon.event.EventAdapter;
 import com.applicationmoveon.event.EventDisplayActivity;
+import com.applicationmoveon.event.ListEventActivity;
 import com.applicationmoveon.event.TemperatureEvent;
 import com.applicationmoveon.event.EventAdapter.EventData;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -70,11 +72,15 @@ public class MapLocateActivity extends FragmentActivity implements
 	private CircleOptions circle;
 	
 	private HashMap<Location,EventAdapter.EventData> listEvents;
+	
+	private ToolBox tools;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+		
+		tools = new ToolBox(this);
 		
 		listEvents = new HashMap<Location,EventAdapter.EventData>();
 		setContentView(R.layout.activity_map_locate);
@@ -202,6 +208,18 @@ public class MapLocateActivity extends FragmentActivity implements
 			}
 		});
 		return true;
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		if(!tools.isOnline()){
+			Intent intent = new Intent(MapLocateActivity.this,
+					com.applicationmoveon.InternetCheckActivity.class);
+			intent.putExtra("KEY_PREVIOUS_ACTIVITY", this.getClass().getName());
+			startActivity(intent);
+		}
 	}
 
 	@Override

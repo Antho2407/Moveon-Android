@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.applicationmoveon.R;
+import com.applicationmoveon.ToolBox;
 import com.applicationmoveon.UserSettingActivity;
 import com.applicationmoveon.R.drawable;
 import com.applicationmoveon.R.id;
@@ -18,6 +19,7 @@ import com.applicationmoveon.database.RequestTask;
 import com.applicationmoveon.event.AddEventActivity;
 import com.applicationmoveon.event.EventAdapter;
 import com.applicationmoveon.event.EventDisplayActivity;
+import com.applicationmoveon.event.ListEventActivity;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -54,12 +56,16 @@ public class UserDisplayActivity extends Activity{
 	private EventAdapter mainAdapter;
 	private UserAdapter.UserData user;
 	private ArrayList<EventAdapter.EventData> eventData;
+	private ToolBox tools;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_display_user);
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		tools = new ToolBox(this);
 
 		eventData = new ArrayList<EventAdapter.EventData>();
 		mainAdapter = new EventAdapter(getApplicationContext(), eventData);
@@ -106,6 +112,18 @@ public class UserDisplayActivity extends Activity{
 		eventNb.setText("Nombres d'evenements crées : "+user.eventOwned);
 		followed.setChecked(user.followed);
 
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		if(!tools.isOnline()){
+			Intent intent = new Intent(UserDisplayActivity.this,
+					com.applicationmoveon.InternetCheckActivity.class);
+			intent.putExtra("KEY_PREVIOUS_ACTIVITY", this.getClass().getName());
+			startActivity(intent);
+		}
 	}
 
 	@Override

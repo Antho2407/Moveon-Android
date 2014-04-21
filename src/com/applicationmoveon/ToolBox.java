@@ -6,11 +6,14 @@ import java.io.IOException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -67,7 +70,6 @@ public class ToolBox {
 		String scheme = uri.getScheme();
 		if (scheme.equals("file")) {
 		    fileName = uri.getLastPathSegment();
-		    Log.i("ANTHO", fileName);
 		}
 		else if (scheme.equals("content")) {
 		    String[] proj = { MediaStore.Images.Media.TITLE };
@@ -79,5 +81,15 @@ public class ToolBox {
 		    }
 		}
 		return fileName;
+	}
+	
+	public boolean isOnline() {
+		ConnectivityManager cm =
+				(ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+			return true;
+		}
+		return false;
 	}
 }

@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.applicationmoveon.R;
+import com.applicationmoveon.ToolBox;
 import com.applicationmoveon.UserSettingActivity;
 import com.applicationmoveon.R.drawable;
 import com.applicationmoveon.R.id;
@@ -16,6 +17,7 @@ import com.applicationmoveon.R.layout;
 import com.applicationmoveon.R.menu;
 import com.applicationmoveon.database.RequestTask;
 import com.applicationmoveon.event.AddEventActivity;
+import com.applicationmoveon.event.ListEventActivity;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -48,12 +50,16 @@ public class ListUserActivity extends Activity{
 	private ListView userList;
 	private UserAdapter mainAdapter;
 	private ArrayList<UserAdapter.UserData> userData;
+	private ToolBox tools;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_listuser);
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		tools = new ToolBox(this);
 
 		userData = new ArrayList<UserAdapter.UserData>();
 		mainAdapter = new UserAdapter(getApplicationContext(), userData);
@@ -120,6 +126,18 @@ public class ListUserActivity extends Activity{
 
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		if(!tools.isOnline()){
+			Intent intent = new Intent(ListUserActivity.this,
+					com.applicationmoveon.InternetCheckActivity.class);
+			intent.putExtra("KEY_PREVIOUS_ACTIVITY", this.getClass().getName());
+			startActivity(intent);
+		}
 	}
 	
 	public int getUsers() throws InterruptedException, ExecutionException, JSONException{

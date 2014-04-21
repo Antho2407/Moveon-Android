@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.applicationmoveon.R;
+import com.applicationmoveon.ToolBox;
 import com.applicationmoveon.UserSettingActivity;
 import com.applicationmoveon.R.id;
 import com.applicationmoveon.R.layout;
@@ -49,12 +50,16 @@ public class ListEventActivity extends Activity {
 	private ListView eventList;
 	private EventAdapter mainAdapter;
 	private ArrayList<EventAdapter.EventData> eventData;
+	private ToolBox tools;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_listevent);
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		tools = new ToolBox(this);
 
 		eventData = new ArrayList<EventAdapter.EventData>();
 		mainAdapter = new EventAdapter(getApplicationContext(), eventData);
@@ -75,6 +80,18 @@ public class ListEventActivity extends Activity {
 		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		if(!tools.isOnline()){
+			Intent intent = new Intent(ListEventActivity.this,
+					com.applicationmoveon.InternetCheckActivity.class);
+			intent.putExtra("KEY_PREVIOUS_ACTIVITY", this.getClass().getName());
+			startActivity(intent);
 		}
 	}
 

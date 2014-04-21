@@ -7,7 +7,9 @@ import com.applicationmoveon.R;
 import com.applicationmoveon.R.id;
 import com.applicationmoveon.R.layout;
 import com.applicationmoveon.R.menu;
+import com.applicationmoveon.ToolBox;
 import com.applicationmoveon.event.AddEventActivity;
+import com.applicationmoveon.event.ListEventActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -49,6 +51,8 @@ public class MapActivity extends FragmentActivity {
 	private String finalAdressString = "";
 
 	private Address currentAddress;
+	
+	private ToolBox tools;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,8 @@ public class MapActivity extends FragmentActivity {
 		setContentView(R.layout.activity_map);
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		tools = new ToolBox(this);
 
 		// Recuperer le fragment de la map
 		SupportMapFragment supportMapFragment = (SupportMapFragment) 
@@ -131,6 +137,18 @@ public class MapActivity extends FragmentActivity {
 		btn_previous.setOnClickListener(previousClickListener); 
 		btn_next.setOnClickListener(nextClickListener); 
 		btn_choose.setOnClickListener(chooseClickListener); 
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		if(!tools.isOnline()){
+			Intent intent = new Intent(MapActivity.this,
+					com.applicationmoveon.InternetCheckActivity.class);
+			intent.putExtra("KEY_PREVIOUS_ACTIVITY", this.getClass().getName());
+			startActivity(intent);
+		}
 	}
 
 	private class LocateTask extends AsyncTask<String, Void, List<Address>> {

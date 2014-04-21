@@ -10,6 +10,8 @@ import com.applicationmoveon.R.id;
 import com.applicationmoveon.R.layout;
 import com.applicationmoveon.R.menu;
 import com.applicationmoveon.database.ExecTask;
+import com.applicationmoveon.event.ListEventActivity;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -152,6 +154,18 @@ public class AddUserActivity extends Activity implements OnClickListener {
 
 			}
 			return;
+		}
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		if(!tools.isOnline()){
+			Intent intent = new Intent(AddUserActivity.this,
+					com.applicationmoveon.InternetCheckActivity.class);
+			intent.putExtra("KEY_PREVIOUS_ACTIVITY", this.getClass().getName());
+			startActivity(intent);
 		}
 	}
 
