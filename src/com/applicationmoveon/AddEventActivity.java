@@ -1,5 +1,6 @@
 package com.applicationmoveon;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -16,9 +17,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -79,11 +82,16 @@ public class AddEventActivity extends Activity implements OnClickListener {
     private String latitude = "";
     private String address = "";
     private String picturePath = "";
+    private String namePicture = "";
+    
+    private ToolBox tools;
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_event);
+		
+		tools = new ToolBox(this);
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
@@ -129,6 +137,11 @@ public class AddEventActivity extends Activity implements OnClickListener {
 		createButton.setOnClickListener(this);
 		
 		restoreActivity(savedInstanceState);
+		
+		//File mydir = tools.createCacheFolder();
+		//new FtpDownloadTask("test.jpg",mydir.getAbsolutePath()+"/test.jpg").execute();
+		//Bitmap myBitmap = BitmapFactory.decodeFile(mydir.getAbsolutePath()+"/test.jpg");
+		//mainPicture.setImageBitmap(myBitmap);
 	}
 
 	@Override
@@ -138,6 +151,7 @@ public class AddEventActivity extends Activity implements OnClickListener {
 		if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK
 				&& null != data) {
 			Uri selectedImage = data.getData();
+			
 			String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
 			Cursor cursor = getContentResolver().query(selectedImage,
@@ -146,11 +160,14 @@ public class AddEventActivity extends Activity implements OnClickListener {
 
 			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 			picturePath = cursor.getString(columnIndex);
+			String extension = picturePath.substring(picturePath.lastIndexOf("."));
+			namePicture = tools.getFileName(selectedImage)+extension;
 			cursor.close();
 
 			BitmapFactory.Options options=new BitmapFactory.Options();
 			options.inSampleSize = 8;
 			mainPicture.setImageBitmap(BitmapFactory.decodeFile(picturePath, options));
+			new FtpUploadTask(picturePath).execute();
 
 		}
 		
