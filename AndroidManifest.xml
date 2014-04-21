@@ -65,14 +65,16 @@
             android:name="com.applicationmoveon.event.ListEventActivity"
             android:label="" />
         <activity
-com.applicationmoveon.user.ListUserActivityid:name=".ListUserActivity"
+			android:name=".ListUserActivity"
             android:label="" />
         <activity
             android:name=".UserSettingActivity"
-            android:label="Préférencecom.applicationmoveon.user.UserDisplayActivityvity
+            android:label="Préférences"
+        />
+        <activity    
             android:name=".UserDisplayActivity"
             android:label="" />
-        <activitycom.applicationmoveon.event.EventDisplayActivityname=".EventDisplayActivity"
+        <activity			android:name=".EventDisplayActivity"
             android:label="" />
 
         <meta-data
