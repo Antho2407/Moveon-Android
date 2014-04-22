@@ -1,9 +1,20 @@
-package com.applicationmoveon;
+package com.applicationmoveon.accueil;
 
 
 import java.util.ArrayList;
 
+import com.applicationmoveon.R;
+import com.applicationmoveon.UserSettingActivity;
+import com.applicationmoveon.R.drawable;
+import com.applicationmoveon.R.id;
+import com.applicationmoveon.R.layout;
+import com.applicationmoveon.R.menu;
+import com.applicationmoveon.event.AddEventActivity;
+import com.applicationmoveon.event.ListEventActivity;
+import com.applicationmoveon.localisation.MapLocateActivity;
+import com.applicationmoveon.notification.NotificationService;
 import com.applicationmoveon.session.SessionManager;
+import com.applicationmoveon.user.ListUserActivity;
 import com.google.android.gms.plus.PlusClient;
 
 import android.app.Activity;

@@ -1,4 +1,7 @@
-package com.applicationmoveon;
+package com.applicationmoveon.notification;
+
+import com.applicationmoveon.R;
+import com.applicationmoveon.R.drawable;
 
 import android.app.Notification;
 import android.app.NotificationManager;

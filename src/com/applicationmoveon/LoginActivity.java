@@ -5,8 +5,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.applicationmoveon.accueil.MainActivity;
 import com.applicationmoveon.database.ExecTask;
 import com.applicationmoveon.session.SessionManager;
+import com.applicationmoveon.user.AddUserActivity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

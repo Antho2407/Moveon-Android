@@ -85,7 +85,7 @@ public class ExecTask extends AsyncTask<HashMap<String,String>, String, Boolean>
 			
 			if(request.containsKey("title") && request.containsKey("description")&& request.containsKey("location")&& request.containsKey("latitude")&& request.containsKey("longitude")&& request.containsKey("date_debut")&& request.containsKey("heure_debut")&& request.containsKey("heure_fin")&& request.containsKey("date_fin")
 			&& request.containsKey("participants")&& request.containsKey("id_createur")&& request.containsKey("date_creation")&& request.containsKey("state")
-			&& request.containsKey("urlimage")){
+			&& request.containsKey("urlimage")&& request.containsKey("temperature")&& request.containsKey("likes")&& request.containsKey("dislikes")){
 				db.addEvent(request.get("title"), request.get("location"),request.get("latitude"),request.get("longitude"), request.get("description"), request.get("date_debut"),request.get("heure_debut"), request.get("date_fin"), 
 				request.get("heure_fin"),request.get("participants"), request.get("id_createur"), request.get("date_creation"), request.get("state"), request.get("urlimage"));
 				return true;
