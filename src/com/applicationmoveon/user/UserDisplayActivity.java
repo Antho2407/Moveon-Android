@@ -11,20 +11,14 @@ import org.json.JSONObject;
 import com.applicationmoveon.R;
 import com.applicationmoveon.ToolBox;
 import com.applicationmoveon.UserSettingActivity;
-import com.applicationmoveon.R.drawable;
-import com.applicationmoveon.R.id;
-import com.applicationmoveon.R.layout;
-import com.applicationmoveon.R.menu;
 import com.applicationmoveon.database.RequestTask;
 import com.applicationmoveon.event.AddEventActivity;
 import com.applicationmoveon.event.EventAdapter;
 import com.applicationmoveon.event.EventDisplayActivity;
-import com.applicationmoveon.event.ListEventActivity;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,7 +29,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SearchView.OnQueryTextListener;
 

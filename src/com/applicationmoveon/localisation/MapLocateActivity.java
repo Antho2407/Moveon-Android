@@ -42,6 +42,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,6 +58,7 @@ public class MapLocateActivity extends FragmentActivity implements
 	private MarkerOptions markerOptions;
 	private LatLng locationMap;
 	private List<Location> addresses;
+
 	private Button btn_next;
 	private Button btn_previous;
 	private Button btn_choose;
@@ -70,25 +72,29 @@ public class MapLocateActivity extends FragmentActivity implements
 	private Geocoder geocoder;
 
 	private CircleOptions circle;
-	
-	private HashMap<Location,EventAdapter.EventData> listEvents;
-	
+
+	private HashMap<Location, EventAdapter.EventData> listEvents;
+
 	private ToolBox tools;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		
+
 		tools = new ToolBox(this);
-		
-		listEvents = new HashMap<Location,EventAdapter.EventData>();
+
+		listEvents = new HashMap<Location, EventAdapter.EventData>();
 		setContentView(R.layout.activity_map_locate);
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		geocoder = new Geocoder(getBaseContext());
 		addresses = new ArrayList<Location>();
+
+		btn_next = (Button) findViewById(R.id.btn_next_locate);
+		btn_previous = (Button) findViewById(R.id.btn_previous_locate);
+		btn_choose = (Button) findViewById(R.id.btn_validate_locate);
 
 		// Recuperer le fragment de la map
 		SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -98,8 +104,6 @@ public class MapLocateActivity extends FragmentActivity implements
 		map = supportMapFragment.getMap();
 
 		map.setMyLocationEnabled(true);
-
-		/*****/
 
 		// Getting LocationManager object from System Service LOCATION_SERVICE
 		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -118,8 +122,6 @@ public class MapLocateActivity extends FragmentActivity implements
 		}
 		locationManager.requestLocationUpdates(provider, 20000, 0, this);
 
-		/*****/
-
 		// Location myLocation = map.getMyLocation();
 		LatLng myLocationLatlng = new LatLng(myLocation.getLatitude(),
 				myLocation.getLongitude());
@@ -131,7 +133,6 @@ public class MapLocateActivity extends FragmentActivity implements
 		markerOptions.icon(bitmapDescriptor);
 
 		map.addMarker(markerOptions);
-		map.animateCamera(CameraUpdateFactory.zoomTo(15));
 		map.animateCamera(CameraUpdateFactory.newLatLng(myLocationLatlng));
 
 		circle = new CircleOptions();
@@ -146,10 +147,6 @@ public class MapLocateActivity extends FragmentActivity implements
 		circle.radius(10000);
 
 		map.addCircle(circle);
-
-		btn_next = (Button) findViewById(R.id.btn_next_locate);
-		btn_previous = (Button) findViewById(R.id.btn_previous_locate);
-		btn_choose = (Button) findViewById(R.id.btn_validate_locate);
 
 		OnClickListener previousClickListener = new OnClickListener() {
 			@Override
@@ -178,8 +175,10 @@ public class MapLocateActivity extends FragmentActivity implements
 		OnClickListener chooseClickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(MapLocateActivity.this, EventDisplayActivity.class);
-				i.putExtra("KEY_ID_EVENT", listEvents.get(currentAddress).eventId);
+				Intent i = new Intent(MapLocateActivity.this,
+						EventDisplayActivity.class);
+				i.putExtra("KEY_ID_EVENT",
+						listEvents.get(currentAddress).eventId);
 				startActivity(i);
 			}
 		};
@@ -209,16 +208,26 @@ public class MapLocateActivity extends FragmentActivity implements
 		});
 		return true;
 	}
-	
+
 	@Override
 	protected void onStart() {
 		super.onStart();
 
-		if(!tools.isOnline()){
+		if (!tools.isOnline()) {
 			Intent intent = new Intent(MapLocateActivity.this,
 					com.applicationmoveon.InternetCheckActivity.class);
 			intent.putExtra("KEY_PREVIOUS_ACTIVITY", this.getClass().getName());
 			startActivity(intent);
+			finish();
+		}
+
+		if (!tools.gpsActivated()) {
+			Log.i("ANTHO","je passe");
+			Intent intent = new Intent(MapLocateActivity.this,
+					com.applicationmoveon.GpsCheckActivity.class);
+			intent.putExtra("KEY_PREVIOUS_ACTIVITY", this.getClass().getName());
+			startActivity(intent);
+			finish();
 		}
 	}
 
@@ -273,7 +282,7 @@ public class MapLocateActivity extends FragmentActivity implements
 		map.animateCamera(CameraUpdateFactory.zoomTo(15));
 		map.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 		map.addCircle(c);
-		
+
 		try {
 			getCloseEvents(10000, 5);
 		} catch (InterruptedException e) {
@@ -326,6 +335,7 @@ public class MapLocateActivity extends FragmentActivity implements
 		for (int i = 0; i < length; i++) {
 
 			JSONObject row_item = resultJson.getJSONObject(i);
+			
 			String title = row_item.getString("title");
 			String description = row_item.getString("description");
 			String dateStart = row_item.getString("date_debut");
@@ -335,6 +345,7 @@ public class MapLocateActivity extends FragmentActivity implements
 			String location = row_item.getString("location");
 			String emailOwner = row_item.getString("id_createur");
 			String urlImage = row_item.getString("urlimage");
+			
 			int id = Integer.parseInt(row_item.getString("id_event"));
 			float latitude = Float.parseFloat(row_item.getString("latitude"));
 			float longitude = Float.parseFloat(row_item.getString("longitude"));
@@ -342,22 +353,23 @@ public class MapLocateActivity extends FragmentActivity implements
 			String dateCreation = row_item.getString("date_creation");
 			int participants = Integer.parseInt(row_item
 					.getString("participants"));
-			
+
 			EventAdapter.EventData newEvent = new EventAdapter.EventData(id,
 					title, location, description, dateStart, hourStart,
 					hourEnd, participants, emailOwner, state, dateCreation,
-					latitude, longitude,urlImage);
+					latitude, longitude, urlImage);
 
 			Location locationEvent = new Location("locationEvent");
 			locationEvent.setLatitude(latitude);
 			locationEvent.setLongitude(longitude);
-			
+
 			newEvent.distance = (float) myLocation.distanceTo(locationEvent);
 
-			if (newEvent.distance < distanceMax)
+			if (newEvent.distance < distanceMax) {
 				result.add(newEvent);
 				addresses.add(locationEvent);
 				listEvents.put(locationEvent, newEvent);
+			}
 		}
 
 		Collections.sort(result, new Comparator<EventAdapter.EventData>() {
@@ -381,26 +393,33 @@ public class MapLocateActivity extends FragmentActivity implements
 	public void displayCloseEvents(ArrayList<EventAdapter.EventData> events,
 			int nbResultMax) {
 		if (events.size() > 0 && events != null) {
+
+			// Si des adresses sont trouvees les boutons apparaissent
+			btn_previous.setVisibility(View.VISIBLE);
+			btn_next.setVisibility(View.VISIBLE);
+			btn_choose.setVisibility(View.VISIBLE);
+
 			for (int i = 0; i < events.size(); i++) {
-				
-				if(i > nbResultMax)
+
+				if (i > nbResultMax)
 					return;
-				
+
 				EventAdapter.EventData event = events.get(i);
-				int temperatureEvent = (int) TemperatureEvent.getTemperature(event.numberOfParticipants, 0, 0);
+				int temperatureEvent = (int) TemperatureEvent.getTemperature(
+						event.numberOfParticipants, 0, 0);
 				LatLng myLocationLatlng = new LatLng(event.latitude,
 						event.longitude);
 
 				markerOptions = new MarkerOptions();
 				BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory
-						.defaultMarker(TemperatureEvent.getColor(temperatureEvent));
+						.defaultMarker(TemperatureEvent
+								.getColor(temperatureEvent));
 				markerOptions.icon(bitmapDescriptor);
 				markerOptions.position(myLocationLatlng);
-				markerOptions.title(event.eventTitle+" ("+event.numberOfParticipants+" participants)");
-				
+				markerOptions.title(event.eventTitle + " ("
+						+ event.numberOfParticipants + " participants)");
 
 				map.addMarker(markerOptions);
-				map.animateCamera(CameraUpdateFactory.zoomTo(15));
 			}
 		}
 	}

@@ -12,6 +12,7 @@ import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -91,5 +92,10 @@ public class ToolBox {
 			return true;
 		}
 		return false;
+	}
+	
+	public boolean gpsActivated() {
+		LocationManager manager = (LocationManager) activity.getSystemService( Context.LOCATION_SERVICE ); 
+		return manager.isProviderEnabled( LocationManager.GPS_PROVIDER ); 
 	}
 }

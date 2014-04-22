@@ -8,20 +8,21 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center" 
         android:layout_marginTop="30dp"
-        android:text="@string/connection_error"
+        android:text="@string/gps_error"
         android:textSize="20sp" />
     
     <Button
-	    android:id="@+id/button_internet"
+	    android:id="@+id/button_gps"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_gravity="center" 
 	    android:text="@string/button_parameter" />
     
     <ImageView
-	    android:id="@+id/loading_wifi"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:src="@drawable/loading_wifi" />
+	    android:id="@+id/loading_gps"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_gravity="center" 
+	    android:src="@drawable/loading_gps" />
     
 </LinearLayout>

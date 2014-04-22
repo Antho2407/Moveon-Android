@@ -107,6 +107,12 @@
             android:name="com.applicationmoveon.InternetCheckActivity"
             android:label="Vérification de la connexion Internet" >
         </activity>
+        <activity
+            android:configChanges="orientation"
+    		android:screenOrientation="portrait"
+            android:name="com.applicationmoveon.GpsCheckActivity"
+            android:label="Vérification de la réception GPS" >
+        </activity>
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
