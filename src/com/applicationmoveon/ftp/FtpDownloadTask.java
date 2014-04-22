@@ -50,7 +50,7 @@ public class FtpDownloadTask extends AsyncTask<String, Void, FTPClient> {
 			try {
 				mFTPClient.setFileType(FTP.BINARY_FILE_TYPE);
 				mFTPClient.enterLocalPassiveMode();
-				mFTPClient.changeWorkingDirectory("www/moveon/images");
+				mFTPClient.changeWorkingDirectory("www/moveon/images/");
 				FileOutputStream desFileStream = new FileOutputStream(
 						destination);
 				status = mFTPClient.retrieveFile(path, desFileStream);

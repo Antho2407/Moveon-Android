@@ -90,7 +90,7 @@ public class EventDisplayActivity extends Activity{
 		Button participate = (Button) findViewById(R.id.event_participate);
 
 		File mydir = tools.createCacheFolder();
-		new FtpDownloadTask(event.url, mydir.getAbsolutePath() + "/" + event.url)
+		new FtpDownloadTask(event.eventOwner +"/"+ event.url, mydir.getAbsolutePath() + "/" + event.url)
 				.execute();
 		Bitmap myBitmap = BitmapFactory.decodeFile(mydir.getAbsolutePath()
 				+ "/" + event.url);
