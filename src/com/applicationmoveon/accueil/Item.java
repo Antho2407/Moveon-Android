@@ -1,4 +1,4 @@
-package com.applicationmoveon;
+package com.applicationmoveon.accueil;
 
 import android.graphics.Bitmap;
 

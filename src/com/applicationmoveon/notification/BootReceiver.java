@@ -1,4 +1,4 @@
-package com.applicationmoveon;
+package com.applicationmoveon.notification;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
