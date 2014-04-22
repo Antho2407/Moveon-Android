@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -45,14 +46,14 @@ public class EventDisplayActivity extends Activity{
 	private UserAdapter.UserData user;
 	private String id;
 	private ToolBox tools;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_display_event);
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-
-
+		
 		tools = new ToolBox(this);
 		
 		//TODO Ajout de l'event à l'activité
@@ -92,8 +93,8 @@ public class EventDisplayActivity extends Activity{
 		File mydir = tools.createCacheFolder();
 		new FtpDownloadTask(event.eventOwner +"/"+ event.url, mydir.getAbsolutePath() + "/" + event.url)
 				.execute();
-		Bitmap myBitmap = BitmapFactory.decodeFile(mydir.getAbsolutePath()
-				+ "/" + event.url);
+		Bitmap myBitmap = tools.decodeSampledBitmapFromResource(mydir.getAbsolutePath()
+				+ "/" + event.url, 100, 100);
 		picture.setImageBitmap(myBitmap);
 		
 		title.setText(event.eventTitle);

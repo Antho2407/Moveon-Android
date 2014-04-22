@@ -337,6 +337,9 @@ public class AddEventActivity extends Activity implements OnClickListener {
 				hm.put("date_creation", year + "-" + month + "-" + day);
 				hm.put("state", Integer.toString(0));
 				hm.put("urlimage", namePicture);
+				hm.put("temperature", Integer.toString(0));
+				hm.put("likes", Integer.toString(0));
+				hm.put("dislikes", Integer.toString(0));
 				
 				//Execution de la requête
 				ExecTask rt = new ExecTask();

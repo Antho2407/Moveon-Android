@@ -15,12 +15,38 @@
         android:textColor="#000"
         android:textSize="20sp"
         android:textStyle="bold" />
+    
+    <LinearLayout
+    android:id="@+id/bar"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_below="@id/event_title"
+    android:layout_height="wrap_content" >
+    <View
+     android:id="@+id/bar_grey"
+	 android:layout_width="0dp"
+	 android:layout_weight=".0"
+	 android:layout_height="4dp"
+	 android:background="@android:color/darker_gray" />
+    <View
+     android:id="@+id/bar_red"
+	 android:layout_width="0dp"
+	 android:layout_weight=".2"
+	 android:layout_height="4dp"
+	 android:background="@android:color/holo_red_light" />
+    <View
+     android:id="@+id/bar_green"
+	 android:layout_width="0dp"
+	 android:layout_weight=".8"
+	 android:layout_height="4dp"
+	 android:background="@android:color/holo_green_light" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/event_owner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/event_title"
+        android:layout_below="@id/bar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="6dp"
         android:text="Créé par :"
