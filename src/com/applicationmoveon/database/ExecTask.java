@@ -44,10 +44,20 @@ public class ExecTask extends AsyncTask<HashMap<String,String>, String, Boolean>
 				return isValidCombination(request);
 			}else if(query.equals("addUser")){
 				return addUser(request);
+			}else if(query.equals("addParticipants")){
+				return addParticipants(request);
 			}
 			
 			return false;
 			
+		}
+		
+		protected Boolean addParticipants(HashMap<String,String> request){
+			if(request.containsKey("id_event") && request.containsKey("email")){
+				db.addParticipants(request.get("id_event"), request.get("email"));
+				return true;
+			}
+			return false;
 		}
 		
 		protected Boolean isValidCombination(HashMap<String,String> request){

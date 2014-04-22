@@ -69,11 +69,11 @@ public class Database {
 		}
 	}
 	
-	public void addParticipants(String id_event, String id_user){
+	public void addParticipants(String id_event, String email){
 		//the year data to send
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("id_event",id_event));
-		nameValuePairs.add(new BasicNameValuePair("id_user",id_user));
+		nameValuePairs.add(new BasicNameValuePair("email",email));
 		 
 		//http post
 		try{
