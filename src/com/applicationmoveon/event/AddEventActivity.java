@@ -192,7 +192,8 @@ public class AddEventActivity extends Activity implements OnClickListener {
 
 			BitmapFactory.Options options=new BitmapFactory.Options();
 			options.outHeight = 8;
-			mainPicture.setImageBitmap(BitmapFactory.decodeFile(picturePath, options));
+			//mainPicture.setImageBitmap(BitmapFactory.decodeFile(picturePath, options));
+			mainPicture.setImageBitmap(tools.decodeSampledBitmapFromResource(picturePath, 200, 200));
 			new FtpUploadTask(picturePath, userMail, namePicture).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 		}
