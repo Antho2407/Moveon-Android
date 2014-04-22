@@ -15,12 +15,14 @@ import com.applicationmoveon.R.layout;
 import com.applicationmoveon.R.menu;
 import com.applicationmoveon.database.ExecTask;
 import com.applicationmoveon.database.RequestTask;
+import com.applicationmoveon.session.SessionManager;
 
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,7 +44,7 @@ public class ListEventActivity extends Activity {
 
 			Intent intent = new Intent(ListEventActivity.this,
 					EventDisplayActivity.class);
-			intent.putExtra("ID", eventData.get(position).eventId);
+			intent.putExtra("ID", String.valueOf(eventData.get(position).eventId));
 			startActivity(intent);
 		}
 	}
@@ -51,6 +53,8 @@ public class ListEventActivity extends Activity {
 	private EventAdapter mainAdapter;
 	private ArrayList<EventAdapter.EventData> eventData;
 	private ToolBox tools;
+	private SessionManager session;
+	private String email = "";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,8 @@ public class ListEventActivity extends Activity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
 		tools = new ToolBox(this);
+		session = new SessionManager(this);
+		email = session.getUserDetails().get(SessionManager.KEY_EMAIL);
 
 		eventData = new ArrayList<EventAdapter.EventData>();
 		mainAdapter = new EventAdapter(getApplicationContext(), eventData);
@@ -143,7 +149,8 @@ public class ListEventActivity extends Activity {
 	public int getEvents() throws InterruptedException, ExecutionException, JSONException{
 
 		HashMap<String, String> hm = new HashMap<String, String>();
-		hm.put("Request", "SelectEvent");
+		hm.put("Request", "SelectEventByUserMail");
+		hm.put("email", email);
 		
 		// Execution de la requête
 		RequestTask rt = new RequestTask();

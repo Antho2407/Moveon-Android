@@ -77,7 +77,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/event_date"
                 android:layout_margin="5dp"
-                android:text="Description:\n\n\zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzn\n\n\n\n\n\n\nzufaezkfgfkaejfh\n\n\n\n\ndjzhfkefgaekfgeafjah"
                 android:textColor="#000"
                 android:textSize="12sp" />
 

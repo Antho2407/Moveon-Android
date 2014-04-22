@@ -54,12 +54,12 @@
         <activity
             android:configChanges="orientation"
     		android:screenOrientation="portrait"
-            android:name=".LoginActivity"
+            android:name="com.applicationmoveon.LoginActivity"
             android:label="@string/title_login_activity" />
         <activity
             android:configChanges="orientation"
     		android:screenOrientation="portrait"
-            android:name=".LoginDisplayActivity"
+            android:name="com.applicationmoveon.LoginDisplayActivity"
             android:label="@string/title_login_activity" />
         <activity
             android:configChanges="orientation"
@@ -84,23 +84,23 @@
         <activity
             android:configChanges="orientation"
     		android:screenOrientation="portrait"
-			android:name=".ListUserActivity"
+			android:name="com.applicationmoveon.user.ListUserActivity"
             android:label="" />
         <activity
             android:configChanges="orientation"
     		android:screenOrientation="portrait"
-            android:name=".UserSettingActivity"
+            android:name="com.applicationmoveon.UserSettingActivity"
             android:label="Préférences"
         />
         <activity 
             android:configChanges="orientation"
     		android:screenOrientation="portrait"   
-            android:name=".UserDisplayActivity"
+            android:name="com.applicationmoveon.user.UserDisplayActivity"
             android:label="" />
         <activity
             android:configChanges="orientation"
-    		android:screenOrientation="portrait"			android:name=".EventDisplayActivity"
-            android:label="" />
+    		android:screenOrientation="portrait"			android:name="com.applicationmoveon.event.EventDisplayActivity"
+            android:label="Affichage d'un évènement" />
         <activity
             android:configChanges="orientation"
     		android:screenOrientation="portrait"

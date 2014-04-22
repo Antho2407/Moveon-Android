@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,7 +62,7 @@ public class EventDisplayActivity extends Activity{
 			if (extras == null) {
 				id = null;
 			} else {
-				id = extras.getString("ID");
+				id = getIntent().getStringExtra("ID");
 			}
 		} else {
 			id = (String) savedInstanceState.getSerializable("SEARCH");
@@ -69,7 +70,7 @@ public class EventDisplayActivity extends Activity{
 		 try {
 			try {
 				getEvent(id);
-				//getUser(event.eventOwner);
+				getUser(event.eventOwner);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -80,6 +81,7 @@ public class EventDisplayActivity extends Activity{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		 
 		ImageView picture = (ImageView) findViewById(R.id.event_pic);
 		TextView title = (TextView) findViewById(R.id.event_title);
 		Button owner = (Button) findViewById(R.id.event_owner_button);
@@ -88,7 +90,7 @@ public class EventDisplayActivity extends Activity{
 		Button participate = (Button) findViewById(R.id.event_participate);
 
 		File mydir = tools.createCacheFolder();
-		new FtpDownloadTask("test.jpg", mydir.getAbsolutePath() + "/" + event.url)
+		new FtpDownloadTask(event.url, mydir.getAbsolutePath() + "/" + event.url)
 				.execute();
 		Bitmap myBitmap = BitmapFactory.decodeFile(mydir.getAbsolutePath()
 				+ "/" + event.url);
@@ -174,7 +176,8 @@ public class EventDisplayActivity extends Activity{
 	public int getEvent(String id_event) throws InterruptedException, ExecutionException, JSONException{
 
 		HashMap<String, String> hm = new HashMap<String, String>();
-		hm.put("Request", "SelectEvent");
+		hm.put("Request", "SelectEventById");
+		hm.put("id_event", id_event);
 
 		// Execution de la requête
 		RequestTask rt = new RequestTask();
@@ -192,7 +195,7 @@ public class EventDisplayActivity extends Activity{
 
 		else {
 
-			JSONObject row_item = result.getJSONObject(1);
+			JSONObject row_item = result.getJSONObject(0);
 			String title = row_item.getString("title");
 			String description = row_item.getString("description");
 			String dateStart = row_item.getString("date_debut");
@@ -200,6 +203,7 @@ public class EventDisplayActivity extends Activity{
 			String hourStart = row_item.getString("heure_debut");
 			String hourEnd = row_item.getString("heure_fin");
 			String location = row_item.getString("location");
+			String mail = row_item.getString("id_createur");
 			int id = Integer.parseInt(row_item.getString("id_event"));
 			float latitude = Float.parseFloat(row_item.getString("latitude"));
 			float longitude= Float.parseFloat(row_item.getString("longitude"));
@@ -208,7 +212,7 @@ public class EventDisplayActivity extends Activity{
 			String url = row_item.getString("urlimage");
 			int participants = Integer.parseInt(row_item.getString("participants"));
 			event = new EventAdapter.EventData(id, title, location, description, dateStart,
-					hourStart, hourEnd, participants,"test",state,dateCreation, latitude, longitude,url);
+					hourStart, hourEnd, participants,mail,state,dateCreation, latitude, longitude,url);
 		}
 		return 1;
 
@@ -218,14 +222,15 @@ public class EventDisplayActivity extends Activity{
 	public int getUser(String mail) throws InterruptedException, ExecutionException, JSONException{
 
 		HashMap<String, String> hm = new HashMap<String, String>();
-		hm.put("Request", "SelectUserByMail");
+		hm.put("Request", "SelectUserByEmail");
+		hm.put("email", event.eventOwner);
 		
 		// Execution de la requête
 		RequestTask rt = new RequestTask();
 		rt.execute(hm);
 		
 		JSONArray result = rt.get();
-
+		
 		if(result == null)
 			return -1;
 		
@@ -234,9 +239,9 @@ public class EventDisplayActivity extends Activity{
 		if(length == 0)
 			return 0;
 
-		if(length == 1) {
+		if(length > 0) {
 
-			JSONObject row_item = result.getJSONObject(1);
+			JSONObject row_item = result.getJSONObject(0);
 			String prenom = row_item.getString("firstname");
 			String nom = row_item.getString("lastname");
 			String email = row_item.getString("email");
@@ -245,6 +250,7 @@ public class EventDisplayActivity extends Activity{
 			
 			UserAdapter.UserData newUser = new UserAdapter.UserData(prenom, nom, 0,getResources().getDrawable(R.drawable.ic_action_content_event) , false);
 			user = newUser;
+			Log.i("ANTHO",newUser.toString());
 		}
 		return 1;
 		
