@@ -1,6 +1,5 @@
 package com.applicationmoveon.event;
 
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
@@ -16,6 +15,7 @@ import com.applicationmoveon.R.drawable;
 import com.applicationmoveon.R.id;
 import com.applicationmoveon.R.layout;
 import com.applicationmoveon.R.menu;
+import com.applicationmoveon.database.ExecTask;
 import com.applicationmoveon.database.RequestTask;
 import com.applicationmoveon.ftp.FtpDownloadTask;
 import com.applicationmoveon.user.UserAdapter;
@@ -38,9 +38,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.SearchView.OnQueryTextListener;
 
-public class EventDisplayActivity extends Activity{
-
-
+public class EventDisplayActivity extends Activity {
 
 	private EventAdapter.EventData event;
 	private UserAdapter.UserData user;
@@ -53,10 +51,10 @@ public class EventDisplayActivity extends Activity{
 		setContentView(R.layout.activity_display_event);
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		
+
 		tools = new ToolBox(this);
-		
-		//TODO Ajout de l'event à l'activité
+
+		// Ajout de l'event à l'activité
 		Bundle extras;
 		if (savedInstanceState == null) {
 			extras = getIntent().getExtras();
@@ -68,7 +66,7 @@ public class EventDisplayActivity extends Activity{
 		} else {
 			id = (String) savedInstanceState.getSerializable("SEARCH");
 		}
-		 try {
+		try {
 			try {
 				getEvent(id);
 				getUser(event.eventOwner);
@@ -76,13 +74,11 @@ public class EventDisplayActivity extends Activity{
 				e.printStackTrace();
 			}
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 
+
 		ImageView picture = (ImageView) findViewById(R.id.event_pic);
 		TextView title = (TextView) findViewById(R.id.event_title);
 		Button owner = (Button) findViewById(R.id.event_owner_button);
@@ -91,38 +87,48 @@ public class EventDisplayActivity extends Activity{
 		Button participate = (Button) findViewById(R.id.event_participate);
 
 		File mydir = tools.createCacheFolder();
-		new FtpDownloadTask(event.eventOwner +"/"+ event.url, mydir.getAbsolutePath() + "/" + event.url)
-				.execute();
-		Bitmap myBitmap = tools.decodeSampledBitmapFromResource(mydir.getAbsolutePath()
-				+ "/" + event.url, 100, 100);
+		new FtpDownloadTask(event.eventOwner + "/" + event.url,
+				mydir.getAbsolutePath() + "/" + event.url).execute();
+		Bitmap myBitmap = tools.decodeSampledBitmapFromResource(
+				mydir.getAbsolutePath() + "/" + event.url, 100, 100);
 		picture.setImageBitmap(myBitmap);
-		
+
 		title.setText(event.eventTitle);
-		owner.setText(user.userFirstname+ " "+user.userName);
+		owner.setText(user.userFirstname + " " + user.userName);
 		desc.setText(event.eventDescription);
-		date.setText("Le "+event.eventDateStart+" de "+event.eventHourStart+" à "+event.eventHourFinish+" à "+event.eventLocation);
-		participate.setOnClickListener(new View.OnClickListener()
-		{
+		date.setText("Le " + event.eventDateStart + " de "
+				+ event.eventHourStart + " à " + event.eventHourFinish + " à "
+				+ event.eventLocation);
+		participate.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (v.getId() == R.id.event_participate){
-					//TODO participer
+				if (v.getId() == R.id.event_participate) {
+					HashMap<String, String> hm = new HashMap<String, String>();
+					hm.put("Request", "addParticipants");
+					hm.put("id_event", Integer.toString(event.eventId));
+					hm.put("email", event.eventOwner);
 
+					// Execution de la requête
+					ExecTask rt = new ExecTask();
+					rt.execute(hm);
+
+					tools.alertUser("Participation envoyée",
+								"Vous participez maintenant à l'évenement!");
 				}
 
 			}
 		});
-		owner.setOnClickListener(new View.OnClickListener()
-		{
+		owner.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*if (v.getId() == R.id.event_owner_button){
-					Intent intent = new Intent(ListEventActivity.this,
-							EventDisplayActivity.class);
-					intent.putExtra("MAIL", eventData.get(position).eventId);
-					startActivity(intent);
-
-				}*/
+				/*
+				 * if (v.getId() == R.id.event_owner_button){ Intent intent =
+				 * new Intent(ListEventActivity.this,
+				 * EventDisplayActivity.class); intent.putExtra("MAIL",
+				 * eventData.get(position).eventId); startActivity(intent);
+				 * 
+				 * }
+				 */
 
 			}
 		});
@@ -137,7 +143,7 @@ public class EventDisplayActivity extends Activity{
 
 			@Override
 			public boolean onQueryTextSubmit(String query) {
-				//TODO RECHERCHE
+				// TODO RECHERCHE
 				return true;
 			}
 
@@ -154,27 +160,26 @@ public class EventDisplayActivity extends Activity{
 		Intent intent = null;
 		switch (item.getItemId()) {
 		case R.id.menu_locate:
-			//TODO lancer localisation
+			// TODO lancer localisation
 			return true;
 		case R.id.menu_add:
-			intent = new Intent(this,AddEventActivity.class);
+			intent = new Intent(this, AddEventActivity.class);
 			startActivity(intent);
 			return true;
 		case R.id.menu_pref:
-			intent = new Intent(this,UserSettingActivity.class);
+			intent = new Intent(this, UserSettingActivity.class);
 			startActivity(intent);
 			return true;
 		case android.R.id.home:
 			this.finish();
 			return true;
 
-
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-
-	public int getEvent(String id_event) throws InterruptedException, ExecutionException, JSONException{
+	public int getEvent(String id_event) throws InterruptedException,
+			ExecutionException, JSONException {
 
 		HashMap<String, String> hm = new HashMap<String, String>();
 		hm.put("Request", "SelectEventById");
@@ -186,12 +191,12 @@ public class EventDisplayActivity extends Activity{
 
 		JSONArray result = rt.get();
 
-		if(result == null)
+		if (result == null)
 			return -1;
 
 		int length = result.length();
 
-		if(length == 0)
+		if (length == 0)
 			return 0;
 
 		else {
@@ -207,54 +212,57 @@ public class EventDisplayActivity extends Activity{
 			String mail = row_item.getString("id_createur");
 			int id = Integer.parseInt(row_item.getString("id_event"));
 			float latitude = Float.parseFloat(row_item.getString("latitude"));
-			float longitude= Float.parseFloat(row_item.getString("longitude"));
+			float longitude = Float.parseFloat(row_item.getString("longitude"));
 			int state = Integer.parseInt(row_item.getString("state"));
 			String dateCreation = row_item.getString("date_creation");
 			String url = row_item.getString("urlimage");
-			int participants = Integer.parseInt(row_item.getString("participants"));
-			event = new EventAdapter.EventData(id, title, location, description, dateStart,
-					hourStart, hourEnd, participants,mail,state,dateCreation, latitude, longitude,url);
+			int participants = Integer.parseInt(row_item
+					.getString("participants"));
+			event = new EventAdapter.EventData(id, title, location,
+					description, dateStart, hourStart, hourEnd, participants,
+					mail, state, dateCreation, latitude, longitude, url);
 		}
 		return 1;
 
-
 	}
-	
-	public int getUser(String mail) throws InterruptedException, ExecutionException, JSONException{
+
+	public int getUser(String mail) throws InterruptedException,
+			ExecutionException, JSONException {
 
 		HashMap<String, String> hm = new HashMap<String, String>();
 		hm.put("Request", "SelectUserByEmail");
 		hm.put("email", event.eventOwner);
-		
+
 		// Execution de la requête
 		RequestTask rt = new RequestTask();
 		rt.execute(hm);
-		
+
 		JSONArray result = rt.get();
-		
-		if(result == null)
+
+		if (result == null)
 			return -1;
-		
+
 		int length = result.length();
-		
-		if(length == 0)
+
+		if (length == 0)
 			return 0;
 
-		if(length > 0) {
+		if (length > 0) {
 
 			JSONObject row_item = result.getJSONObject(0);
 			String prenom = row_item.getString("firstname");
 			String nom = row_item.getString("lastname");
 			String email = row_item.getString("email");
 			String mdp = row_item.getString("password");
-			//Drawable picture = row_item.getString("imageprofile");
-			
-			UserAdapter.UserData newUser = new UserAdapter.UserData(prenom, nom, 0,getResources().getDrawable(R.drawable.ic_action_content_event) , false);
+			// Drawable picture = row_item.getString("imageprofile");
+
+			UserAdapter.UserData newUser = new UserAdapter.UserData(prenom,
+					nom, 0, getResources().getDrawable(
+							R.drawable.ic_action_content_event), false);
 			user = newUser;
-			Log.i("ANTHO",newUser.toString());
+			Log.i("ANTHO", newUser.toString());
 		}
 		return 1;
-		
-		
+
 	}
 }

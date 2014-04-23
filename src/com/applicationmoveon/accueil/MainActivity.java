@@ -5,22 +5,16 @@ import java.util.ArrayList;
 
 import com.applicationmoveon.R;
 import com.applicationmoveon.UserSettingActivity;
-import com.applicationmoveon.R.drawable;
-import com.applicationmoveon.R.id;
-import com.applicationmoveon.R.layout;
-import com.applicationmoveon.R.menu;
 import com.applicationmoveon.event.AddEventActivity;
+import com.applicationmoveon.event.EventsFollowedActivity;
 import com.applicationmoveon.event.ListEventActivity;
 import com.applicationmoveon.localisation.MapLocateActivity;
 import com.applicationmoveon.notification.NotificationService;
 import com.applicationmoveon.session.SessionManager;
 import com.applicationmoveon.user.ListUserActivity;
-import com.google.android.gms.plus.PlusClient;
-
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -75,6 +69,8 @@ public class MainActivity extends Activity {
 				startActivity(intent);
 				break;
 			case 5:
+				intent = new Intent(MainActivity.this,EventsFollowedActivity.class);
+				startActivity(intent);
 				break;
 			}
 			//startActivity(intent);
@@ -103,12 +99,12 @@ public class MainActivity extends Activity {
 		Bitmap eventIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_action_content_event);
 		Bitmap usersIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_social_group);
 
-		gridArray.add(new Item(userIcon,"Profil"));
-		gridArray.add(new Item(eventIcon,"My Events"));
-		gridArray.add(new Item(settingsIcon,"Settings"));
-		gridArray.add(new Item(homeIcon,"Locate"));
-		gridArray.add(new Item(usersIcon,"Users followed"));
-		gridArray.add(new Item(homeIcon,"menu 6"));
+		gridArray.add(new Item(userIcon,"Profile"));
+		gridArray.add(new Item(eventIcon,"Mes évènements"));
+		gridArray.add(new Item(settingsIcon,"Paramètres"));
+		gridArray.add(new Item(homeIcon,"Localiser"));
+		gridArray.add(new Item(usersIcon,"Utilisateurs suivis"));
+		gridArray.add(new Item(homeIcon,"Evènements suivis"));
 
 		gridView = (GridView) findViewById(R.id.gridView1);
 		customGridAdapter = new CustomGridViewAdapter(this, R.layout.row_grid, gridArray);
