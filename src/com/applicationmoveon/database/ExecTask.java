@@ -133,8 +133,8 @@ public class ExecTask extends
 	}
 
 	protected Boolean addVote(HashMap<String, String> request) {
-		if (request.containsKey("id_event") && request.containsKey("vote")) {
-			db.addVote(request.get("id_event"), request.get("vote"));
+		if (request.containsKey("id_event") && request.containsKey("vote") && request.containsKey("email")) {
+			db.addVote(request.get("id_event"), request.get("vote"), request.get("email"));
 			return true;
 		}
 		return false;

@@ -11,22 +11,15 @@ import org.json.JSONObject;
 import com.applicationmoveon.R;
 import com.applicationmoveon.ToolBox;
 import com.applicationmoveon.UserSettingActivity;
-import com.applicationmoveon.R.drawable;
-import com.applicationmoveon.R.id;
-import com.applicationmoveon.R.layout;
-import com.applicationmoveon.R.menu;
 import com.applicationmoveon.database.ExecTask;
 import com.applicationmoveon.database.RequestTask;
 import com.applicationmoveon.ftp.FtpDownloadTask;
+import com.applicationmoveon.session.SessionManager;
 import com.applicationmoveon.user.UserAdapter;
-import com.applicationmoveon.user.UserAdapter.UserData;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -46,7 +39,7 @@ public class EventDisplayActivity extends Activity {
 	private UserAdapter.UserData user;
 	private String id;
 	private ToolBox tools;
-
+	private SessionManager session;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +48,9 @@ public class EventDisplayActivity extends Activity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
+		session = new SessionManager(this);
+		session.checkLogin();
+		
 		tools = new ToolBox(this);
 
 		// Ajout de l'event à l'activité
@@ -93,21 +89,42 @@ public class EventDisplayActivity extends Activity {
 
 		like.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-			   @Override
-			   public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-				   if (isChecked)
-				   dislike.setChecked(false);
-			   }
-			});
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				if (isChecked)
+					dislike.setChecked(false);
+				addVote(1);
+//				try {
+//					udpateTemperature();
+//				} catch (JSONException e) {
+//					e.printStackTrace();
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				} catch (ExecutionException e) {
+//					e.printStackTrace();
+//				}
+			}
+		});
 		dislike.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-			   @Override
-			   public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-				   if (isChecked)
-				   like.setChecked(false);
-			   }
-			});
-
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				if (isChecked)
+					like.setChecked(false);
+				addVote(-1);
+//				try {
+//					udpateTemperature();
+//				} catch (JSONException e) {
+//					e.printStackTrace();
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				} catch (ExecutionException e) {
+//					e.printStackTrace();
+//				}
+			}
+		});
 
 		File mydir = tools.createCacheFolder();
 		new FtpDownloadTask(event.eventOwner + "/" + event.url,
@@ -136,7 +153,7 @@ public class EventDisplayActivity extends Activity {
 					rt.execute(hm);
 
 					tools.alertUser("Participation envoyée",
-								"Vous participez maintenant à l'évenement!");
+							"Vous participez maintenant à l'évenement!");
 				}
 
 			}
@@ -157,7 +174,6 @@ public class EventDisplayActivity extends Activity {
 		});
 	}
 
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
@@ -288,5 +304,61 @@ public class EventDisplayActivity extends Activity {
 		}
 		return 1;
 
+	}
+
+	public void addVote(int vote) {
+		HashMap<String, String> hm = new HashMap<String, String>();
+		hm.put("Request", "addVote");
+		hm.put("id_event", String.valueOf(event.eventId));
+		hm.put("email", session.getUserDetails().get(SessionManager.KEY_EMAIL));
+		hm.put("vote", String.valueOf(vote));
+
+		// Execution de la requête
+		ExecTask rt = new ExecTask();
+		rt.execute(hm);
+
+		try {
+			if (!rt.get()) {
+				tools.alertUser("Vote impossible",
+						"Impossible d'enregistrer le vote pour cet évènement");
+				return;
+			} else {
+				tools.alertUser("Vote effectué",
+						"Votre vote a bien été pris en compte !");
+				return;
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void udpateTemperature() throws JSONException, InterruptedException, ExecutionException{
+		
+		HashMap<String, String> hm = new HashMap<String, String>();
+		hm.put("Request", "SelectEventById");
+		hm.put("id_event", String.valueOf(event.eventId));
+
+		// Execution de la requête
+		RequestTask rt = new RequestTask();
+		rt.execute(hm);
+
+		JSONArray result = rt.get();
+		JSONObject row_item = result.getJSONObject(0);
+
+		int length = result.length();
+		int likes = Integer.parseInt(row_item.getString("likes"));
+		int dislikes = Integer.parseInt(row_item.getString("dislikes"));
+
+		float newTemperature = TemperatureEvent.getTemperature(event.numberOfParticipants, likes, dislikes);
+		hm = new HashMap<String,String>();
+		hm.put("Request","updateTemperature");
+		hm.put("id_event", String.valueOf(event.eventId));
+		hm.put("temperature", String.valueOf(newTemperature));
+		
+		//Execution de la requête
+		RequestTask rt2 = new RequestTask();
+		rt2.execute(hm);
 	}
 }

@@ -154,31 +154,6 @@ public class AddEventActivity extends Activity implements OnClickListener {
 			intent.putExtra("KEY_PREVIOUS_ACTIVITY", this.getClass().getName());
 			startActivity(intent);
 		}
-		
-		
-		HashMap<String, String> hm = new HashMap<String,String>();
-		hm.put("Request","updateTemperature");
-		hm.put("id_event", String.valueOf(16));
-		hm.put("temperature", String.valueOf(70));
-		
-		//Execution de la requête
-		ExecTask rt = new ExecTask();
-		rt.execute(hm);
-		
-		
-		try {
-			if(!rt.get()){
-				alertUser("Ajout impossible","L'évènement existe déjà !");
-				return;
-			}else{
-				alertUser("Ajout effectué","L'évènement a été ajouté avec succès !");
-				return;
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
