@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">Application MoveOn</string>
@@ -56,8 +57,10 @@
     <string name="pref_notification_summary">Recevoir les notifications concernant les evenements</string>
     <string name="pref_notification_frequency_summary">Fréquence de vérification sur les evenements</string>
     <string name="pref_notification_frequency">Fréquence des notifications</string>
-	<string name="connection_error">Veuillez activer votre connexion Internet</string>
-	<string name="gps_error">Veuillez activer votre puce gps</string>
-	<string name="button_parameter">Paramètres</string>
-    
+    <string name="connection_error">Veuillez activer votre connexion Internet</string>
+    <string name="gps_error">Veuillez activer votre puce gps</string>
+    <string name="button_parameter">Paramètres</string>
+    <string name="app_id">722576574443679</string>
+    <string name="title_activity_facebook">FacebookActivity</string>
+
 </resources>

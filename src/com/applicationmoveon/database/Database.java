@@ -107,7 +107,6 @@ public class Database {
 	}
 	
 	public void updateTemperature(String id_event, String temperature){
-		//the year data to send
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("id_event",id_event));
 		nameValuePairs.add(new BasicNameValuePair("temperature",temperature));

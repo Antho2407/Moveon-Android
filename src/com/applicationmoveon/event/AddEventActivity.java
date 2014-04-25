@@ -1,20 +1,12 @@
 package com.applicationmoveon.event;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
-import org.json.JSONArray;
-
 import com.applicationmoveon.R;
 import com.applicationmoveon.ToolBox;
-import com.applicationmoveon.R.drawable;
-import com.applicationmoveon.R.id;
-import com.applicationmoveon.R.layout;
-import com.applicationmoveon.R.menu;
-import com.applicationmoveon.database.Database;
 import com.applicationmoveon.database.ExecTask;
 import com.applicationmoveon.ftp.FtpUploadTask;
 import com.applicationmoveon.localisation.MapActivity;
@@ -26,17 +18,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,11 +35,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.SearchView.OnQueryTextListener;
-import android.widget.Toast;
 
 public class AddEventActivity extends Activity implements OnClickListener {
 
@@ -167,6 +153,31 @@ public class AddEventActivity extends Activity implements OnClickListener {
 					com.applicationmoveon.InternetCheckActivity.class);
 			intent.putExtra("KEY_PREVIOUS_ACTIVITY", this.getClass().getName());
 			startActivity(intent);
+		}
+		
+		
+		HashMap<String, String> hm = new HashMap<String,String>();
+		hm.put("Request","updateTemperature");
+		hm.put("id_event", String.valueOf(16));
+		hm.put("temperature", String.valueOf(70));
+		
+		//Execution de la requête
+		ExecTask rt = new ExecTask();
+		rt.execute(hm);
+		
+		
+		try {
+			if(!rt.get()){
+				alertUser("Ajout impossible","L'évènement existe déjà !");
+				return;
+			}else{
+				alertUser("Ajout effectué","L'évènement a été ajouté avec succès !");
+				return;
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
 		}
 	}
 

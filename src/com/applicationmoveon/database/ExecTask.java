@@ -46,7 +46,7 @@ public class ExecTask extends
 		} else if (query.equals("addVote")) {
 			return addVote(request);
 		} else if (query.equals("updateTemperature")) {
-			return addVote(request);
+			return updateTemperature(request);
 		}
 
 		return false;
