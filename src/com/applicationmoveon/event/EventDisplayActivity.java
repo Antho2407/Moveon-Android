@@ -33,6 +33,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -44,6 +46,7 @@ public class EventDisplayActivity extends Activity {
 	private UserAdapter.UserData user;
 	private String id;
 	private ToolBox tools;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +88,26 @@ public class EventDisplayActivity extends Activity {
 		TextView desc = (TextView) findViewById(R.id.event_description);
 		TextView date = (TextView) findViewById(R.id.event_date);
 		Button participate = (Button) findViewById(R.id.event_participate);
+		final CheckBox like = (CheckBox) findViewById(R.id.button_like);
+		final CheckBox dislike = (CheckBox) findViewById(R.id.button_dislike);
+
+		like.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+			   @Override
+			   public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+				   if (isChecked)
+				   dislike.setChecked(false);
+			   }
+			});
+		dislike.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+			   @Override
+			   public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+				   if (isChecked)
+				   like.setChecked(false);
+			   }
+			});
+
 
 		File mydir = tools.createCacheFolder();
 		new FtpDownloadTask(event.eventOwner + "/" + event.url,
@@ -134,6 +157,7 @@ public class EventDisplayActivity extends Activity {
 		});
 	}
 
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);

@@ -15,31 +15,34 @@
         android:textColor="#000"
         android:textSize="20sp"
         android:textStyle="bold" />
-    
+
     <LinearLayout
-    android:id="@+id/bar"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_below="@id/event_title"
-    android:layout_height="wrap_content" >
-    <View
-     android:id="@+id/bar_grey"
-	 android:layout_width="0dp"
-	 android:layout_weight=".0"
-	 android:layout_height="4dp"
-	 android:background="@android:color/darker_gray" />
-    <View
-     android:id="@+id/bar_red"
-	 android:layout_width="0dp"
-	 android:layout_weight=".2"
-	 android:layout_height="4dp"
-	 android:background="@android:color/holo_red_light" />
-    <View
-     android:id="@+id/bar_green"
-	 android:layout_width="0dp"
-	 android:layout_weight=".8"
-	 android:layout_height="4dp"
-	 android:background="@android:color/holo_green_light" />
+        android:id="@+id/bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/event_title"
+        android:orientation="horizontal" >
+
+        <View
+            android:id="@+id/bar_grey"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight=".0"
+            android:background="@android:color/darker_gray" />
+
+        <View
+            android:id="@+id/bar_red"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight=".2"
+            android:background="@android:color/holo_red_light" />
+
+        <View
+            android:id="@+id/bar_green"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_weight=".8"
+            android:background="@android:color/holo_green_light" />
     </LinearLayout>
 
     <TextView
@@ -96,6 +99,23 @@
                 android:text="Le 00/00/00 de 00h00 à 00h00"
                 android:textColor="#555"
                 android:textSize="12sp" />
+
+            <CheckBox
+                android:id="@+id/button_like"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignBottom="@+id/event_description"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/event_date"
+                android:layout_toRightOf="@+id/event_participate"
+                 />
+
+            <CheckBox
+                android:id="@+id/button_dislike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/button_like"
+                android:layout_alignTop="@id/event_date" />
 
             <TextView
                 android:id="@+id/event_description"
