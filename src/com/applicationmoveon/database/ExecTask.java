@@ -45,10 +45,20 @@ public class ExecTask extends
 			return addParticipants(request);
 		} else if (query.equals("addVote")) {
 			return addVote(request);
+		} else if (query.equals("updateTemperature")) {
+			return addVote(request);
 		}
 
 		return false;
 
+	}
+	
+	protected Boolean updateTemperature(HashMap<String, String> request) {
+		if (request.containsKey("id_event") && request.containsKey("temperature")) {
+			db.updateTemperature(request.get("id_event"), request.get("temperature"));
+			return true;
+		}
+		return false;
 	}
 
 	protected Boolean addParticipants(HashMap<String, String> request) {

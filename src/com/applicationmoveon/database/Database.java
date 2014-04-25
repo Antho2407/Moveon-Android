@@ -106,6 +106,23 @@ public class Database {
 		}
 	}
 	
+	public void updateTemperature(String id_event, String temperature){
+		//the year data to send
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("id_event",id_event));
+		nameValuePairs.add(new BasicNameValuePair("temperature",temperature));
+		 
+		//http post
+		try{
+		        HttpClient httpclient = new DefaultHttpClient();
+		        HttpPost httppost = new HttpPost("http://martinezhugo.com/moveon/update_temperature.php");
+		        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		        HttpResponse response = httpclient.execute(httppost);
+		}catch(Exception e){
+		        Log.e("log_tag", "Error in http connection "+e.toString());
+		}
+	}
+	
 	
 	public JSONArray SelectEvent(){
 		JSONArray jArray = null;
