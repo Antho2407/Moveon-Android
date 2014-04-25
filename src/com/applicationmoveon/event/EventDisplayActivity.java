@@ -326,22 +326,6 @@ public class EventDisplayActivity extends Activity {
 		// Execution de la requête
 		ExecTask rt = new ExecTask();
 		rt.execute(hm);
-
-		try {
-			if (!rt.get()) {
-				tools.alertUser("Vote impossible",
-						"Impossible d'enregistrer le vote pour cet évènement");
-				return;
-			} else {
-				tools.alertUser("Vote effectué",
-						"Votre vote a bien été pris en compte !");
-				return;
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void udpateTemperature() throws JSONException, InterruptedException, ExecutionException{
