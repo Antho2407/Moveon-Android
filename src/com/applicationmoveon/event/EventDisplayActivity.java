@@ -50,7 +50,7 @@ public class EventDisplayActivity extends Activity {
 
 		session = new SessionManager(this);
 		session.checkLogin();
-		
+
 		tools = new ToolBox(this);
 
 		// Ajout de l'event à l'activité
@@ -92,18 +92,22 @@ public class EventDisplayActivity extends Activity {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
-				if (isChecked)
+				if (isChecked){
+					if (dislike.isChecked()){
+						//bouton like vient d'etre activé et dislike etait activé donc +2
+						addVote(2);
+					}
+					if (!dislike.isChecked()){
+						//bouton like vient d'etre activé et dislike etait pas activé donc +1
+						addVote(1);
+					}
 					dislike.setChecked(false);
-				addVote(1);
-//				try {
-//					udpateTemperature();
-//				} catch (JSONException e) {
-//					e.printStackTrace();
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				} catch (ExecutionException e) {
-//					e.printStackTrace();
-//				}
+				}
+				if (!isChecked){
+					if (!dislike.isChecked()){
+						addVote(-1);
+					}
+				}
 			}
 		});
 		dislike.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -111,18 +115,22 @@ public class EventDisplayActivity extends Activity {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
-				if (isChecked)
+				if (isChecked){
+					if (like.isChecked()){
+						//bouton dislike vient d'etre activé et like etait activé donc -2
+						addVote(-2);
+					}
+					if (!like.isChecked()){
+						//bouton dislike vient d'etre activé et like etait pas activé donc -1
+						addVote(-1);
+					}
 					like.setChecked(false);
-				addVote(-1);
-//				try {
-//					udpateTemperature();
-//				} catch (JSONException e) {
-//					e.printStackTrace();
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				} catch (ExecutionException e) {
-//					e.printStackTrace();
-//				}
+				}
+				if (!isChecked){
+					if (!like.isChecked()){
+						addVote(1);
+					}
+				}
 			}
 		});
 
@@ -219,7 +227,7 @@ public class EventDisplayActivity extends Activity {
 	}
 
 	public int getEvent(String id_event) throws InterruptedException,
-			ExecutionException, JSONException {
+	ExecutionException, JSONException {
 
 		HashMap<String, String> hm = new HashMap<String, String>();
 		hm.put("Request", "SelectEventById");
@@ -267,7 +275,7 @@ public class EventDisplayActivity extends Activity {
 	}
 
 	public int getUser(String mail) throws InterruptedException,
-			ExecutionException, JSONException {
+	ExecutionException, JSONException {
 
 		HashMap<String, String> hm = new HashMap<String, String>();
 		hm.put("Request", "SelectUserByEmail");
@@ -335,7 +343,7 @@ public class EventDisplayActivity extends Activity {
 	}
 
 	public void udpateTemperature() throws JSONException, InterruptedException, ExecutionException{
-		
+
 		HashMap<String, String> hm = new HashMap<String, String>();
 		hm.put("Request", "SelectEventById");
 		hm.put("id_event", String.valueOf(event.eventId));
@@ -356,7 +364,7 @@ public class EventDisplayActivity extends Activity {
 		hm.put("Request","updateTemperature");
 		hm.put("id_event", String.valueOf(event.eventId));
 		hm.put("temperature", String.valueOf(newTemperature));
-		
+
 		//Execution de la requête
 		RequestTask rt2 = new RequestTask();
 		rt2.execute(hm);
