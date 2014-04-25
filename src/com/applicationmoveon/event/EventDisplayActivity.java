@@ -40,6 +40,7 @@ public class EventDisplayActivity extends Activity {
 	private String id;
 	private ToolBox tools;
 	private SessionManager session;
+	private String email;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class EventDisplayActivity extends Activity {
 
 		session = new SessionManager(this);
 		session.checkLogin();
+		email = session.getUserDetails().get(SessionManager.KEY_EMAIL);
 
 		tools = new ToolBox(this);
 
@@ -318,9 +320,9 @@ public class EventDisplayActivity extends Activity {
 		HashMap<String, String> hm = new HashMap<String, String>();
 		hm.put("Request", "addVote");
 		hm.put("id_event", String.valueOf(event.eventId));
-		hm.put("email", session.getUserDetails().get(SessionManager.KEY_EMAIL));
+		hm.put("email", email);
 		hm.put("vote", String.valueOf(vote));
-
+		
 		// Execution de la requête
 		ExecTask rt = new ExecTask();
 		rt.execute(hm);
