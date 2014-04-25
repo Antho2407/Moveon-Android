@@ -56,11 +56,27 @@
         android:textColor="#555"
         android:textSize="12sp" />
 
+    <CheckBox
+        android:id="@+id/button_dislike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/event_owner"
+        android:layout_toLeftOf="@id/event_owner"
+        android:button="@drawable/button_dislike_style" />
+
+    <CheckBox
+        android:id="@+id/button_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/event_owner"
+        android:layout_toLeftOf="@id/button_dislike"
+        android:button="@drawable/button_like_style" />
+
     <View
         android:id="@+id/line1"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/event_owner"
+        android:layout_below="@id/button_dislike"
         android:background="@android:color/darker_gray" />
 
     <ImageView
@@ -100,23 +116,6 @@
                 android:textColor="#555"
                 android:textSize="12sp" />
 
-            <CheckBox
-                android:id="@+id/button_like"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignBottom="@+id/event_description"
-                android:layout_alignParentRight="true"
-                android:layout_alignTop="@id/event_date"
-                android:layout_toRightOf="@+id/event_participate"
-                 />
-
-            <CheckBox
-                android:id="@+id/button_dislike"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/button_like"
-                android:layout_alignTop="@id/event_date" />
-
             <TextView
                 android:id="@+id/event_description"
                 android:layout_width="wrap_content"
@@ -142,8 +141,7 @@
         android:id="@+id/event_owner_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/event_pic"
-        android:layout_alignRight="@+id/event_title"
+        android:layout_alignBottom="@+id/event_owner"
         android:layout_alignTop="@+id/event_owner"
         android:layout_toRightOf="@+id/event_owner"
         android:background="@android:color/transparent"
