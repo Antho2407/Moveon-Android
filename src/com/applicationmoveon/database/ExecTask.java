@@ -114,18 +114,20 @@ public class ExecTask extends
 					request.get("heure_debut"), request.get("date_fin"),
 					request.get("heure_fin"), request.get("participants"),
 					request.get("id_createur"), request.get("date_creation"),
-					request.get("state"), request.get("urlimage"));
+					request.get("state"), request.get("urlimage"),
+					request.get("temperature"),
+					request.get("likes"), request.get("dislikes"));
 			return true;
 		}
 		return false;
 	}
 
 	protected Boolean addVote(HashMap<String, String> request) {
-			if (request.containsKey("id_event") && request.containsKey("vote")) {
-				db.addVote(request.get("id_event"), request.get("vote"));
-				return true;
-			}
-			return false;
+		if (request.containsKey("id_event") && request.containsKey("vote")) {
+			db.addVote(request.get("id_event"), request.get("vote"));
+			return true;
+		}
+		return false;
 	}
 
 	protected Boolean addUser(HashMap<String, String> request) {

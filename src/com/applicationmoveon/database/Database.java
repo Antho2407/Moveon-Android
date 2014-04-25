@@ -41,7 +41,7 @@ public class Database {
 		}
 	}
 	
-	public void addEvent(String title, String location,String latitude, String longitude, String description, String date_debut,String heure_debut, String date_fin,String heure_fin, String participants, String id_createur, String date_creation, String state, String urlimage){
+	public void addEvent(String title, String location,String latitude, String longitude, String description, String date_debut,String heure_debut, String date_fin,String heure_fin, String participants, String id_createur, String date_creation, String state, String urlimage, String temperature, String likes, String dislikes){
 		//the year data to send
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("title",title));
@@ -58,6 +58,9 @@ public class Database {
 		nameValuePairs.add(new BasicNameValuePair("date_creation",date_creation));
 		nameValuePairs.add(new BasicNameValuePair("state",state));
 		nameValuePairs.add(new BasicNameValuePair("urlimage",urlimage));
+		nameValuePairs.add(new BasicNameValuePair("temperature",temperature));
+		nameValuePairs.add(new BasicNameValuePair("likes",likes));
+		nameValuePairs.add(new BasicNameValuePair("dislikes",dislikes));
 		//http post
 		try{
 		        HttpClient httpclient = new DefaultHttpClient();
