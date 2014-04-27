@@ -12,6 +12,8 @@ import com.applicationmoveon.localisation.MapLocateActivity;
 import com.applicationmoveon.notification.NotificationService;
 import com.applicationmoveon.session.SessionManager;
 import com.applicationmoveon.user.ListUserActivity;
+import com.applicationmoveon.user.UserDisplayActivity;
+
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -39,7 +41,8 @@ import android.widget.SearchView.OnQueryTextListener;
 public class MainActivity extends Activity {
 	
 	 // Session Manager Class
-    SessionManager session;
+    public SessionManager session;
+    public String email;
     
   
 
@@ -51,9 +54,13 @@ public class MainActivity extends Activity {
 			Intent intent = null;
 			switch(position){
 			case 0:
+				intent = new Intent(MainActivity.this,UserDisplayActivity.class);
+				intent.putExtra("mail", email);
+				startActivity(intent);
 				break;
 			case 1:
 				intent = new Intent(MainActivity.this,ListEventActivity.class);
+				intent.putExtra("type", "all");
 				startActivity(intent);
 				break;
 			case 2:
@@ -69,11 +76,11 @@ public class MainActivity extends Activity {
 				startActivity(intent);
 				break;
 			case 5:
-				intent = new Intent(MainActivity.this,EventsFollowedActivity.class);
+				intent = new Intent(MainActivity.this,ListEventActivity.class);
+				intent.putExtra("type", "followed");
 				startActivity(intent);
 				break;
 			}
-			//startActivity(intent);
 		}
 	}
 	GridView gridView;
@@ -89,6 +96,7 @@ public class MainActivity extends Activity {
 		//Initialisation du session manager
 		session = new SessionManager(MainActivity.this);
 		session.checkLogin();
+		email = session.getUserDetails().get(SessionManager.KEY_EMAIL);
 		
 		setContentView(R.layout.activity_accueil);
 

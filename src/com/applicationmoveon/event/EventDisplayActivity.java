@@ -41,6 +41,7 @@ public class EventDisplayActivity extends Activity {
 	private ToolBox tools;
 	private SessionManager session;
 	private String email;
+	private TextView temperature;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,7 @@ public class EventDisplayActivity extends Activity {
 				id = getIntent().getStringExtra("ID");
 			}
 		} else {
-			id = (String) savedInstanceState.getSerializable("SEARCH");
+			id = (String) savedInstanceState.getString("ID");
 		}
 		try {
 			try {
@@ -85,7 +86,8 @@ public class EventDisplayActivity extends Activity {
 		Button owner = (Button) findViewById(R.id.event_owner_button);
 		TextView desc = (TextView) findViewById(R.id.event_description);
 		TextView date = (TextView) findViewById(R.id.event_date);
-		Button participate = (Button) findViewById(R.id.event_participate);
+		temperature = (TextView) findViewById(R.id.event_temp);
+		final Button participate = (Button) findViewById(R.id.event_participate);
 		final CheckBox like = (CheckBox) findViewById(R.id.button_like);
 		final CheckBox dislike = (CheckBox) findViewById(R.id.button_dislike);
 
@@ -107,8 +109,21 @@ public class EventDisplayActivity extends Activity {
 				}
 				if (!isChecked){
 					if (!dislike.isChecked()){
-						addVote(-1);
+						//ne rien faire
+						like.setChecked(true);
 					}
+				}
+				try {
+					udpateTemperature();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		});
@@ -130,8 +145,21 @@ public class EventDisplayActivity extends Activity {
 				}
 				if (!isChecked){
 					if (!like.isChecked()){
-						addVote(1);
+						//ne rien faire
+						dislike.setChecked(true);
 					}
+				}
+				try {
+					udpateTemperature();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		});
@@ -149,6 +177,7 @@ public class EventDisplayActivity extends Activity {
 		date.setText("Le " + event.eventDateStart + " de "
 				+ event.eventHourStart + " à " + event.eventHourFinish + " à "
 				+ event.eventLocation);
+		temperature.setText(event.temperature+"%");
 		participate.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -164,6 +193,8 @@ public class EventDisplayActivity extends Activity {
 
 					tools.alertUser("Participation envoyée",
 							"Vous participez maintenant à l'évenement!");
+					participate.setVisibility(-1);
+					//TODO UPDATE
 				}
 
 			}
@@ -266,11 +297,12 @@ public class EventDisplayActivity extends Activity {
 			int state = Integer.parseInt(row_item.getString("state"));
 			String dateCreation = row_item.getString("date_creation");
 			String url = row_item.getString("urlimage");
+			float temperature = Float.parseFloat(row_item.getString("temperature"));
 			int participants = Integer.parseInt(row_item
 					.getString("participants"));
 			event = new EventAdapter.EventData(id, title, location,
 					description, dateStart, hourStart, hourEnd, participants,
-					mail, state, dateCreation, latitude, longitude, url);
+					mail, state, dateCreation, latitude, longitude, temperature,url);
 		}
 		return 1;
 
@@ -302,12 +334,11 @@ public class EventDisplayActivity extends Activity {
 			JSONObject row_item = result.getJSONObject(0);
 			String prenom = row_item.getString("firstname");
 			String nom = row_item.getString("lastname");
-			String email = row_item.getString("email");
-			String mdp = row_item.getString("password");
+			String _email = row_item.getString("email");
 			// Drawable picture = row_item.getString("imageprofile");
 
 			UserAdapter.UserData newUser = new UserAdapter.UserData(prenom,
-					nom, 0, getResources().getDrawable(
+					nom,_email, 0, getResources().getDrawable(
 							R.drawable.ic_action_content_event), false);
 			user = newUser;
 			Log.i("ANTHO", newUser.toString());
@@ -322,7 +353,7 @@ public class EventDisplayActivity extends Activity {
 		hm.put("id_event", String.valueOf(event.eventId));
 		hm.put("email", email);
 		hm.put("vote", String.valueOf(vote));
-		
+
 		// Execution de la requête
 		ExecTask rt = new ExecTask();
 		rt.execute(hm);
@@ -354,5 +385,6 @@ public class EventDisplayActivity extends Activity {
 		//Execution de la requête
 		RequestTask rt2 = new RequestTask();
 		rt2.execute(hm);
+		temperature.setText(newTemperature+"%");
 	}
 }

@@ -79,12 +79,33 @@
         android:layout_below="@id/button_dislike"
         android:background="@android:color/darker_gray" />
 
+    <TextView
+        android:id="@+id/event_temp_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/line1"
+        android:layout_margin="5dp"
+        android:text="Température de l&apos;évenement:"
+        android:textColor="#444"
+        android:textSize="8sp" />
+
+    <TextView
+        android:id="@+id/event_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/event_temp_text"
+        android:layout_margin="5dp"
+        android:text="60%"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="35sp" />
+
     <ImageView
         android:id="@+id/event_pic"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_below="@id/line1"
-        android:layout_centerHorizontal="true"
         android:layout_margin="5dp"
         android:src="@drawable/ic_action_content_event"
         android:textColor="#AAA" />

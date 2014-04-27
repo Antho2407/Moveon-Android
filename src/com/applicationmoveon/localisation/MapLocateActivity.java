@@ -353,11 +353,13 @@ public class MapLocateActivity extends FragmentActivity implements
 			String dateCreation = row_item.getString("date_creation");
 			int participants = Integer.parseInt(row_item
 					.getString("participants"));
+			float temperature = Float.parseFloat(row_item.getString("temperature"));
+
 
 			EventAdapter.EventData newEvent = new EventAdapter.EventData(id,
 					title, location, description, dateStart, hourStart,
 					hourEnd, participants, emailOwner, state, dateCreation,
-					latitude, longitude, urlImage);
+					latitude, longitude, temperature,urlImage);
 
 			Location locationEvent = new Location("locationEvent");
 			locationEvent.setLatitude(latitude);

@@ -168,7 +168,7 @@ public class ListUserActivity extends Activity{
 			String mdp = row_item.getString("password");
 			//Drawable picture = row_item.getString("imageprofile");
 			
-			UserAdapter.UserData newUser = new UserAdapter.UserData(prenom,nom, 0,getResources().getDrawable(R.drawable.ic_action_content_event) , false);
+			UserAdapter.UserData newUser = new UserAdapter.UserData(prenom,nom,email, 0,getResources().getDrawable(R.drawable.ic_action_content_event) , false);
 			userData.add(newUser);
 		}
 		return 1;

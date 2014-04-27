@@ -55,14 +55,20 @@ public class ListEventActivity extends Activity {
 	private ToolBox tools;
 	private SessionManager session;
 	private String email = "";
-	
+	private String type;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_listevent);
+		Bundle extras = getIntent().getExtras();
+		if(extras == null){
+			return;
+		}
+		type = extras.getString("type");
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		
+
 		tools = new ToolBox(this);
 		session = new SessionManager(this);
 		email = session.getUserDetails().get(SessionManager.KEY_EMAIL);
@@ -73,10 +79,13 @@ public class ListEventActivity extends Activity {
 		eventList = (ListView)findViewById(R.id.eventList);
 		eventList.setAdapter(mainAdapter);
 		eventList.setOnItemClickListener(new EventListOnItemClick());
-		
+
 		try {
 			try {
-				getEvents();
+				if (type.equals("followed"))
+					getEventsFollowed();
+				else
+					getEvents();
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -88,7 +97,7 @@ public class ListEventActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -151,18 +160,18 @@ public class ListEventActivity extends Activity {
 		HashMap<String, String> hm = new HashMap<String, String>();
 		hm.put("Request", "SelectEventByUserMail");
 		hm.put("email", email);
-		
+
 		// Execution de la requête
 		RequestTask rt = new RequestTask();
 		rt.execute(hm);
-		
+
 		JSONArray result = rt.get();
 
 		if(result == null)
 			return -1;
-		
+
 		int length = result.length();
-		
+
 		if(length == 0)
 			return 0;
 
@@ -179,15 +188,62 @@ public class ListEventActivity extends Activity {
 			int id = Integer.parseInt(row_item.getString("id_event"));
 			float latitude = Float.parseFloat(row_item.getString("latitude"));
 			float longitude= Float.parseFloat(row_item.getString("longitude"));
+			float temperature = Float.parseFloat(row_item.getString("temperature"));
+
 			int state = Integer.parseInt(row_item.getString("state"));
 			String dateCreation = row_item.getString("date_creation");
 			int participants = Integer.parseInt(row_item.getString("participants"));
 			EventAdapter.EventData newEvent = new EventAdapter.EventData(id, title, location, description, dateStart,
-					hourStart, hourEnd, participants,"test",state,dateCreation, latitude, longitude,null);
+					hourStart, hourEnd, participants,"test",state,dateCreation, latitude, longitude,temperature,null);
 			eventData.add(newEvent);
 		}
 		return 1;
-		
-		
+
+
+	}
+	public int getEventsFollowed() throws InterruptedException, ExecutionException, JSONException{
+
+		HashMap<String, String> hm = new HashMap<String, String>();
+		hm.put("Request", "SelectEventByParticipation");
+		hm.put("email", email);
+
+		// Execution de la requête
+		RequestTask rt = new RequestTask();
+		rt.execute(hm);
+
+		JSONArray result = rt.get();
+
+		if(result == null)
+			return -1;
+
+		int length = result.length();
+
+		if(length == 0)
+			return 0;
+
+		for (int i = 0; i < length; i++) {
+
+			JSONObject row_item = result.getJSONObject(i);
+			String title = row_item.getString("title");
+			String description = row_item.getString("description");
+			String dateStart = row_item.getString("date_debut");
+			String dateEnd = row_item.getString("date_fin");
+			String hourStart = row_item.getString("heure_debut");
+			String hourEnd = row_item.getString("heure_fin");
+			String location = row_item.getString("location");
+			int id = Integer.parseInt(row_item.getString("id_event"));
+			float latitude = Float.parseFloat(row_item.getString("latitude"));
+			float longitude= Float.parseFloat(row_item.getString("longitude"));
+			float temperature = Float.parseFloat(row_item.getString("temperature"));
+			int state = Integer.parseInt(row_item.getString("state"));
+			String dateCreation = row_item.getString("date_creation");
+			int participants = Integer.parseInt(row_item.getString("participants"));
+			EventAdapter.EventData newEvent = new EventAdapter.EventData(id, title, location, description, dateStart,
+					hourStart, hourEnd, participants,"test",state,dateCreation, latitude, longitude,temperature,null);
+			eventData.add(newEvent);
+		}
+		return 1;
+
+
 	}
 }

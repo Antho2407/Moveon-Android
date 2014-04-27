@@ -26,12 +26,13 @@ public class UserAdapter extends BaseAdapter{
 
 		public String userFirstname;
 		public String userName;
+		public String email;
 		public int eventOwned;
 		public Drawable picture;
 		public boolean followed;
 
 
-		public UserData(String userFirstname, String userName,
+		public UserData(String userFirstname, String userName,String email,
 				int eventOwned, Drawable picture, boolean followed) {
 			this.userFirstname = userFirstname;
 			this.userName = userName;

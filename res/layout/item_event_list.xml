@@ -47,5 +47,13 @@
 	        android:text="150000 participants"
 	        android:textColor="#888"
 	        android:textSize="10sp" />
+	    
+	    <ImageView 
+	        android:id="@+id/pic_temp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+   	        android:layout_margin="5dp"
+	        android:layout_alignParentTop="true"
+	        android:layout_alignParentRight="true"/>
 
 </RelativeLayout>

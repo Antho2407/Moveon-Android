@@ -39,30 +39,13 @@ public class EventAdapter extends BaseAdapter {
 		public float latitude;
 		public float longitude;
 		public float distance;
+		public float temperature;
 		public String url;
 
-//		public EventData(int eventId, String eventTitle, String eventLocation,
-//				String eventDescription, Date eventDateStart,
-//				String eventHourStart, String eventHourFinish,
-//				int numberOfParticipants, int numberOfPlaces, String eventOwner, int eventState, Date eventDateCreation) {
-//			this.eventId = eventId;
-//			this.eventDescription = eventDescription;	
-//			this.eventTitle = eventTitle;
-//			this.eventLocation = eventLocation;
-//			this.eventDateStart = eventDateStart;
-//			this.eventHourStart = eventHourStart;
-//			this.eventHourFinish = eventHourFinish;
-//			this.numberOfParticipants = numberOfParticipants;
-//			this.numberOfPlaces = numberOfPlaces;
-//			this.eventState = eventState;
-//			this.eventOwner = eventOwner;
-//			this.eventDateCreation = eventDateCreation;
-//		}
-		
 		public EventData(int eventId, String eventTitle, String eventLocation,
 				String eventDescription, String eventDateStart,
 				String eventHourStart, String eventHourFinish,
-				int numberOfParticipants, String eventOwner, int eventState, String eventDateCreation, float latitude, float longitude,String url) {
+				int numberOfParticipants, String eventOwner, int eventState, String eventDateCreation, float latitude, float longitude,float temperature,String url) {
 			this.eventId = eventId;
 			this.eventDescription = eventDescription;	
 			this.eventTitle = eventTitle;
@@ -76,6 +59,7 @@ public class EventAdapter extends BaseAdapter {
 			this.eventDateCreation = eventDateCreation;
 			this.latitude = latitude;
 			this.longitude = longitude;
+			this.temperature = temperature;
 			this.url = url;
 		}
 
@@ -127,7 +111,7 @@ public class EventAdapter extends BaseAdapter {
 
 		title.setText(data.eventTitle);
 		date.setText("Le "+ data.eventDateStart +" ра "+ data.eventLocation + " de "+data.eventHourStart+" р "+data.eventHourFinish);
-		description.setText(data.eventDescription);
+		//description.setText(data.eventDescription);
 		part.setText(data.numberOfParticipants+" participants");
 
 		if(position % 2 == 0)

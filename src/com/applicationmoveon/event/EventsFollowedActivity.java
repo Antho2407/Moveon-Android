@@ -173,9 +173,9 @@ public class EventsFollowedActivity extends Activity {
 			int state = Integer.parseInt(row_item.getString("state"));
 			String dateCreation = row_item.getString("date_creation");
 			int participants = Integer.parseInt(row_item.getString("participants"));
-			EventAdapter.EventData newEvent = new EventAdapter.EventData(id, title, location, description, dateStart,
-					hourStart, hourEnd, participants,"test",state,dateCreation, latitude, longitude,null);
-			eventData.add(newEvent);
+			//EventAdapter.EventData newEvent = new EventAdapter.EventData(id, title, location, description, dateStart,
+				//	hourStart, hourEnd, participants,"test",state,dateCreation, latitude, longitude,null);
+			//eventData.add(newEvent);
 		}
 		return 1;
 		
