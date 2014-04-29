@@ -307,12 +307,13 @@ ConnectionCallbacks, OnConnectionFailedListener {
 			ExecTask rtuser = new ExecTask();
 			rtuser.execute(testuser);
 			Boolean isAlreadyCreated = true;
-			try {
-				isAlreadyCreated = rtuser.get();
-			} catch (InterruptedException | ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				try {
+					isAlreadyCreated = rtuser.get();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				}
 			return isAlreadyCreated;
 	    }
 
