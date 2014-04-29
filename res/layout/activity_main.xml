@@ -13,8 +13,9 @@
     
      <ImageButton
         android:id="@+id/connectFacebook"
-        android:layout_width="@dimen/padding_large"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:src="@drawable/connexion_facebook"
         android:layout_marginTop="@dimen/normal_padding"
         android:text="@string/connect" />
