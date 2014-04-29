@@ -11,6 +11,14 @@
         android:layout_marginTop="@dimen/small_padding"
         android:text="@string/create_account" />
     
+     <ImageButton
+        android:id="@+id/connectFacebook"
+        android:layout_width="@dimen/padding_large"
+        android:layout_height="wrap_content"
+        android:src="@drawable/connexion_facebook"
+        android:layout_marginTop="@dimen/normal_padding"
+        android:text="@string/connect" />
+    
     <com.google.android.gms.common.SignInButton
     android:id="@+id/sign_in_button"
     android:layout_gravity="center"
@@ -57,5 +65,5 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/normal_padding"
         android:text="@string/connect" />
-
+    
 </LinearLayout>

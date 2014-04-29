@@ -5,8 +5,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.applicationmoveon.accueil.FacebookActivity;
 import com.applicationmoveon.accueil.MainActivity;
 import com.applicationmoveon.database.ExecTask;
+import com.applicationmoveon.event.AddEventActivity;
+import com.applicationmoveon.localisation.MapActivity;
 import com.applicationmoveon.session.SessionManager;
 import com.applicationmoveon.user.AddUserActivity;
 
@@ -21,6 +24,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -46,6 +50,8 @@ ConnectionCallbacks, OnConnectionFailedListener {
 	private EditText login;
 	private EditText pass;
 	
+	private int RESULT_FACEBOOK = 0;
+	
 	// Session Manager Class
     SessionManager session;
 
@@ -68,6 +74,7 @@ ConnectionCallbacks, OnConnectionFailedListener {
 		final Button loginButton = (Button) findViewById(R.id.connect);
 		final Button subscribeButton = (Button) findViewById(R.id.create_account);
 		final SignInButton googleplusco = (SignInButton)findViewById(R.id.sign_in_button);
+		final ImageButton facebookConnect = (ImageButton)findViewById(R.id.connectFacebook);
 		
 		googleplusco.setOnClickListener(new OnClickListener(){
 
@@ -89,6 +96,14 @@ ConnectionCallbacks, OnConnectionFailedListener {
 				
 			}
 			
+		});
+		facebookConnect.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(LoginActivity.this, FacebookActivity.class);
+				startActivityForResult(i, RESULT_FACEBOOK);
+			}
 		});
 		subscribeButton.setOnClickListener(new OnClickListener() {
 
@@ -163,8 +178,6 @@ ConnectionCallbacks, OnConnectionFailedListener {
 		hm.put("Request","isValidCombination");
 		hm.put("email", login.getText().toString());
 		hm.put("password", pass.getText().toString());
-		Log.i("ANTHO",login.getText().toString());
-		Log.i("ANTHO",pass.getText().toString());
 		
 		//Execution de la requête
 		ExecTask rt = new ExecTask();
@@ -202,6 +215,30 @@ ConnectionCallbacks, OnConnectionFailedListener {
 	            mConnectionResult = null;
 	            mPlusClient.connect();
 	        }
+	        if (requestCode == RESULT_FACEBOOK
+					&& null != intent) {
+				String name = intent.getStringExtra("EXTRA_NAME");
+				String firstname = intent.getStringExtra("EXTRA_FIRSTNAME");
+				String id = intent.getStringExtra("EXTRA_ID");
+				
+				HashMap<String, String> hm = new HashMap<String, String>();
+				hm.put("Request", "addUser");
+				hm.put("lastname", name);
+				hm.put("firstname", firstname);
+				hm.put("password", "facebook");
+				hm.put("email",id);
+				hm.put("urlimage", "");
+
+				// Execution de la requête
+				ExecTask rt = new ExecTask();
+				rt.execute(hm);
+				
+				session.createLoginSession(id);
+
+				Intent i = new Intent(LoginActivity.this,
+						MainActivity.class);
+				startActivity(i);
+			}
 	    }
 
 

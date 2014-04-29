@@ -2,7 +2,6 @@ package com.applicationmoveon.session;
 
 import java.util.HashMap;
 
-import com.applicationmoveon.LoginDisplayActivity;
 import com.applicationmoveon.LoginActivity;
 
 import android.content.Context;

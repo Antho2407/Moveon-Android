@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.facebook.*;
 import com.facebook.model.*;
@@ -29,7 +28,6 @@ public class FacebookActivity extends Activity {
 			public void call(Session session, SessionState state,
 					Exception exception) {
 				if (session.isOpened()) {
-					Toast.makeText(getApplicationContext(), "OMG", Toast.LENGTH_SHORT).show();
 					// make request to the /me API
 					Request.newMeRequest(session, new Request.GraphUserCallback() {
 
@@ -37,12 +35,16 @@ public class FacebookActivity extends Activity {
 						  @Override
 						  public void onCompleted(GraphUser user, Response response) {
 						    if (user != null) {
-						      TextView welcome = (TextView) findViewById(R.id.welcome);
-						      welcome.setText("Hello " + user.getName() + "!");
+						    	Intent intent = new Intent(FacebookActivity.this, LoginActivity.class);
+								intent.putExtra("EXTRA_NAME", user.getLastName());
+								intent.putExtra("EXTRA_FIRSTNAME", user.getFirstName());
+								intent.putExtra("EXTRA_ID",user.getId());
+								setResult(0,intent);  
+								finish();
 						    }
 						  }
 					}).executeAsync();
-				}else Toast.makeText(getApplicationContext(), "msg msg", Toast.LENGTH_SHORT).show();
+				}else Toast.makeText(getApplicationContext(), "Connexion Facebook effectuée", Toast.LENGTH_SHORT).show();
 			}
 		});
 	}

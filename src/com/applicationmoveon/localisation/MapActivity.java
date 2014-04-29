@@ -123,7 +123,6 @@ public class MapActivity extends FragmentActivity {
 				intent.putExtra("EXTRA_LAT", Double.toString(finalLatitude));
 				intent.putExtra("EXTRA_ADDRESS",finalAdressString);
 				setResult(1,intent);  
-				//map.stopAnimation();
 				finish();
 			}
 		};
