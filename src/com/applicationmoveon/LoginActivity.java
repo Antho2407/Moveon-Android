@@ -118,16 +118,18 @@ ConnectionCallbacks, OnConnectionFailedListener {
 				
 				HashMap<String,String> hm = new HashMap<String,String>();
 				
-				hm.put("Request", "addUser");
-				hm.put("lastname", mPlusClient.getCurrentPerson().getName().getFamilyName());
-				hm.put("firstname", mPlusClient.getCurrentPerson().getName().getGivenName());
-				hm.put("password", "google");
-				hm.put("email",mPlusClient.getAccountName());
-				hm.put("urlimage", "");
-
-				// Execution de la requête
-				ExecTask rt = new ExecTask();
-				rt.execute(hm);
+				if(!userAlreadyExists(mPlusClient.getAccountName())){
+					hm.put("Request", "addUser");
+					hm.put("lastname", mPlusClient.getCurrentPerson().getName().getFamilyName());
+					hm.put("firstname", mPlusClient.getCurrentPerson().getName().getGivenName());
+					hm.put("password", "google");
+					hm.put("email",mPlusClient.getAccountName());
+					hm.put("urlimage", "");
+	
+					// Execution de la requête
+					ExecTask rt = new ExecTask();
+					rt.execute(hm);
+				}
 				
 				session.createLoginSession(mPlusClient.getAccountName());
 				
@@ -275,17 +277,21 @@ ConnectionCallbacks, OnConnectionFailedListener {
 				String firstname = intent.getStringExtra("EXTRA_FIRSTNAME");
 				String id = intent.getStringExtra("EXTRA_ID");
 				
-				HashMap<String, String> hm = new HashMap<String, String>();
-				hm.put("Request", "addUser");
-				hm.put("lastname", name);
-				hm.put("firstname", firstname);
-				hm.put("password", "facebook");
-				hm.put("email",id);
-				hm.put("urlimage", "");
+				
+				if(!userAlreadyExists(id)){
+					HashMap<String, String> hm = new HashMap<String, String>();
+					hm.put("Request", "addUser");
+					hm.put("lastname", name);
+					hm.put("firstname", firstname);
+					hm.put("password", "facebook");
+					hm.put("email",id);
+					hm.put("urlimage", "");
 
-				// Execution de la requête
-				ExecTask rt = new ExecTask();
-				rt.execute(hm);
+					// Execution de la requête
+					ExecTask rt = new ExecTask();
+					rt.execute(hm);
+				}
+			
 				
 				session.createLoginSession(id);
 
@@ -293,7 +299,22 @@ ConnectionCallbacks, OnConnectionFailedListener {
 				
 			}
 	    }
-
+	    
+	    public Boolean userAlreadyExists(String id){
+	    	HashMap<String, String> testuser = new HashMap<String, String>();
+	    	testuser.put("Request", "doesUserAlreadyExists");
+			testuser.put("email", id);
+			ExecTask rtuser = new ExecTask();
+			rtuser.execute(testuser);
+			Boolean isAlreadyCreated = true;
+			try {
+				isAlreadyCreated = rtuser.get();
+			} catch (InterruptedException | ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return isAlreadyCreated;
+	    }
 
 	    @Override
 	    public void onDisconnected() {

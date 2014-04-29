@@ -49,10 +49,39 @@ public class ExecTask extends
 			return updateTemperature(request);
 		}else if (query.equals("addSuivi")) {
 			return addSuivi(request);
-		} 
+		}else if(query.equals("doesUserAlreadyExists")) {
+			return doesUserAlreadyExists(request);
+		}
 
 		return false;
 
+	}
+	
+	protected Boolean doesUserAlreadyExists(HashMap<String,String> request){
+		if(request.containsKey("email")){
+			JSONArray result = db.SelectUserByMail(request.get("email"));
+			JSONObject user = null;
+			if (result != null && result.length() == 1) {
+				try {
+					 user = result.getJSONObject(0);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				try {
+					if(user.getString("email").equals(request.get("email")) && user != null){
+						return true;
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		}
+		return false;
+		
 	}
 	
 	protected Boolean updateTemperature(HashMap<String, String> request) {
