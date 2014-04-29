@@ -19,12 +19,16 @@ import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.SearchView;
 import android.widget.Toast;
 import android.widget.SearchView.OnQueryTextListener;
@@ -46,8 +50,10 @@ public class MapActivity extends FragmentActivity {
 	private String finalAdressString = "";
 
 	private Address currentAddress;
-	
+
 	private ToolBox tools;
+
+	private SupportMapFragment supportMapFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +61,12 @@ public class MapActivity extends FragmentActivity {
 		setContentView(R.layout.activity_map);
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		
+
 		tools = new ToolBox(this);
 
 		// Recuperer le fragment de la map
-		SupportMapFragment supportMapFragment = (SupportMapFragment) 
-				getSupportFragmentManager().findFragmentById(R.id.map);
+		supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.map);
 
 		// Recuperer la map
 		map = supportMapFragment.getMap();
@@ -70,7 +76,7 @@ public class MapActivity extends FragmentActivity {
 		btn_previous = (Button) findViewById(R.id.btn_previous);
 		btn_choose = (Button) findViewById(R.id.btn_validate);
 
-		OnClickListener findClickListener = new OnClickListener() {            
+		OnClickListener findClickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 
@@ -82,62 +88,74 @@ public class MapActivity extends FragmentActivity {
 				// Recuperer l'adresse demandee
 				String location = etLocation.getText().toString();
 
-				if(location!=null && !location.equals("")){
+				if (location != null && !location.equals("")) {
 					new LocateTask().execute(location);
 				}
+
+				RelativeLayout topLayout = (RelativeLayout) findViewById(R.id.relative_layout_map);
+				topLayout.setVisibility(View.GONE);
+				RelativeLayout mapLayout = (RelativeLayout) findViewById(R.id.map_layout);
+				mapLayout.setLayoutParams(new LinearLayout.LayoutParams(
+						LayoutParams.WRAP_CONTENT, 0,
+						0.8f));
 			}
 		};
 
-		OnClickListener previousClickListener = new OnClickListener() {            
+		OnClickListener previousClickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				cursor = (cursor - 1);
-				if(cursor < 0)
-					cursor = addresses.size()-1;
+				if (cursor < 0)
+					cursor = addresses.size() - 1;
 				currentAddress = addresses.get(cursor);
-				locationMap = new LatLng(currentAddress.getLatitude(), currentAddress.getLongitude());
-				map.animateCamera(CameraUpdateFactory.newLatLng(locationMap)); 
+				locationMap = new LatLng(currentAddress.getLatitude(),
+						currentAddress.getLongitude());
+				map.animateCamera(CameraUpdateFactory.newLatLng(locationMap));
 			}
 		};
 
-		OnClickListener nextClickListener = new OnClickListener() {            
+		OnClickListener nextClickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				cursor = (cursor + 1) % (addresses.size());
 				currentAddress = addresses.get(cursor);
-				locationMap = new LatLng(currentAddress.getLatitude(), currentAddress.getLongitude());
-				map.animateCamera(CameraUpdateFactory.newLatLng(locationMap));  
+				locationMap = new LatLng(currentAddress.getLatitude(),
+						currentAddress.getLongitude());
+				map.animateCamera(CameraUpdateFactory.newLatLng(locationMap));
 			}
 		};
 
-		OnClickListener chooseClickListener = new OnClickListener() {            
+		OnClickListener chooseClickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				finalLatitude = currentAddress.getLatitude();
 				finalLongitude = currentAddress.getLongitude();
-				finalAdressString = String.format("%s, %s",
-						currentAddress.getMaxAddressLineIndex() > 0 ? currentAddress.getAddressLine(0) : "",
-								currentAddress.getCountryName());
-				Intent intent = new Intent(MapActivity.this, AddEventActivity.class);
+				finalAdressString = String
+						.format("%s, %s",
+								currentAddress.getMaxAddressLineIndex() > 0 ? currentAddress
+										.getAddressLine(0) : "", currentAddress
+										.getCountryName());
+				Intent intent = new Intent(MapActivity.this,
+						AddEventActivity.class);
 				intent.putExtra("EXTRA_LONG", Double.toString(finalLongitude));
 				intent.putExtra("EXTRA_LAT", Double.toString(finalLatitude));
-				intent.putExtra("EXTRA_ADDRESS",finalAdressString);
-				setResult(1,intent);  
+				intent.putExtra("EXTRA_ADDRESS", finalAdressString);
+				setResult(1, intent);
 				finish();
 			}
 		};
 
-		btn_find.setOnClickListener(findClickListener); 
-		btn_previous.setOnClickListener(previousClickListener); 
-		btn_next.setOnClickListener(nextClickListener); 
-		btn_choose.setOnClickListener(chooseClickListener); 
+		btn_find.setOnClickListener(findClickListener);
+		btn_previous.setOnClickListener(previousClickListener);
+		btn_next.setOnClickListener(nextClickListener);
+		btn_choose.setOnClickListener(chooseClickListener);
 	}
-	
+
 	@Override
 	protected void onStart() {
 		super.onStart();
 
-		if(!tools.isOnline()){
+		if (!tools.isOnline()) {
 			Intent intent = new Intent(MapActivity.this,
 					com.applicationmoveon.InternetCheckActivity.class);
 			intent.putExtra("KEY_PREVIOUS_ACTIVITY", this.getClass().getName());
@@ -185,11 +203,11 @@ public class MapActivity extends FragmentActivity {
 				locationMap = new LatLng(currentAddress.getLatitude(),
 						currentAddress.getLongitude());
 
-				finalAdressString = String.format(
-						"%s, %s",
-						currentAddress.getMaxAddressLineIndex() > 0 ? currentAddress
-								.getAddressLine(0) : "", currentAddress
-								.getCountryName());
+				finalAdressString = String
+						.format("%s, %s",
+								currentAddress.getMaxAddressLineIndex() > 0 ? currentAddress
+										.getAddressLine(0) : "", currentAddress
+										.getCountryName());
 
 				markerOptions = new MarkerOptions();
 				markerOptions.position(locationMap);
@@ -201,7 +219,7 @@ public class MapActivity extends FragmentActivity {
 				if (i == 0)
 					map.animateCamera(CameraUpdateFactory
 							.newLatLng(locationMap));
-				
+
 				// Si des adresses sont trouvees les boutons apparaissent
 				btn_previous.setVisibility(View.VISIBLE);
 				btn_next.setVisibility(View.VISIBLE);

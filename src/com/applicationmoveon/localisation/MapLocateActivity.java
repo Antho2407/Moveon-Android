@@ -12,17 +12,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.applicationmoveon.R;
-import com.applicationmoveon.R.id;
-import com.applicationmoveon.R.layout;
-import com.applicationmoveon.R.menu;
 import com.applicationmoveon.ToolBox;
 import com.applicationmoveon.database.RequestTask;
 import com.applicationmoveon.event.AddEventActivity;
 import com.applicationmoveon.event.EventAdapter;
 import com.applicationmoveon.event.EventDisplayActivity;
-import com.applicationmoveon.event.ListEventActivity;
 import com.applicationmoveon.event.TemperatureEvent;
-import com.applicationmoveon.event.EventAdapter.EventData;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -34,13 +29,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.app.ActionBar;
 import android.content.Intent;
-import android.location.Address;
+import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -63,7 +59,7 @@ public class MapLocateActivity extends FragmentActivity implements
 	private Button btn_previous;
 	private Button btn_choose;
 
-	private Location myLocation;
+	private Location myLocation = null;
 
 	private int cursor;
 
@@ -76,6 +72,8 @@ public class MapLocateActivity extends FragmentActivity implements
 	private HashMap<Location, EventAdapter.EventData> listEvents;
 
 	private ToolBox tools;
+	
+	private int radius;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +81,9 @@ public class MapLocateActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 
 		tools = new ToolBox(this);
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		radius=Integer.parseInt(prefs.getString("prefKm", ""));
 
 		listEvents = new HashMap<Location, EventAdapter.EventData>();
 		setContentView(R.layout.activity_map_locate);
@@ -115,8 +116,9 @@ public class MapLocateActivity extends FragmentActivity implements
 		String provider = locationManager.getBestProvider(criteria, true);
 
 		// Getting Current Location
-		myLocation = locationManager.getLastKnownLocation(provider);
-
+		while(myLocation==null)
+			myLocation = locationManager.getLastKnownLocation(provider);
+		
 		if (myLocation != null) {
 			onLocationChanged(myLocation);
 		}
@@ -144,7 +146,7 @@ public class MapLocateActivity extends FragmentActivity implements
 		circle.fillColor(0x5500ff00);
 		circle.strokeWidth(2);
 		circle.center(myLocationLatlng);
-		circle.radius(10000);
+		circle.radius(radius*1000);
 
 		map.addCircle(circle);
 
@@ -222,7 +224,6 @@ public class MapLocateActivity extends FragmentActivity implements
 		}
 
 		if (!tools.gpsActivated()) {
-			Log.i("ANTHO","je passe");
 			Intent intent = new Intent(MapLocateActivity.this,
 					com.applicationmoveon.GpsCheckActivity.class);
 			intent.putExtra("KEY_PREVIOUS_ACTIVITY", this.getClass().getName());
@@ -270,21 +271,22 @@ public class MapLocateActivity extends FragmentActivity implements
 		// Showing the current location in Google Map
 		// map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
-		CircleOptions c = new CircleOptions();
-		c.center(latLng);
-		// 55 represents percentage of transparency. For 100% transparency,
-		// specify 00.
-		// For 0% transparency ( ie, opaque ) , specify ff
-		// The remaining 6 characters(00ff00) specify the fill color
-		c.fillColor(0x5500ff00);
-		c.strokeWidth(2);
-		c.radius(10000);
+//		CircleOptions c = new CircleOptions();
+//		c.center(latLng);
+//		// 55 represents percentage of transparency. For 100% transparency,
+//		// specify 00.
+//		// For 0% transparency ( ie, opaque ) , specify ff
+//		// The remaining 6 characters(00ff00) specify the fill color
+//		c.fillColor(0x5500ff00);
+//		c.strokeWidth(2);
+//		c.radius(radius*1000);
+//		Log.i("ANTHO", String.valueOf(radius*1000));
 		map.animateCamera(CameraUpdateFactory.zoomTo(15));
 		map.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-		map.addCircle(c);
+//		map.addCircle(c);
 
 		try {
-			getCloseEvents(10000, 5);
+			getCloseEvents(radius*1000, 10);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
@@ -339,7 +341,7 @@ public class MapLocateActivity extends FragmentActivity implements
 			String title = row_item.getString("title");
 			String description = row_item.getString("description");
 			String dateStart = row_item.getString("date_debut");
-			String dateEnd = row_item.getString("date_fin");
+			row_item.getString("date_fin");
 			String hourStart = row_item.getString("heure_debut");
 			String hourEnd = row_item.getString("heure_fin");
 			String location = row_item.getString("location");
@@ -395,6 +397,8 @@ public class MapLocateActivity extends FragmentActivity implements
 	public void displayCloseEvents(ArrayList<EventAdapter.EventData> events,
 			int nbResultMax) {
 		if (events.size() > 0 && events != null) {
+			
+			Log.i("ANTHO", "taille liste"+events.size());
 
 			// Si des adresses sont trouvees les boutons apparaissent
 			btn_previous.setVisibility(View.VISIBLE);

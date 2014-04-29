@@ -51,15 +51,11 @@ public class ExecTask extends
 			return updateTemperature(request);
 		}else if (query.equals("addSuivi")) {
 			return addSuivi(request);
-<<<<<<< HEAD
 		}else if (query.equals("deleteSuivi")) {
 			return addSuivi(request);
-		} 
-=======
 		}else if(query.equals("doesUserAlreadyExists")) {
 			return doesUserAlreadyExists(request);
 		}
->>>>>>> c1e2db8149621f4821f5943c402324de8ae9fa65
 
 		return false;
 

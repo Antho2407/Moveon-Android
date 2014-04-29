@@ -2,8 +2,6 @@ package com.applicationmoveon.event;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
-import android.graphics.Color;
-
 // Classe permettant de gerer la temperature d'un evenement
 public abstract class TemperatureEvent {
 	
