@@ -1,5 +1,6 @@
 package com.applicationmoveon;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
@@ -15,9 +16,11 @@ import com.applicationmoveon.user.AddUserActivity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.content.res.Resources.NotFoundException;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +30,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
@@ -39,6 +45,13 @@ ConnectionCallbacks, OnConnectionFailedListener {
 
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_CODE_RESOLVE_ERR = 9000;
+    
+ // A magic number we will use to know that our sign-in error
+ 	// resolution activity has completed.
+ 	private static final int OUR_REQUEST_CODE = 49404;
+ 	
+ // A flag to stop multiple dialogues appearing for the user.
+ 	private boolean mResolveOnFail;
 
     private ProgressDialog mConnectionProgressDialog;
     private PlusClient mPlusClient;
@@ -59,6 +72,9 @@ ConnectionCallbacks, OnConnectionFailedListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		mConnectionProgressDialog = new ProgressDialog(this);
+		mConnectionProgressDialog.setMessage("Signing in...");
+
 		
 		// Session Manager
         session = new SessionManager(LoginActivity.this);
@@ -80,19 +96,43 @@ ConnectionCallbacks, OnConnectionFailedListener {
 
 			@Override
 			public void onClick(View v) {
-				 if (v.getId() == R.id.sign_in_button && !mPlusClient.isConnected()) {
-				        if (mConnectionResult == null) {
-				            mConnectionProgressDialog.show();
-				        } else {
-				            try {
-				                mConnectionResult.startResolutionForResult(LoginActivity.this, REQUEST_CODE_RESOLVE_ERR);
-				            } catch (SendIntentException e) {
-				                // Nouvelle tentative de connexion
-				                mConnectionResult = null;
-				                mPlusClient.connect();
-				            }
-				        }
-				    }
+				Log.v(TAG, "Tapped sign in");
+				
+				if (!mPlusClient.isConnected()) {
+					// Show the dialog as we are now signing in.
+					mConnectionProgressDialog.show();
+					// Make sure that we will start the resolution (e.g. fire the
+					// intent and pop up a dialog for the user) for any errors
+					// that come in.
+					mResolveOnFail = true;
+					// We should always have a connection result ready to resolve,
+					// so we can start that process.
+					if (mConnectionResult != null) {
+						startResolution();
+					} else {
+						// If we don't have one though, we can start connect in
+						// order to retrieve one.
+						mPlusClient.connect();
+					}
+				}
+				
+				HashMap<String,String> hm = new HashMap<String,String>();
+				
+				hm.put("Request", "addUser");
+				hm.put("lastname", mPlusClient.getCurrentPerson().getName().getFamilyName());
+				hm.put("firstname", mPlusClient.getCurrentPerson().getName().getGivenName());
+				hm.put("password", "google");
+				hm.put("email",mPlusClient.getAccountName());
+				hm.put("urlimage", "");
+
+				// Execution de la requête
+				ExecTask rt = new ExecTask();
+				rt.execute(hm);
+				
+				session.createLoginSession(mPlusClient.getAccountName());
+				
+				
+				
 				
 			}
 			
@@ -188,25 +228,39 @@ ConnectionCallbacks, OnConnectionFailedListener {
 	 @Override
 	 protected void onStart() {
 	        super.onStart();
+	        Log.v(TAG, "Start");
+			// Every time we start we want to try to connect. If it
+			// succeeds we'll get an onConnected() callback. If it
+			// fails we'll get onConnectionFailed(), with a result!
+			mPlusClient.connect();
 	}
 	
 	@Override
     protected void onStop() {
         super.onStop();
-        mPlusClient.disconnect();
-    }
+        Log.v(TAG, "Stop");
+		// It can be a little costly to keep the connection open
+		// to Google Play Services, so each time our activity is
+		// stopped we should disconnect.
+		mPlusClient.disconnect();
+    }	
 
 	  @Override
 	    public void onConnectionFailed(ConnectionResult result) {
-	        if (result.hasResolution()) {
-	            try {
-	                result.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
-	            } catch (SendIntentException e) {
-	                mPlusClient.connect();
-	            }
-	        }
-	        // Enregistrer le résultat et résoudre l'échec de connexion lorsque l'utilisateur clique.
-	        mConnectionResult = result;
+		  Log.v(TAG, "ConnectionFailed");
+			// Most of the time, the connection will fail with a
+			// user resolvable result. We can store that in our
+			// mConnectionResult property ready for to be used
+			// when the user clicks the sign-in button.
+			if (result.hasResolution()) {
+				mConnectionResult = result;
+				if (mResolveOnFail) {
+					// This is a local helper function that starts
+					// the resolution of the problem, which may be
+					// showing the user an account chooser or similar.
+					startResolution();
+				}
+			}
 	    }
 
 	    @Override
@@ -235,9 +289,8 @@ ConnectionCallbacks, OnConnectionFailedListener {
 				
 				session.createLoginSession(id);
 
-				Intent i = new Intent(LoginActivity.this,
-						MainActivity.class);
-				startActivity(i);
+				
+				
 			}
 	    }
 
@@ -247,11 +300,61 @@ ConnectionCallbacks, OnConnectionFailedListener {
 	        Log.d(TAG, "disconnected");
 	    }
 
-		@Override
-		public void onConnected(Bundle connectionHint) {
-			 String accountName = mPlusClient.getAccountName();
-		     Toast.makeText(this, accountName + " is connected.", Toast.LENGTH_LONG).show();
-			
+	    @Override
+		public void onConnected(Bundle bundle) {
+			// Yay! We can get the oAuth 2.0 access token we are using.
+			Log.v(TAG, "Connected. Yay!");
+	 
+			// Turn off the flag, so if the user signs out they'll have to
+			// tap to sign in again.
+			mResolveOnFail = false;
+	 
+			// Hide the progress dialog if its showing.
+			mConnectionProgressDialog.dismiss();
+	 
+	 
+			// Retrieve the oAuth 2.0 access token.
+			final Context context = this.getApplicationContext();
+			AsyncTask task = new AsyncTask() {
+				@Override
+				protected Object doInBackground(Object... params) {
+					String scope = "oauth2:" + Scopes.PLUS_LOGIN;
+					try {
+						// We can retrieve the token to check via
+						// tokeninfo or to pass to a service-side
+						// application.
+						String token = GoogleAuthUtil.getToken(context,
+								mPlusClient.getAccountName(), scope);
+					} catch (UserRecoverableAuthException e) {
+						// This error is recoverable, so we could fix this
+						// by displaying the intent to the user.
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (GoogleAuthException e) {
+						e.printStackTrace();
+					}
+					return null;
+				}
+			};
+			task.execute((Void) null);
+		}
+	    
+	    private void startResolution() {
+			try {
+				// Don't start another resolution now until we have a
+				// result from the activity we're about to start.
+				mResolveOnFail = false;
+				// If we can resolve the error, then call start resolution
+				// and pass it an integer tag we can use to track. This means
+				// that when we get the onActivityResult callback we'll know
+				// its from being started here.
+				mConnectionResult.startResolutionForResult(this, OUR_REQUEST_CODE);
+			} catch (SendIntentException e) {
+				// Any problems, just try to connect() again so we get a new
+				// ConnectionResult.
+				mPlusClient.connect();
+			}
 		}
 
 }
