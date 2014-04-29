@@ -18,10 +18,12 @@ public abstract class TemperatureEvent {
 		
 		// Definir un coefficient qui rendra le nombre de like/dislike
 		// moins important selon le nombre de participants
+		if(nbOfParticipants!=0){
 		if(likes>0)
 			coeffLikes = likes/nbOfParticipants;
 		if(dislikes>0)
 			coeffDislikes = dislikes/nbOfParticipants;
+		}
 		
 		// Premier coefficient lie au nombre de participants
 		// Si le nombre depasse le palier fixe

@@ -68,7 +68,7 @@ public class ListUserActivity extends Activity{
 		userList.setAdapter(mainAdapter);
 		userList.setOnItemClickListener(new EventListOnItemClick());
 		
-		/*try {
+		try {
 			try {
 				getUsers();
 			} catch (JSONException e) {
@@ -80,7 +80,7 @@ public class ListUserActivity extends Activity{
 		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 	}
 
 	@Override

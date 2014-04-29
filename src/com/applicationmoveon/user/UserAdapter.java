@@ -36,6 +36,7 @@ public class UserAdapter extends BaseAdapter{
 				int eventOwned, Drawable picture, boolean followed) {
 			this.userFirstname = userFirstname;
 			this.userName = userName;
+			this.email = email;
 			this.eventOwned = eventOwned;
 			this.picture = picture;
 			this.followed=followed;

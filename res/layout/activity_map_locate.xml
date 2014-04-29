@@ -1,52 +1,51 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linear_layout_map_locate" 
+    android:id="@+id/linear_layout_map_locate"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MapActivity" >    
+    tools:context=".MapActivity" >
     
-    <fragment 
-		android:id="@+id/map_locate"
-		android:layout_width="fill_parent"
-		android:layout_height="0dp"
+    <fragment
+android:id="@+id/map_locate"
+android:layout_width="fill_parent"
+android:layout_height="0dp"
         android:layout_weight=".9"
-		class="com.google.android.gms.maps.SupportMapFragment" />
-    
-<RelativeLayout
+class="com.google.android.gms.maps.SupportMapFragment" />
+  <RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="0dp"
     android:layout_weight=".1"
-    >    
+    >
     <LinearLayout
-        android:id="@+id/layout_board_locate" 
+        android:id="@+id/layout_board_locate"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_verticalHorizontal="true"
-        android:orientation="horizontal" >		    
-	    
-	    <Button 
-	        android:id="@+id/btn_previous_locate"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" 
-	        android:text="@string/label_previous"
-	        android:visibility="gone" />
-	    
-	    <Button 
-	        android:id="@+id/btn_validate_locate"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" 
-	        android:text="@string/label_find" 
-	        android:visibility="gone" />
-	    
-	    <Button 
-	        android:id="@+id/btn_next_locate"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" 
-	        android:text="@string/label_next"  
-	        android:visibility="gone" />
-	    
-    </LinearLayout>  
-</RelativeLayout>
+        android:layout_centerVertical="true"
+        android:orientation="horizontal" >	
+
+<Button
+android:id="@+id/btn_previous_locate"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="@string/label_previous"
+android:visibility="gone" />
+
+<Button
+android:id="@+id/btn_validate_locate"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="@string/label_find"
+android:visibility="gone" />
+
+<Button
+android:id="@+id/btn_next_locate"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="@string/label_next"
+android:visibility="gone" />
+
+    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

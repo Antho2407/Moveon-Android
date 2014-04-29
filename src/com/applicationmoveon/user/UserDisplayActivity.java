@@ -41,7 +41,7 @@ public class UserDisplayActivity extends Activity{
 		public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 			Intent intent = new Intent(UserDisplayActivity.this,
 					EventDisplayActivity.class);
-			intent.putExtra("ID", eventData.get(position).eventId);
+			intent.putExtra("ID", String.valueOf(eventData.get(position).eventId));
 			startActivity(intent);
 
 		}
@@ -76,6 +76,8 @@ public class UserDisplayActivity extends Activity{
 		eventList.setAdapter(mainAdapter);
 		eventList.setOnItemClickListener(new EventListOnItemClick());
 		//TODO Ajout de l'user		
+		followed = (CheckBox) findViewById(R.id.user_followed);
+
 
 		Bundle extras;
 		if (savedInstanceState == null) {
@@ -88,14 +90,13 @@ public class UserDisplayActivity extends Activity{
 		} else {
 			mail = (String) savedInstanceState.getSerializable("mail");
 		}
-		Log.i("debug", mail);
-		Log.i("debug", email);
+		Log.i("toto", mail);
+		Log.i("toto", email);
 
 		try {
 			try {
 				getEvents(mail);
 				getUser(mail);
-				Log.i("debug", user.email);
 
 				if(email.equals(user.email))
 					followed.setVisibility(-1);
@@ -113,7 +114,6 @@ public class UserDisplayActivity extends Activity{
 		ImageView picture = (ImageView) findViewById(R.id.user_pic);
 		TextView login = (TextView) findViewById(R.id.user_login);
 		TextView eventNb = (TextView) findViewById(R.id.user_nb_event);
-		followed = (CheckBox) findViewById(R.id.user_followed);
 
 
 		//picture.setImageDrawable(user.picture);
@@ -211,7 +211,9 @@ public class UserDisplayActivity extends Activity{
 			//Drawable picture = row_item.getString("imageprofile");
 
 			UserAdapter.UserData newUser = new UserAdapter.UserData(prenom,nom,_mail, 0,getResources().getDrawable(R.drawable.ic_action_content_event) , false);
+			Log.i("debug", newUser.email);
 			user = newUser;
+		
 		}
 		return 1;
 

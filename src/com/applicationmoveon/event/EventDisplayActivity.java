@@ -1,9 +1,14 @@
 package com.applicationmoveon.event;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +21,8 @@ import com.applicationmoveon.database.RequestTask;
 import com.applicationmoveon.ftp.FtpDownloadTask;
 import com.applicationmoveon.session.SessionManager;
 import com.applicationmoveon.user.UserAdapter;
+import com.applicationmoveon.user.UserDisplayActivity;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
@@ -29,7 +36,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.SearchView.OnQueryTextListener;
 
@@ -42,6 +51,8 @@ public class EventDisplayActivity extends Activity {
 	private SessionManager session;
 	private String email;
 	private TextView temperature;
+	private int likes;
+	private int dislikes;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,10 +97,41 @@ public class EventDisplayActivity extends Activity {
 		Button owner = (Button) findViewById(R.id.event_owner_button);
 		TextView desc = (TextView) findViewById(R.id.event_description);
 		TextView date = (TextView) findViewById(R.id.event_date);
+		likes=event.likes;
+		dislikes=event.dislikes;
+		final View barre_verte = (View) findViewById(R.id.bar_green);
+		final View barre_rouge = (View) findViewById(R.id.bar_red);
+		final View barre_vide = (View) findViewById(R.id.bar_grey);
+		if((likes+dislikes) == 0)
+			barre_vide.setLayoutParams(new LinearLayout.LayoutParams(0, 4, 1));
+		Log.i("ot", "avant      "+getDislikePercentage()+" fefhe"+event.dislikes);
+		Log.i("ot", "avant      "+getLikePercentage()+" fefhe"+event.likes);
+
+		barre_rouge.setLayoutParams(new LinearLayout.LayoutParams(0, 4, getDislikePercentage()));
+		barre_verte.setLayoutParams(new LinearLayout.LayoutParams(0, 4, getLikePercentage()));
+		Log.i("ot", "apres");
+		Log.i("ot", "avant      "+getDislikePercentage()+" fefhe"+event.dislikes);
+		Log.i("ot", "avant      "+getLikePercentage()+" fefhe"+event.likes);
+
 		temperature = (TextView) findViewById(R.id.event_temp);
 		final Button participate = (Button) findViewById(R.id.event_participate);
 		final CheckBox like = (CheckBox) findViewById(R.id.button_like);
 		final CheckBox dislike = (CheckBox) findViewById(R.id.button_dislike);
+		try {
+			if(participate()){
+				participate.setVisibility(-1);
+			}
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ExecutionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+			
 
 		like.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -99,10 +141,16 @@ public class EventDisplayActivity extends Activity {
 				if (isChecked){
 					if (dislike.isChecked()){
 						//bouton like vient d'etre activé et dislike etait activé donc +2
+						dislikes--;
+						likes++;
+						barre_rouge.setLayoutParams(new LinearLayout.LayoutParams(0, 4, getDislikePercentage()));
+						barre_verte.setLayoutParams(new LinearLayout.LayoutParams(0, 4, getLikePercentage()));
 						addVote(2);
 					}
 					if (!dislike.isChecked()){
 						//bouton like vient d'etre activé et dislike etait pas activé donc +1
+						likes++;
+						barre_verte.setLayoutParams(new LinearLayout.LayoutParams(0, 4, getLikePercentage()));
 						addVote(1);
 					}
 					dislike.setChecked(false);
@@ -113,6 +161,7 @@ public class EventDisplayActivity extends Activity {
 						like.setChecked(true);
 					}
 				}
+				barre_vide.setLayoutParams(new LinearLayout.LayoutParams(0, 4, 0));
 				try {
 					udpateTemperature();
 				} catch (JSONException e) {
@@ -135,10 +184,16 @@ public class EventDisplayActivity extends Activity {
 				if (isChecked){
 					if (like.isChecked()){
 						//bouton dislike vient d'etre activé et like etait activé donc -2
+						likes--;
+						dislikes++;
+						barre_verte.setLayoutParams(new LinearLayout.LayoutParams(0, 4, getLikePercentage()));
+						barre_rouge.setLayoutParams(new LinearLayout.LayoutParams(0, 4, getDislikePercentage()));
 						addVote(-2);
 					}
 					if (!like.isChecked()){
 						//bouton dislike vient d'etre activé et like etait pas activé donc -1
+						dislikes++;
+						barre_rouge.setLayoutParams(new LinearLayout.LayoutParams(0, 4, getDislikePercentage()));
 						addVote(-1);
 					}
 					like.setChecked(false);
@@ -149,6 +204,7 @@ public class EventDisplayActivity extends Activity {
 						dislike.setChecked(true);
 					}
 				}
+				barre_vide.setLayoutParams(new LinearLayout.LayoutParams(0, 4, 0));
 				try {
 					udpateTemperature();
 				} catch (JSONException e) {
@@ -202,14 +258,14 @@ public class EventDisplayActivity extends Activity {
 		owner.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*
-				 * if (v.getId() == R.id.event_owner_button){ Intent intent =
-				 * new Intent(ListEventActivity.this,
-				 * EventDisplayActivity.class); intent.putExtra("MAIL",
-				 * eventData.get(position).eventId); startActivity(intent);
-				 * 
-				 * }
-				 */
+				
+				 if (v.getId() == R.id.event_owner_button){ Intent intent =
+				 new Intent(EventDisplayActivity.this,
+				 UserDisplayActivity.class); intent.putExtra("mail",
+				 user.email); startActivity(intent);
+				 
+				 }
+				 
 
 			}
 		});
@@ -300,9 +356,14 @@ public class EventDisplayActivity extends Activity {
 			float temperature = Float.parseFloat(row_item.getString("temperature"));
 			int participants = Integer.parseInt(row_item
 					.getString("participants"));
+			int likes = Integer.parseInt(row_item
+					.getString("likes"));
+			int dislikes = Integer.parseInt(row_item
+					.getString("dislikes"));
 			event = new EventAdapter.EventData(id, title, location,
 					description, dateStart, hourStart, hourEnd, participants,
-					mail, state, dateCreation, latitude, longitude, temperature,url);
+					mail, state, dateCreation, latitude, longitude, temperature,url,likes,dislikes);
+			Log.i("test", mail);
 		}
 		return 1;
 
@@ -341,9 +402,42 @@ public class EventDisplayActivity extends Activity {
 					nom,_email, 0, getResources().getDrawable(
 							R.drawable.ic_action_content_event), false);
 			user = newUser;
-			Log.i("ANTHO", newUser.toString());
 		}
 		return 1;
+
+	}
+	
+	public boolean participate() throws InterruptedException,
+	ExecutionException, JSONException {
+
+		HashMap<String, String> hm = new HashMap<String, String>();
+		hm.put("Request", "SelectEventByParticipation");
+
+		hm.put("email", email);
+
+		RequestTask rt = new RequestTask();
+		rt.execute(hm);
+
+
+		JSONArray result = rt.get();
+
+		if(result == null)
+			return false;
+
+		int length = result.length();
+
+		if(length == 0)
+			return false;
+
+		for (int i = 0; i < length; i++) {
+
+			JSONObject row_item = result.getJSONObject(i);
+			int id = row_item.getInt("id_event");
+			if(id==event.eventId)
+				return true;
+
+		}
+		return false;
 
 	}
 
@@ -386,5 +480,19 @@ public class EventDisplayActivity extends Activity {
 		RequestTask rt2 = new RequestTask();
 		rt2.execute(hm);
 		temperature.setText(newTemperature+"%");
+	}
+
+	private float getDislikePercentage(){
+		if(dislikes==0)
+			return 0;
+		float total = likes+dislikes;
+		return dislikes/total;
+	}
+	
+	private float getLikePercentage(){
+		if(likes==0)
+			return 0;
+		float total = likes+dislikes;
+		return likes/total;
 	}
 }

@@ -4,8 +4,7 @@ package com.applicationmoveon.event;
 import java.util.List;
 
 import com.applicationmoveon.R;
-import com.applicationmoveon.R.id;
-import com.applicationmoveon.R.layout;
+
 
 
 import android.content.Context;
@@ -41,6 +40,8 @@ public class EventAdapter extends BaseAdapter {
 		public float distance;
 		public float temperature;
 		public String url;
+		public int likes;
+		public int dislikes;
 
 		public EventData(int eventId, String eventTitle, String eventLocation,
 				String eventDescription, String eventDateStart,
@@ -61,6 +62,17 @@ public class EventAdapter extends BaseAdapter {
 			this.longitude = longitude;
 			this.temperature = temperature;
 			this.url = url;
+		}
+		public EventData(int eventId, String eventTitle, String eventLocation,
+				String eventDescription, String eventDateStart,
+				String eventHourStart, String eventHourFinish,
+				int numberOfParticipants, String eventOwner, int eventState, String eventDateCreation, float latitude, float longitude,float temperature,String url,int likes,int dislikes) {
+			this( eventId,  eventTitle,  eventLocation,
+					 eventDescription,  eventDateStart,
+					 eventHourStart,  eventHourFinish,
+					 numberOfParticipants,  eventOwner,  eventState,  eventDateCreation,  latitude,  longitude, temperature, url);
+			this.dislikes=dislikes;
+			this.likes = likes;
 		}
 
 	}
@@ -111,7 +123,7 @@ public class EventAdapter extends BaseAdapter {
 
 		title.setText(data.eventTitle);
 		date.setText("Le "+ data.eventDateStart +" ра "+ data.eventLocation + " de "+data.eventHourStart+" р "+data.eventHourFinish);
-		//description.setText(data.eventDescription);
+		description.setText(data.eventDescription);
 		part.setText(data.numberOfParticipants+" participants");
 
 		if(position % 2 == 0)
