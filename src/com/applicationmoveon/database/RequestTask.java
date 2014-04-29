@@ -4,6 +4,7 @@ import java.util.HashMap;
 import org.json.JSONArray;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class RequestTask extends AsyncTask<HashMap<String,String>, String, JSONArray> {
 		
@@ -45,6 +46,8 @@ public class RequestTask extends AsyncTask<HashMap<String,String>, String, JSONA
 				return SelectEventByUserMail(request);
 			}else if(query.equals("SelectEventByParticipation")){
 				return SelectEventByParticipation(request);
+			}else if(query.equals("SelectEventBySearch")){
+				return SelectEventBySearch(request);
 			}
 			return null;
 			
@@ -53,6 +56,13 @@ public class RequestTask extends AsyncTask<HashMap<String,String>, String, JSONA
 		protected JSONArray SelectEventById(HashMap<String,String> request){
 			if(request.containsKey("id_event")){
 				return db.SelectEventById(request.get("id_event"));
+			}
+			return null;
+		}
+		
+		protected JSONArray SelectEventBySearch(HashMap<String,String> request){
+			if(request.containsKey("search")){
+				return db.SelectEventBySearch(request.get("search"));
 			}
 			return null;
 		}

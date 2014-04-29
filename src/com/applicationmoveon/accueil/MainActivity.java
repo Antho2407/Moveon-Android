@@ -129,7 +129,10 @@ public class MainActivity extends Activity {
 
 			@Override
 			public boolean onQueryTextSubmit(String query) {
-				//TODO RECHERCHE
+				Intent intent = new Intent(MainActivity.this,ListEventActivity.class);
+				intent.putExtra("type", "search");
+				intent.putExtra("SEARCH", query);
+				startActivity(intent);
 				return true;
 			}
 

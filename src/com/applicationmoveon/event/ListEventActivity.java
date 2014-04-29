@@ -84,7 +84,9 @@ public class ListEventActivity extends Activity {
 			try {
 				if (type.equals("followed"))
 					getEventsFollowed();
-				else
+				else if(type.equals("search")){
+					getEventsSearch(extras.getString("SEARCH"));
+				}else
 					getEvents();
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -201,6 +203,52 @@ public class ListEventActivity extends Activity {
 
 
 	}
+	
+	public int getEventsSearch(String search) throws InterruptedException, ExecutionException, JSONException{
+
+		HashMap<String, String> hm = new HashMap<String, String>();
+		hm.put("Request", "SelectEventBySearch");
+		hm.put("search", search);
+
+		// Execution de la requête
+		RequestTask rt = new RequestTask();
+		rt.execute(hm);
+
+		JSONArray result = rt.get();
+
+		if(result == null)
+			return -1;
+
+		int length = result.length();
+
+		if(length == 0)
+			return 0;
+
+		for (int i = 0; i < length; i++) {
+
+			JSONObject row_item = result.getJSONObject(i);
+			String title = row_item.getString("title");
+			String description = row_item.getString("description");
+			String dateStart = row_item.getString("date_debut");
+			String dateEnd = row_item.getString("date_fin");
+			String hourStart = row_item.getString("heure_debut");
+			String hourEnd = row_item.getString("heure_fin");
+			String location = row_item.getString("location");
+			int id = Integer.parseInt(row_item.getString("id_event"));
+			float latitude = Float.parseFloat(row_item.getString("latitude"));
+			float longitude= Float.parseFloat(row_item.getString("longitude"));
+			float temperature = Float.parseFloat(row_item.getString("temperature"));
+
+			int state = Integer.parseInt(row_item.getString("state"));
+			String dateCreation = row_item.getString("date_creation");
+			int participants = Integer.parseInt(row_item.getString("participants"));
+			EventAdapter.EventData newEvent = new EventAdapter.EventData(id, title, location, description, dateStart,
+					hourStart, hourEnd, participants,"test",state,dateCreation, latitude, longitude,temperature,null);
+			eventData.add(newEvent);
+		}
+		return 1;
+	}
+	
 	public int getEventsFollowed() throws InterruptedException, ExecutionException, JSONException{
 
 		HashMap<String, String> hm = new HashMap<String, String>();

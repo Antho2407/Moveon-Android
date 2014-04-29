@@ -47,7 +47,9 @@ public class ExecTask extends
 			return addVote(request);
 		} else if (query.equals("updateTemperature")) {
 			return updateTemperature(request);
-		}
+		}else if (query.equals("addSuivi")) {
+			return addSuivi(request);
+		} 
 
 		return false;
 
@@ -64,6 +66,14 @@ public class ExecTask extends
 	protected Boolean addParticipants(HashMap<String, String> request) {
 		if (request.containsKey("id_event") && request.containsKey("email")) {
 			db.addParticipants(request.get("id_event"), request.get("email"));
+			return true;
+		}
+		return false;
+	}
+	
+	protected Boolean addSuivi(HashMap<String, String> request) {
+		if (request.containsKey("email_user") && request.containsKey("user_suivi")) {
+			db.addParticipants(request.get("email_user"), request.get("user_suivi"));
 			return true;
 		}
 		return false;
