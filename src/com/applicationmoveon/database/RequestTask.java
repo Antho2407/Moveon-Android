@@ -48,6 +48,8 @@ public class RequestTask extends AsyncTask<HashMap<String,String>, String, JSONA
 				return SelectEventByParticipation(request);
 			}else if(query.equals("SelectEventBySearch")){
 				return SelectEventBySearch(request);
+			}else if(query.equals("SelectUsersFollowed")){
+				return SelectEventBySearch(request);
 			}
 			return null;
 			
@@ -60,6 +62,13 @@ public class RequestTask extends AsyncTask<HashMap<String,String>, String, JSONA
 			return null;
 		}
 		
+		protected JSONArray SelectUsersFollowed(HashMap<String,String> request){
+			if (request.containsKey("email_user")) {
+				return db.SelectUsersFollowed(request.get("email_user"));
+			}
+			return null;
+		}
+		
 		protected JSONArray SelectEventBySearch(HashMap<String,String> request){
 			if(request.containsKey("search")){
 				return db.SelectEventBySearch(request.get("search"));
@@ -68,7 +77,7 @@ public class RequestTask extends AsyncTask<HashMap<String,String>, String, JSONA
 		}
 		
 		protected JSONArray SelectUserByEmail(HashMap<String,String> request){
-			if(request.containsKey("email")){
+			if(request.containsKey("email_user")){
 				return db.SelectUserByMail(request.get("email"));
 			}
 			return null;

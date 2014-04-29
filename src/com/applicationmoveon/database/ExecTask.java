@@ -43,11 +43,15 @@ public class ExecTask extends
 			return addUser(request);
 		} else if (query.equals("addParticipants")) {
 			return addParticipants(request);
+		} else if (query.equals("deleteParticipants")) {
+			return addParticipants(request);
 		} else if (query.equals("addVote")) {
 			return addVote(request);
 		} else if (query.equals("updateTemperature")) {
 			return updateTemperature(request);
 		}else if (query.equals("addSuivi")) {
+			return addSuivi(request);
+		}else if (query.equals("deleteSuivi")) {
 			return addSuivi(request);
 		} 
 
@@ -71,9 +75,25 @@ public class ExecTask extends
 		return false;
 	}
 	
+	protected Boolean deleteParticipants(HashMap<String, String> request) {
+		if (request.containsKey("id_event") && request.containsKey("email")) {
+			db.deleteParticipants(request.get("id_event"), request.get("email"));
+			return true;
+		}
+		return false;
+	}
+	
 	protected Boolean addSuivi(HashMap<String, String> request) {
 		if (request.containsKey("email_user") && request.containsKey("user_suivi")) {
-			db.addParticipants(request.get("email_user"), request.get("user_suivi"));
+			db.addSuivi(request.get("email_user"), request.get("user_suivi"));
+			return true;
+		}
+		return false;
+	}
+	
+	protected Boolean deleteSuivi(HashMap<String, String> request) {
+		if (request.containsKey("email_user") && request.containsKey("user_suivi")) {
+			db.deleteSuivi(request.get("email_user"), request.get("user_suivi"));
 			return true;
 		}
 		return false;
