@@ -49,7 +49,7 @@ public class RequestTask extends AsyncTask<HashMap<String,String>, String, JSONA
 			}else if(query.equals("SelectEventBySearch")){
 				return SelectEventBySearch(request);
 			}else if(query.equals("SelectUsersFollowed")){
-				return SelectEventBySearch(request);
+				return SelectUsersFollowed(request);
 			}
 			return null;
 			
