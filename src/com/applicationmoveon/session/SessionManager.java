@@ -3,7 +3,9 @@ package com.applicationmoveon.session;
 import java.util.HashMap;
 
 import com.applicationmoveon.LoginActivity;
+import com.applicationmoveon.accueil.MainActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -50,6 +52,13 @@ public class SessionManager {
          
         // commit changes
         editor.commit();
+        
+        Intent i = new Intent(_context,
+				MainActivity.class);
+		
+		_context.startActivity(i);
+		
+		((Activity) _context).finish();
     }   
      
     /**
@@ -68,9 +77,14 @@ public class SessionManager {
              
             // Add new Flag to start new Activity
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-             
+            
+            
             // Staring Login Activity
             _context.startActivity(i);
+            
+           ((Activity) _context).finish();
+            
+            
         }
          
     }
@@ -109,6 +123,8 @@ public class SessionManager {
          
         // Staring Login Activity
         _context.startActivity(i);
+        
+        ((Activity) _context).finish();
     }
      
     /**
