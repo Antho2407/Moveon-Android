@@ -357,7 +357,7 @@ containing a value of this type.
         public static final int com_facebook_list_section_header_background=0x7f020011;
         public static final int com_facebook_loginbutton_silver=0x7f020012;
         public static final int com_facebook_logo=0x7f020013;
-        public static final int com_facebook_picker_default_separator_color=0x7f020058;
+        public static final int com_facebook_picker_default_separator_color=0x7f02005b;
         public static final int com_facebook_picker_item_background=0x7f020014;
         public static final int com_facebook_picker_list_focused=0x7f020015;
         public static final int com_facebook_picker_list_longpressed=0x7f020016;
@@ -421,11 +421,14 @@ containing a value of this type.
         public static final int ic_plusone_tall_off_client=0x7f020050;
         public static final int ic_social_group=0x7f020051;
         public static final int ic_social_person=0x7f020052;
-        public static final int loading_gps=0x7f020053;
-        public static final int loading_wifi=0x7f020054;
-        public static final int logomoveon=0x7f020055;
-        public static final int picture_missing=0x7f020056;
-        public static final int text_edit_style=0x7f020057;
+        public static final int ic_thermo_cold=0x7f020053;
+        public static final int ic_thermo_hot=0x7f020054;
+        public static final int ic_thermo_medium=0x7f020055;
+        public static final int loading_gps=0x7f020056;
+        public static final int loading_wifi=0x7f020057;
+        public static final int logomoveon=0x7f020058;
+        public static final int picture_missing=0x7f020059;
+        public static final int text_edit_style=0x7f02005a;
     }
     public static final class id {
         public static final int GridLayout1=0x7f04000b;

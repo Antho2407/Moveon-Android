@@ -263,6 +263,50 @@ public class Database {
 		
 	}
 	
+	public JSONArray SelectVoteByUser(String id_user, String id_event){
+		JSONArray jArray = null;
+		String result = "";
+		InputStream is = null;
+		//the year data to send
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("id_user",id_user));
+		nameValuePairs.add(new BasicNameValuePair("id_event",id_event));
+		 
+		//http post
+		try{
+		        HttpClient httpclient = new DefaultHttpClient();
+		        HttpPost httppost = new HttpPost("http://martinezhugo.com/moveon/select_vote_by_user.php");
+		        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		        HttpResponse response = httpclient.execute(httppost);
+		        HttpEntity entity = response.getEntity();
+		        is = entity.getContent();
+		}catch(Exception e){
+		        Log.e("log_tag", "Error in http connection "+e.toString());
+		}
+		//convert response to string
+		try{
+		        BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
+		        StringBuilder sb = new StringBuilder();
+		        String line = null;
+		        while ((line = reader.readLine()) != null) {
+		                sb.append(line + "\n");
+		        }
+		        is.close();
+		 
+		        result=sb.toString();
+		}catch(Exception e){
+		        Log.e("log_tag", "Error converting result "+e.toString());
+		}
+		 
+		//parse json data
+		try{
+		        jArray = new JSONArray(result);
+		}catch(JSONException e){
+		        Log.e("log_tag", "Error parsing data "+e.toString());
+		}
+		return jArray;
+	}
+	
 	public JSONArray SelectUserByMail(String email){
 		JSONArray jArray = null;
 		String result = "";

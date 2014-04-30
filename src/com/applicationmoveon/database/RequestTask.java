@@ -50,9 +50,18 @@ public class RequestTask extends AsyncTask<HashMap<String,String>, String, JSONA
 				return SelectEventBySearch(request);
 			}else if(query.equals("SelectUsersFollowed")){
 				return SelectUsersFollowed(request);
+			}else if(query.equals("SelectVoteByUser")){
+				return SelectUsersFollowed(request);
 			}
 			return null;
 			
+		}
+		
+		protected JSONArray SelectVoteByUser(HashMap<String,String> request){
+			if((request.containsKey("id_user"))&&(request.containsKey("id_event"))){
+				return db.SelectVoteByUser(request.get("id_user"), request.get("id_event"));
+			}
+			return null;
 		}
 		
 		protected JSONArray SelectEventById(HashMap<String,String> request){
