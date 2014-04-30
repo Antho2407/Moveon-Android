@@ -3,8 +3,7 @@ package com.applicationmoveon.user;
 import java.util.List;
 
 import com.applicationmoveon.R;
-import com.applicationmoveon.R.id;
-import com.applicationmoveon.R.layout;
+
 
 import android.content.Context;
 import android.graphics.Color;
@@ -13,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -86,13 +84,9 @@ public class UserAdapter extends BaseAdapter{
 
 		ImageView picture = (ImageView) view.findViewById(R.id.user_pic);
 		TextView login = (TextView) view.findViewById(R.id.user_login);
-		TextView eventNb = (TextView) view.findViewById(R.id.user_nb_event);
-		CheckBox followed = (CheckBox) view.findViewById(R.id.user_followed);
 		
 		picture.setImageDrawable(data.picture);
 		login.setText(data.userFirstname+ " "+ data.userName);
-		eventNb.setText("Nombres d'evenements crées : "+data.eventOwned);
-		followed.setChecked(data.followed);
 
 		
 		if(position % 2 == 0)

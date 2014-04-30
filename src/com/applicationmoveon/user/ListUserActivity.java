@@ -11,13 +11,10 @@ import org.json.JSONObject;
 import com.applicationmoveon.R;
 import com.applicationmoveon.ToolBox;
 import com.applicationmoveon.UserSettingActivity;
-import com.applicationmoveon.R.drawable;
-import com.applicationmoveon.R.id;
-import com.applicationmoveon.R.layout;
-import com.applicationmoveon.R.menu;
+
 import com.applicationmoveon.database.RequestTask;
 import com.applicationmoveon.event.AddEventActivity;
-import com.applicationmoveon.event.ListEventActivity;
+import com.applicationmoveon.session.SessionManager;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -51,18 +48,24 @@ public class ListUserActivity extends Activity{
 	private UserAdapter mainAdapter;
 	private ArrayList<UserAdapter.UserData> userData;
 	private ToolBox tools;
-	
+    public SessionManager session;
+    private String email;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_listuser);
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		
+
 		tools = new ToolBox(this);
 
 		userData = new ArrayList<UserAdapter.UserData>();
 		mainAdapter = new UserAdapter(getApplicationContext(), userData);
+		
+		session = new SessionManager(this);
+		session.checkLogin();
+		email = session.getUserDetails().get(SessionManager.KEY_EMAIL);
 
 		userList = (ListView)findViewById(R.id.userList);
 		userList.setAdapter(mainAdapter);
@@ -143,7 +146,9 @@ public class ListUserActivity extends Activity{
 	public int getUsers() throws InterruptedException, ExecutionException, JSONException{
 
 		HashMap<String, String> hm = new HashMap<String, String>();
-		hm.put("Request", "SelectUser");
+		hm.put("Request", "SelectUsersFollowed");
+		hm.put("email_user", email);
+
 		
 		// Execution de la requête
 		RequestTask rt = new RequestTask();
@@ -167,8 +172,7 @@ public class ListUserActivity extends Activity{
 			String email = row_item.getString("email");
 			String mdp = row_item.getString("password");
 			//Drawable picture = row_item.getString("imageprofile");
-			
-			UserAdapter.UserData newUser = new UserAdapter.UserData(prenom,nom,email, 0,getResources().getDrawable(R.drawable.ic_action_content_event) , false);
+			UserAdapter.UserData newUser = new UserAdapter.UserData(prenom,nom,email, 0,getResources().getDrawable(R.drawable.ic_social_person) , false);
 			userData.add(newUser);
 		}
 		return 1;

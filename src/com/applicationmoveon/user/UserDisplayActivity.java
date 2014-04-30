@@ -29,7 +29,6 @@ import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -118,8 +117,11 @@ public class UserDisplayActivity extends Activity{
 		TextView login = (TextView) findViewById(R.id.user_login);
 		TextView eventNb = (TextView) findViewById(R.id.user_nb_event);
 
-
-		//picture.setImageDrawable(user.picture);
+		user.eventOwned = eventData.size();
+		if (user.picture==null)
+			picture.setImageDrawable(getResources().getDrawable(R.drawable.ic_social_person));
+		else
+		picture.setImageDrawable(user.picture);
 		login.setText(user.userFirstname+ " "+user.userName);
 		eventNb.setText("Nombres d'evenements crées : "+user.eventOwned);
 
@@ -262,7 +264,6 @@ public class UserDisplayActivity extends Activity{
 			String title = row_item.getString("title");
 			String description = row_item.getString("description");
 			String dateStart = row_item.getString("date_debut");
-			String dateEnd = row_item.getString("date_fin");
 			String hourStart = row_item.getString("heure_debut");
 			String hourEnd = row_item.getString("heure_fin");
 			String location = row_item.getString("location");

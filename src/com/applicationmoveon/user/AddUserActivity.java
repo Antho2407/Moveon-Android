@@ -6,16 +6,11 @@ import java.util.concurrent.ExecutionException;
 
 import com.applicationmoveon.R;
 import com.applicationmoveon.ToolBox;
-import com.applicationmoveon.R.id;
-import com.applicationmoveon.R.layout;
-import com.applicationmoveon.R.menu;
+
 import com.applicationmoveon.database.ExecTask;
-import com.applicationmoveon.event.ListEventActivity;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;

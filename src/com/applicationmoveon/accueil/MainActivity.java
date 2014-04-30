@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import com.applicationmoveon.R;
 import com.applicationmoveon.UserSettingActivity;
 import com.applicationmoveon.event.AddEventActivity;
-import com.applicationmoveon.event.EventsFollowedActivity;
 import com.applicationmoveon.event.ListEventActivity;
 import com.applicationmoveon.localisation.MapLocateActivity;
 import com.applicationmoveon.notification.NotificationService;
@@ -58,12 +57,12 @@ public class MainActivity extends Activity {
 				intent.putExtra("mail", email);
 				startActivity(intent);
 				break;
-			case 1:
+			case 2:
 				intent = new Intent(MainActivity.this,ListEventActivity.class);
 				intent.putExtra("type", "all");
 				startActivity(intent);
 				break;
-			case 2:
+			case 1:
 				intent = new Intent(MainActivity.this,UserSettingActivity.class);
 				startActivity(intent);
 				break;
@@ -107,9 +106,9 @@ public class MainActivity extends Activity {
 		Bitmap eventIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_action_content_event);
 		Bitmap usersIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_social_group);
 
-		gridArray.add(new Item(userIcon,"Profile"));
-		gridArray.add(new Item(eventIcon,"Mes évènements"));
+		gridArray.add(new Item(userIcon,"Mon profil"));
 		gridArray.add(new Item(settingsIcon,"Paramètres"));
+		gridArray.add(new Item(eventIcon,"Tous les évènements"));
 		gridArray.add(new Item(homeIcon,"Localiser"));
 		gridArray.add(new Item(usersIcon,"Utilisateurs suivis"));
 		gridArray.add(new Item(homeIcon,"Evènements suivis"));

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -68,9 +69,9 @@ public class EventAdapter extends BaseAdapter {
 				String eventHourStart, String eventHourFinish,
 				int numberOfParticipants, String eventOwner, int eventState, String eventDateCreation, float latitude, float longitude,float temperature,String url,int likes,int dislikes) {
 			this( eventId,  eventTitle,  eventLocation,
-					 eventDescription,  eventDateStart,
-					 eventHourStart,  eventHourFinish,
-					 numberOfParticipants,  eventOwner,  eventState,  eventDateCreation,  latitude,  longitude, temperature, url);
+					eventDescription,  eventDateStart,
+					eventHourStart,  eventHourFinish,
+					numberOfParticipants,  eventOwner,  eventState,  eventDateCreation,  latitude,  longitude, temperature, url);
 			this.dislikes=dislikes;
 			this.likes = likes;
 		}
@@ -120,11 +121,18 @@ public class EventAdapter extends BaseAdapter {
 		TextView date = (TextView)view.findViewById(R.id.event_date);
 		TextView description = (TextView)view.findViewById(R.id.event_description);
 		TextView part = (TextView)view.findViewById(R.id.event_participants);
+		ImageView thermo = (ImageView) view.findViewById(R.id.pic_temp);
 
 		title.setText(data.eventTitle);
 		date.setText("Le "+ data.eventDateStart +" ра "+ data.eventLocation + " de "+data.eventHourStart+" р "+data.eventHourFinish);
 		description.setText(data.eventDescription);
 		part.setText(data.numberOfParticipants+" participants");
+		if(data.temperature<30)
+			thermo.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_thermo_cold));
+		else if(data.temperature>75)
+			thermo.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_thermo_hot));
+		else
+			thermo.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_thermo_medium));
 
 		if(position % 2 == 0)
 			view.setBackgroundColor(Color.argb(255, 245, 245, 245));
@@ -139,5 +147,5 @@ public class EventAdapter extends BaseAdapter {
 		_context = context;
 		_data = data;
 	}
-	
+
 }

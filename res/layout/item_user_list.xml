@@ -27,23 +27,4 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/user_nb_event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/user_pic"
-        android:layout_below="@+id/user_login"
-        android:layout_margin="5dp"
-        android:text="Nombre d'evenements crées : 9"
-        android:textColor="#555"
-        android:textSize="12sp" />
-
-    <CheckBox
-        android:id="@+id/user_followed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="3dp"/>
-
 </RelativeLayout>
