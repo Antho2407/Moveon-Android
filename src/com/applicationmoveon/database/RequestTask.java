@@ -77,7 +77,7 @@ public class RequestTask extends AsyncTask<HashMap<String,String>, String, JSONA
 		}
 		
 		protected JSONArray SelectUserByEmail(HashMap<String,String> request){
-			if(request.containsKey("email_user")){
+			if(request.containsKey("email")){
 				return db.SelectUserByMail(request.get("email"));
 			}
 			return null;
