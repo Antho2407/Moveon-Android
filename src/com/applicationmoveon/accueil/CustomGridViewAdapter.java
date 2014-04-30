@@ -2,8 +2,6 @@ package com.applicationmoveon.accueil;
 import java.util.ArrayList;
 
 import com.applicationmoveon.R;
-import com.applicationmoveon.R.id;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;

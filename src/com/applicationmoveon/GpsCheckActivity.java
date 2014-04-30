@@ -4,15 +4,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-/**
- * @author damota
- */
 public class GpsCheckActivity extends Activity implements OnClickListener {
 
 	@Override
@@ -38,7 +34,6 @@ public class GpsCheckActivity extends Activity implements OnClickListener {
 	private class GpsCheck extends AsyncTask<String, Integer, Object> {
 
 		public GpsCheckActivity activityGpsCheck;
-		public Object resultat = null;
 		public ToolBox tools;
 		public String previousActivity = "";
 

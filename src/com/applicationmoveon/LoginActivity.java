@@ -9,8 +9,6 @@ import java.util.regex.Pattern;
 import com.applicationmoveon.accueil.FacebookActivity;
 import com.applicationmoveon.accueil.MainActivity;
 import com.applicationmoveon.database.ExecTask;
-import com.applicationmoveon.event.AddEventActivity;
-import com.applicationmoveon.localisation.MapActivity;
 import com.applicationmoveon.session.SessionManager;
 import com.applicationmoveon.user.AddUserActivity;
 
@@ -94,6 +92,7 @@ ConnectionCallbacks, OnConnectionFailedListener {
 		
 		googleplusco.setOnClickListener(new OnClickListener(){
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void onClick(View v) {
 				Log.v(TAG, "Tapped sign in");
@@ -215,6 +214,7 @@ ConnectionCallbacks, OnConnectionFailedListener {
 		});
 	}
 	
+	@SuppressWarnings("unchecked")
 	public boolean checkUser() throws InterruptedException, ExecutionException{
 		HashMap<String, String> hm = new HashMap<String,String>();
 		hm.put("Request","isValidCombination");
@@ -265,7 +265,8 @@ ConnectionCallbacks, OnConnectionFailedListener {
 			}
 	    }
 
-	    @Override
+	    @SuppressWarnings("unchecked")
+		@Override
 	    protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
 	        if (requestCode == REQUEST_CODE_RESOLVE_ERR && responseCode == RESULT_OK) {
 	            mConnectionResult = null;
@@ -300,7 +301,8 @@ ConnectionCallbacks, OnConnectionFailedListener {
 			}
 	    }
 	    
-	    public Boolean userAlreadyExists(String id){
+	    @SuppressWarnings("unchecked")
+		public Boolean userAlreadyExists(String id){
 	    	HashMap<String, String> testuser = new HashMap<String, String>();
 	    	testuser.put("Request", "doesUserAlreadyExists");
 			testuser.put("email", id);
