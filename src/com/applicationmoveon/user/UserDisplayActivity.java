@@ -21,6 +21,7 @@ import com.applicationmoveon.session.SessionManager;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -227,9 +228,11 @@ public class UserDisplayActivity extends Activity{
 			String prenom = row_item.getString("firstname");
 			String nom = row_item.getString("lastname");
 			String _mail = row_item.getString("email");
-			//Drawable picture = row_item.getString("imageprofile");
+			String picture_url = row_item.getString("imageprofile");
+			//TODO recuperer image
+			Drawable picture = null;
 
-			UserAdapter.UserData newUser = new UserAdapter.UserData(prenom,nom,_mail, 0,getResources().getDrawable(R.drawable.ic_action_content_event) , false);
+			UserAdapter.UserData newUser = new UserAdapter.UserData(prenom,nom,_mail, 0,picture, false);
 			user = newUser;
 		
 		}

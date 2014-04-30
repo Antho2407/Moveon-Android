@@ -104,15 +104,8 @@ public class EventDisplayActivity extends Activity {
 		final View barre_vide = (View) findViewById(R.id.bar_grey);
 		if((likes+dislikes) == 0)
 			barre_vide.setLayoutParams(new LinearLayout.LayoutParams(0, 4, 1));
-		Log.i("ot", "avant      "+getDislikePercentage()+" fefhe"+event.dislikes);
-		Log.i("ot", "avant      "+getLikePercentage()+" fefhe"+event.likes);
-
 		barre_rouge.setLayoutParams(new LinearLayout.LayoutParams(0, 4, getDislikePercentage()));
 		barre_verte.setLayoutParams(new LinearLayout.LayoutParams(0, 4, getLikePercentage()));
-		Log.i("ot", "apres");
-		Log.i("ot", "avant      "+getDislikePercentage()+" fefhe"+event.dislikes);
-		Log.i("ot", "avant      "+getLikePercentage()+" fefhe"+event.likes);
-
 		temperature = (TextView) findViewById(R.id.event_temp);
 		final Button participate = (Button) findViewById(R.id.event_participate);
 		final CheckBox like = (CheckBox) findViewById(R.id.button_like);
@@ -363,7 +356,6 @@ public class EventDisplayActivity extends Activity {
 			event = new EventAdapter.EventData(id, title, location,
 					description, dateStart, hourStart, hourEnd, participants,
 					mail, state, dateCreation, latitude, longitude, temperature,url,likes,dislikes);
-			Log.i("test", mail);
 		}
 		return 1;
 
