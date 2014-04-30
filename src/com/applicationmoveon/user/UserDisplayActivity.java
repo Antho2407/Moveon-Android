@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import com.applicationmoveon.R;
 import com.applicationmoveon.ToolBox;
 import com.applicationmoveon.UserSettingActivity;
+import com.applicationmoveon.database.ExecTask;
 import com.applicationmoveon.database.RequestTask;
 import com.applicationmoveon.event.AddEventActivity;
 import com.applicationmoveon.event.EventAdapter;
@@ -21,13 +22,14 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -90,8 +92,7 @@ public class UserDisplayActivity extends Activity{
 		} else {
 			mail = (String) savedInstanceState.getSerializable("mail");
 		}
-		Log.i("toto", mail);
-		Log.i("toto", email);
+
 
 		try {
 			try {
@@ -100,6 +101,8 @@ public class UserDisplayActivity extends Activity{
 
 				if(email.equals(user.email))
 					followed.setVisibility(-1);
+				else
+				user.followed=followed();
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -121,6 +124,20 @@ public class UserDisplayActivity extends Activity{
 		eventNb.setText("Nombres d'evenements crées : "+user.eventOwned);
 
 		followed.setChecked(user.followed);
+		followed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				if (isChecked){
+					suivi(1);
+				}
+				if (!isChecked){
+					suivi(-1);
+				}
+				
+			}
+		});
 
 	}
 
@@ -211,7 +228,6 @@ public class UserDisplayActivity extends Activity{
 			//Drawable picture = row_item.getString("imageprofile");
 
 			UserAdapter.UserData newUser = new UserAdapter.UserData(prenom,nom,_mail, 0,getResources().getDrawable(R.drawable.ic_action_content_event) , false);
-			Log.i("debug", newUser.email);
 			user = newUser;
 		
 		}
@@ -264,5 +280,54 @@ public class UserDisplayActivity extends Activity{
 		return 1;
 
 
+	}
+	
+	public boolean followed() throws InterruptedException,
+	ExecutionException, JSONException {
+
+		HashMap<String, String> hm = new HashMap<String, String>();
+		hm.put("Request", "SelectUsersFollowed");
+
+		hm.put("email", email);
+
+		RequestTask rt = new RequestTask();
+		rt.execute(hm);
+
+
+		JSONArray result = rt.get();
+
+		if(result == null)
+			return false;
+
+		int length = result.length();
+
+		if(length == 0)
+			return false;
+
+		for (int i = 0; i < length; i++) {
+
+			JSONObject row_item = result.getJSONObject(i);
+			String email = row_item.getString("email");
+			if(email.equals(user.email))
+				return true;
+
+		}
+		return false;
+
+	}
+	public void suivi(int req) {
+		HashMap<String, String> hm = new HashMap<String, String>();
+		if(req==1)
+			hm.put("Request", "addSuivi");
+		else
+			hm.put("Request", "deleteSuivi");
+
+		hm.put("email_user", email);
+		hm.put("user_suivi", user.email);
+
+
+		// Execution de la requête
+		ExecTask rt = new ExecTask();
+		rt.execute(hm);
 	}
 }

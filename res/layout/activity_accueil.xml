@@ -11,7 +11,7 @@
         android:layout_weight="1"
         android:layout_margin="4dp"
         android:gravity="center"
-        android:numColumns="3" >
+        android:numColumns="2" >
     </GridView>
 
     <ImageButton
