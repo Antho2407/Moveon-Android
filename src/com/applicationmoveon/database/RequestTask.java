@@ -52,9 +52,18 @@ public class RequestTask extends AsyncTask<HashMap<String,String>, String, JSONA
 				return SelectUsersFollowed(request);
 			}else if(query.equals("SelectVoteByUser")){
 				return SelectUsersFollowed(request);
+			}else if(query.equals("GetNotificationByUser")){
+				return getNotificationByUser(request);
 			}
 			return null;
 			
+		}
+		
+		protected JSONArray getNotificationByUser(HashMap<String,String> request){
+			if(request.containsKey("email")){
+				return db.GetNotificationByUser(request.get("email"));
+			}
+			return null;
 		}
 		
 		protected JSONArray SelectVoteByUser(HashMap<String,String> request){

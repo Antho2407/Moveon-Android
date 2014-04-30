@@ -1,5 +1,6 @@
 package com.applicationmoveon.event;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -320,7 +321,7 @@ public class AddEventActivity extends Activity implements OnClickListener {
 				hm.put("latitude", latitude);
 				hm.put("longitude", longitude);
 				hm.put("id_createur", userMail);
-				hm.put("date_creation", year + "-" + month + "-" + day);
+				hm.put("date_creation", year + "-" + month + "-" + day + " " + new SimpleDateFormat("HH:mm:ss"));
 				hm.put("state", Integer.toString(0));
 				hm.put("urlimage", namePicture);
 				hm.put("temperature", Integer.toString(0));
