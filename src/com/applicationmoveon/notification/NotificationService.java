@@ -9,9 +9,11 @@ import org.json.JSONObject;
 import com.applicationmoveon.R;
 import com.applicationmoveon.database.Database;
 import com.applicationmoveon.session.SessionManager;
+import com.applicationmoveon.user.UserDisplayActivity;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -79,7 +81,11 @@ public class NotificationService extends Service {
 			stopSelf(); 
 		}
 
-		public void createNotification(String texte) {
+		public void createNotification(String texte, String email) {
+            Intent intent = new Intent(context, UserDisplayActivity.class);
+            intent.putExtra("mail", email);
+            PendingIntent pIntent = PendingIntent.getActivity(context, 0,
+                    intent, 0);
 			notifManager = (NotificationManager) getSystemService(context.NOTIFICATION_SERVICE);
 			StringBuilder text = new StringBuilder();
 			StringBuilder longText = new StringBuilder();
@@ -93,10 +99,10 @@ public class NotificationService extends Service {
 			noti = new Notification.Builder(context)
 			.setContentTitle(title).setContentText(text.toString())
 			.setSmallIcon(R.drawable.ic_launcher)
-			.setTicker("MoveOn un nouvel evenement !");
+			.setTicker("MoveOn un nouvel evenement !").setContentIntent(pIntent);;
 
 			if (!text.toString().equals(longText.toString())) {
-				noti.setStyle(new Notification.BigTextStyle().bigText(longText.toString()));
+				noti.setStyle(new Notification.BigTextStyle().bigText(longText.toString())).setContentIntent(pIntent);;
 			}
 			notification = noti.build();
 
@@ -122,7 +128,7 @@ public class NotificationService extends Service {
 				JSONObject row_item = result.getJSONObject(i);
 				String text = row_item.getString("text_notification");
 				String mail = row_item.getString("id_suivi");
-				createNotification(text);
+				createNotification(text,mail);
 			}
 			return true;
 		}
