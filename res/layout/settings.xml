@@ -12,17 +12,6 @@
             android:title="@string/pref_km" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_event_display_settings" >
-
-        <ListPreference
-            android:defaultValue="30"
-            android:entries="@array/event_display"
-            android:entryValues="@array/event_displayValues"
-            android:key="event_display"
-            android:summary="@string/pref_event_display_summary"
-            android:title="@string/pref_event_display" />
-    </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/pref_notification_setting" >
 
         <CheckBoxPreference
