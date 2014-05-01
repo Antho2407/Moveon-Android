@@ -5,12 +5,7 @@
         android:id="@+id/menu_locate"
         android:icon="@drawable/ic_action_device_access_location_found"
         android:showAsAction="always"/>
-    <item
-        android:id="@+id/menu_search"
-        android:actionViewClass="android.widget.SearchView"
-        android:icon="@drawable/ic_action_action_search"
-        android:showAsAction="always"
-        android:title="@string/menu_search"/>
+
     <item
         android:id="@+id/menu_add"
         android:icon="@drawable/ic_action_content_new"

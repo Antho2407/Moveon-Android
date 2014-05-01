@@ -15,6 +15,7 @@ import com.applicationmoveon.R.layout;
 import com.applicationmoveon.R.menu;
 import com.applicationmoveon.database.ExecTask;
 import com.applicationmoveon.database.RequestTask;
+import com.applicationmoveon.localisation.MapLocateActivity;
 import com.applicationmoveon.session.SessionManager;
 
 
@@ -115,21 +116,6 @@ public class ListEventActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
-		MenuItem itemSearch = menu.findItem(R.id.menu_search);
-		SearchView mSearchView = (SearchView) itemSearch.getActionView();
-		mSearchView.setOnQueryTextListener(new OnQueryTextListener() {
-
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				//TODO RECHERCHE
-				return true;
-			}
-
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				return false;
-			}
-		});
 		return true;
 	}
 
@@ -138,7 +124,8 @@ public class ListEventActivity extends Activity {
 		Intent intent = null;
 		switch (item.getItemId()) {
 		case R.id.menu_locate:
-			//TODO lancer localisation
+			intent = new Intent(this,MapLocateActivity.class);
+			startActivity(intent);		
 			return true;
 		case R.id.menu_add:
 			intent = new Intent(ListEventActivity.this,AddEventActivity.class);
@@ -160,8 +147,7 @@ public class ListEventActivity extends Activity {
 	public int getEvents() throws InterruptedException, ExecutionException, JSONException{
 
 		HashMap<String, String> hm = new HashMap<String, String>();
-		hm.put("Request", "SelectEventByUserMail");
-		hm.put("email", email);
+		hm.put("Request", "SelectEvent");
 
 		// Execution de la requête
 		RequestTask rt = new RequestTask();

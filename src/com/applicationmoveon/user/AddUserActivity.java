@@ -6,8 +6,12 @@ import java.util.concurrent.ExecutionException;
 
 import com.applicationmoveon.R;
 import com.applicationmoveon.ToolBox;
+import com.applicationmoveon.UserSettingActivity;
 
 import com.applicationmoveon.database.ExecTask;
+import com.applicationmoveon.event.AddEventActivity;
+import com.applicationmoveon.localisation.MapActivity;
+import com.applicationmoveon.localisation.MapLocateActivity;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -18,6 +22,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -168,6 +173,20 @@ public class AddUserActivity extends Activity implements OnClickListener {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_add, menu);
 		return true;
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent = null;
+		switch (item.getItemId()) {
+		case R.id.menu_pref:
+			intent = new Intent(this,UserSettingActivity.class);
+			startActivity(intent);			return true;
+		case android.R.id.home:
+			this.finish();
+			return true;
+
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	public ArrayList<String> checkFields() {

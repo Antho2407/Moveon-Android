@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import com.applicationmoveon.R;
 import com.applicationmoveon.ToolBox;
+import com.applicationmoveon.UserSettingActivity;
 import com.applicationmoveon.database.RequestTask;
 import com.applicationmoveon.event.AddEventActivity;
 import com.applicationmoveon.event.EventAdapter;
@@ -193,21 +194,6 @@ public class MapLocateActivity extends FragmentActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
-		MenuItem itemSearch = menu.findItem(R.id.menu_search);
-		SearchView mSearchView = (SearchView) itemSearch.getActionView();
-		mSearchView.setOnQueryTextListener(new OnQueryTextListener() {
-
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				// TODO RECHERCHE
-				return true;
-			}
-
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				return false;
-			}
-		});
 		return true;
 	}
 
@@ -237,15 +223,16 @@ public class MapLocateActivity extends FragmentActivity implements
 		Intent intent = null;
 		switch (item.getItemId()) {
 		case R.id.menu_locate:
-			// TODO lancer localisation
+			intent = new Intent(this,MapLocateActivity.class);
+			startActivity(intent);		
 			return true;
 		case R.id.menu_add:
 			intent = new Intent(MapLocateActivity.this, AddEventActivity.class);
 			startActivity(intent);
 			return true;
 		case R.id.menu_pref:
-			// TODO ALLER A PREFERENCES
-			return true;
+			intent = new Intent(this,UserSettingActivity.class);
+			startActivity(intent);			return true;
 		case android.R.id.home:
 			this.finish();
 			return true;

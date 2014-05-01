@@ -11,11 +11,13 @@ import org.json.JSONObject;
 import com.applicationmoveon.R;
 import com.applicationmoveon.ToolBox;
 import com.applicationmoveon.UserSettingActivity;
+import com.applicationmoveon.accueil.MainActivity;
 import com.applicationmoveon.database.ExecTask;
 import com.applicationmoveon.database.RequestTask;
 import com.applicationmoveon.event.AddEventActivity;
 import com.applicationmoveon.event.EventAdapter;
 import com.applicationmoveon.event.EventDisplayActivity;
+import com.applicationmoveon.localisation.MapLocateActivity;
 import com.applicationmoveon.session.SessionManager;
 
 import android.app.ActionBar;
@@ -23,6 +25,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -159,21 +162,6 @@ public class UserDisplayActivity extends Activity{
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
-		MenuItem itemSearch = menu.findItem(R.id.menu_search);
-		SearchView mSearchView = (SearchView) itemSearch.getActionView();
-		mSearchView.setOnQueryTextListener(new OnQueryTextListener() {
-
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				//TODO RECHERCHE
-				return true;
-			}
-
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				return false;
-			}
-		});
 		return true;
 	}
 
@@ -182,8 +170,8 @@ public class UserDisplayActivity extends Activity{
 		Intent intent = null;
 		switch (item.getItemId()) {
 		case R.id.menu_locate:
-			//TODO lancer localisation
-			return true;
+			intent = new Intent(this,MapLocateActivity.class);
+		startActivity(intent);			return true;
 		case R.id.menu_add:
 			intent = new Intent(this,AddEventActivity.class);
 			startActivity(intent);
@@ -292,7 +280,7 @@ public class UserDisplayActivity extends Activity{
 		HashMap<String, String> hm = new HashMap<String, String>();
 		hm.put("Request", "SelectUsersFollowed");
 
-		hm.put("email", email);
+		hm.put("email_user", email);
 
 		RequestTask rt = new RequestTask();
 		rt.execute(hm);
@@ -332,6 +320,7 @@ public class UserDisplayActivity extends Activity{
 
 		// Execution de la requête
 		ExecTask rt = new ExecTask();
+		Log.i("toto","avant exec");
 		rt.execute(hm);
 	}
 }

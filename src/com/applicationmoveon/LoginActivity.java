@@ -21,6 +21,8 @@ import android.content.res.Resources.NotFoundException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -66,6 +68,23 @@ ConnectionCallbacks, OnConnectionFailedListener {
 	// Session Manager Class
     SessionManager session;
 
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.facebook, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent = null;
+		switch (item.getItemId()) {
+		case R.id.menu_pref:
+			intent = new Intent(LoginActivity.this,UserSettingActivity.class);
+			startActivity(intent);			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+    
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

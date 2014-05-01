@@ -14,6 +14,7 @@ import com.applicationmoveon.UserSettingActivity;
 
 import com.applicationmoveon.database.RequestTask;
 import com.applicationmoveon.event.AddEventActivity;
+import com.applicationmoveon.localisation.MapLocateActivity;
 import com.applicationmoveon.session.SessionManager;
 
 import android.app.ActionBar;
@@ -89,21 +90,6 @@ public class ListUserActivity extends Activity{
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
-		MenuItem itemSearch = menu.findItem(R.id.menu_search);
-		SearchView mSearchView = (SearchView) itemSearch.getActionView();
-		mSearchView.setOnQueryTextListener(new OnQueryTextListener() {
-
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				//TODO RECHERCHE
-				return true;
-			}
-
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				return false;
-			}
-		});
 		return true;
 	}
 
@@ -112,8 +98,9 @@ public class ListUserActivity extends Activity{
 		Intent intent = null;
 		switch (item.getItemId()) {
 		case R.id.menu_locate:
-			//TODO lancer localisation
-			return true;
+			intent = new Intent(this,MapLocateActivity.class);
+		startActivity(intent);			
+		return true;
 		case R.id.menu_add:
 			intent = new Intent(this,AddEventActivity.class);
 			startActivity(intent);
