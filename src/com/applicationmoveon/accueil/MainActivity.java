@@ -27,15 +27,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.SearchView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SearchView.OnQueryTextListener;
-
-
-
-
-
 
 public class MainActivity extends Activity {
 	
@@ -105,11 +101,13 @@ public class MainActivity extends Activity {
 		Bitmap settingsIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_action_settings);
 		Bitmap eventIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_action_content_event);
 		Bitmap usersIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_social_group);
+		Bitmap locateIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_action_device_access_location_found);
+
 
 		gridArray.add(new Item(userIcon,"Mon profil"));
 		gridArray.add(new Item(settingsIcon,"Paramètres"));
 		gridArray.add(new Item(eventIcon,"Tous les évènements"));
-		gridArray.add(new Item(homeIcon,"Localiser"));
+		gridArray.add(new Item(locateIcon,"Localiser"));
 		gridArray.add(new Item(usersIcon,"Utilisateurs suivis"));
 		gridArray.add(new Item(homeIcon,"Evènements suivis"));
 
@@ -117,6 +115,17 @@ public class MainActivity extends Activity {
 		customGridAdapter = new CustomGridViewAdapter(this, R.layout.row_grid, gridArray);
 		gridView.setAdapter(customGridAdapter);
 		gridView.setOnItemClickListener(new GridOnItemClick());
+		Button locate = (Button) findViewById(R.id.button_locate);
+		locate.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (v.getId() == R.id.button_locate) {
+					Intent intent = new Intent(MainActivity.this,MapLocateActivity.class);
+					startActivity(intent);
+				}
+
+			}
+		});
 	}
 
 	@Override

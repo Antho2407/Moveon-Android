@@ -26,7 +26,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SearchView.OnQueryTextListener;
 
@@ -37,10 +36,11 @@ public class ListUserActivity extends Activity{
 	{
 		@Override
 		public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-
-
-			Toast.makeText(getApplicationContext(), "Position " + position, Toast.LENGTH_SHORT).show();
-
+			Intent intent = new Intent(ListUserActivity.this,
+					UserDisplayActivity.class); 
+			intent.putExtra("mail",userData.get(position).email); 
+			startActivity(intent);
+			
 		}
 	}
 
@@ -170,7 +170,6 @@ public class ListUserActivity extends Activity{
 			String prenom = row_item.getString("firstname");
 			String nom = row_item.getString("lastname");
 			String email = row_item.getString("email");
-			String mdp = row_item.getString("password");
 			//Drawable picture = row_item.getString("imageprofile");
 			UserAdapter.UserData newUser = new UserAdapter.UserData(prenom,nom,email, 0,getResources().getDrawable(R.drawable.ic_social_person) , false);
 			userData.add(newUser);

@@ -51,19 +51,10 @@ public class RequestTask extends AsyncTask<HashMap<String,String>, String, JSONA
 			}else if(query.equals("SelectUsersFollowed")){
 				return SelectUsersFollowed(request);
 			}else if(query.equals("SelectVoteByUser")){
-				return SelectUsersFollowed(request);
-			}else if(query.equals("GetNotificationByUser")){
-				return getNotificationByUser(request);
+				return SelectVoteByUser(request);
 			}
 			return null;
 			
-		}
-		
-		protected JSONArray getNotificationByUser(HashMap<String,String> request){
-			if(request.containsKey("email")){
-				return db.GetNotificationByUser(request.get("email"));
-			}
-			return null;
 		}
 		
 		protected JSONArray SelectVoteByUser(HashMap<String,String> request){
@@ -138,6 +129,7 @@ public class RequestTask extends AsyncTask<HashMap<String,String>, String, JSONA
 		 */
 		protected void onPostExecute(String web) {
 			// Cache la barre de progression
+
 	
 			
 		}

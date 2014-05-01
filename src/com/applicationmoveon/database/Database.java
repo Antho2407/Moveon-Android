@@ -386,7 +386,8 @@ public class Database {
 		}catch(Exception e){
 		        Log.e("log_tag", "Error converting result "+e.toString());
 		}
-		
+        Log.i("TOTO",result);
+
 		//parse json data
 		try{
 		        jArray = new JSONArray(result);

@@ -44,7 +44,7 @@ public class ExecTask extends
 		} else if (query.equals("addParticipants")) {
 			return addParticipants(request);
 		} else if (query.equals("deleteParticipants")) {
-			return addParticipants(request);
+			return deleteParticipants(request);
 		} else if (query.equals("addVote")) {
 			return addVote(request);
 		} else if (query.equals("updateTemperature")) {
@@ -52,7 +52,7 @@ public class ExecTask extends
 		}else if (query.equals("addSuivi")) {
 			return addSuivi(request);
 		}else if (query.equals("deleteSuivi")) {
-			return addSuivi(request);
+			return deleteSuivi(request);
 		}else if(query.equals("doesUserAlreadyExists")) {
 			return doesUserAlreadyExists(request);
 		}

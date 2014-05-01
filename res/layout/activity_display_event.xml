@@ -153,8 +153,16 @@
                 android:layout_below="@id/event_description"
                 android:layout_centerHorizontal="true"
                 android:text="Participer!"
-                android:textColor="#000" >
-            </Button>
+                android:textColor="#000" />
+
+            <Button
+                android:id="@+id/event_unparticipate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/event_description"
+                android:layout_centerHorizontal="true"
+                android:text="Se désincrire"
+                android:textColor="#000" />
         </RelativeLayout>
     </ScrollView>
 

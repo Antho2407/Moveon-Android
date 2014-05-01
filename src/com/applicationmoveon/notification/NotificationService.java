@@ -1,6 +1,15 @@
 package com.applicationmoveon.notification;
 
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.applicationmoveon.R;
+import com.applicationmoveon.database.Database;
+import com.applicationmoveon.session.SessionManager;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -14,37 +23,42 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 public class NotificationService extends Service { 
 	private WakeLock mWakeLock; 
 	private Context context = this;
 	private NotificationManager notifManager;
-	/**
-	 * Simply return null, since our Service will not be communicating with 
-	 * any other components. It just does its work silently.
-	 **/
+	private SessionManager session;
+	private String email;
+
+
 	@Override
 	public IBinder onBind(Intent intent) { 
 		return null;
 	}
-	/** 
-	 * This is where we initialize. We call this when onStart/onStartCommand is 
-	 * called by the system. We won't do anything with the intent here, and you 
-	 * probably won't, either. 
-	 **/ 
+
 	@SuppressWarnings("deprecation")
-	private void handleIntent(Intent intent) {  
+	private void handleIntent(Intent intent) { 
+		Log.i("toto", "avant wake");
 		//obtain the wake lock
 		PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE); 
 		mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Notificaion Service"); 
 		mWakeLock.acquire(); 
+		Log.i("toto", "apres wake");
+
 		//check the global background data setting
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE); 
 		if (!cm.getBackgroundDataSetting()) {
+			Log.i("toto", "stop");
 			stopSelf(); 
 			return; 
 		} 
-		/*do the actual work, in a separate thread*/ 
+		Log.i("toto", "apres stop");
+		session = new SessionManager(NotificationService.this);
+		session.checkLogin();
+		email = session.getUserDetails().get(SessionManager.KEY_EMAIL);
+		Log.i("toto", "avant poll");
 		new PollTask().execute();
 	} 
 	private class PollTask extends AsyncTask<Void, Void, Void> {
@@ -54,27 +68,31 @@ public class NotificationService extends Service {
 		 * you have to do to get your updates in here, because this is run in a 
 		 * separate thread
 		 **/ 
+		protected Database db;
+
+		public PollTask(){
+			db = new Database();
+		}
+		
 		@Override
 		protected Void doInBackground(Void... params) {
-			/*do stuff!*/ 
+			try {
+				getNotif();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
 			return null; 
 		} 
-		/** 
-		 * In here you should interpret whatever you fetched in doInBackground 
-		 * and push any notifications you need to the status bar, using the 
-		 * NotificationManager. I will not cover this here, go check the docs on
-		 * NotificationManager. 
-		 * 
-		 * What you HAVE to do is call stopSelf() after you've pushed your 
-		 * notification(s). This will: 
-		 * 1) Kill the service so it doesn't waste precious resources 
-		 * 2) Call onDestroy() which will release the wake lock, so the device
-		 * can go to sleep again and save precious battery. 
-		 **/ 
+
 		@Override
 		protected void onPostExecute(Void result) {  
-			/*handle your data*/
-			//createNotification();
 			stopSelf(); 
 		}
 
@@ -114,6 +132,24 @@ public class NotificationService extends Service {
 				notifManager.notify(0, notification);
 			}
 		}
+		public boolean getNotif() throws InterruptedException, ExecutionException, JSONException{
+
+			JSONArray result = 	db.GetNotificationByUser("hugo.83300@gmail.com");
+			//TODO remplacer par email
+			if(result == null)
+				return false;
+
+			int length = result.length();
+
+			if(length == 0)
+				return false;
+
+			for (int i = 0; i < length; i++) {
+				//TODO recuperer texte notif
+
+			}
+			return true;
+		}
 	}
 
 	/** 
@@ -140,7 +176,10 @@ public class NotificationService extends Service {
 	 * lock will be released.
 	 **/
 	public void onDestroy() { 
+		Log.i("toto", "destroyyyy");
+
 		super.onDestroy(); 
 		mWakeLock.release(); 
 	} 
+		
 }
