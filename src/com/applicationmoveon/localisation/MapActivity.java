@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.applicationmoveon.R;
 import com.applicationmoveon.ToolBox;
+import com.applicationmoveon.UserSettingActivity;
 import com.applicationmoveon.event.AddEventActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -231,21 +232,6 @@ public class MapActivity extends FragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
-		MenuItem itemSearch = menu.findItem(R.id.menu_search);
-		SearchView mSearchView = (SearchView) itemSearch.getActionView();
-		mSearchView.setOnQueryTextListener(new OnQueryTextListener() {
-
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				// TODO RECHERCHE
-				return true;
-			}
-
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				return false;
-			}
-		});
 		return true;
 	}
 
@@ -254,15 +240,16 @@ public class MapActivity extends FragmentActivity {
 		Intent intent = null;
 		switch (item.getItemId()) {
 		case R.id.menu_locate:
-			// TODO lancer localisation
+			intent = new Intent(this,MapLocateActivity.class);
+			startActivity(intent);		
 			return true;
 		case R.id.menu_add:
 			intent = new Intent(MapActivity.this, AddEventActivity.class);
 			startActivity(intent);
 			return true;
 		case R.id.menu_pref:
-			// TODO ALLER A PREFERENCES
-			return true;
+			intent = new Intent(this,UserSettingActivity.class);
+			startActivity(intent);			return true;
 		case android.R.id.home:
 			this.finish();
 			return true;

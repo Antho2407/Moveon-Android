@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutionException;
 
 import com.applicationmoveon.R;
 import com.applicationmoveon.ToolBox;
+import com.applicationmoveon.UserSettingActivity;
 import com.applicationmoveon.database.ExecTask;
 import com.applicationmoveon.ftp.FtpUploadTask;
 import com.applicationmoveon.localisation.MapActivity;
@@ -368,8 +369,8 @@ public class AddEventActivity extends Activity implements OnClickListener {
 			startActivity(intent);
 			return true;
 		case R.id.menu_pref:
-			//TODO ALLER A PREFERENCES
-			return true;
+			intent = new Intent(AddEventActivity.this, UserSettingActivity.class);
+			startActivity(intent);			return true;
 		case android.R.id.home:
 			this.finish();
 			return true;

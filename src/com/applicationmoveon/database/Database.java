@@ -111,7 +111,7 @@ public class Database {
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("email_user",email_user));
 		nameValuePairs.add(new BasicNameValuePair("user_suivi",user_suivi));
-		 
+
 		//http post
 		try{
 		        HttpClient httpclient = new DefaultHttpClient();
@@ -406,7 +406,7 @@ public class Database {
 		InputStream is = null;
 		//the year data to send
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-		nameValuePairs.add(new BasicNameValuePair("email_user",email_user));
+		nameValuePairs.add(new BasicNameValuePair("email",email_user));
 		 
 		//http post
 		try{
