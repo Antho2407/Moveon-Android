@@ -167,7 +167,7 @@ public class EventDisplayActivity extends Activity {
 					HashMap<String, String> hm = new HashMap<String, String>();
 					hm.put("Request", "addParticipants");
 					hm.put("id_event", Integer.toString(event.eventId));
-					hm.put("email", event.eventOwner);
+					hm.put("email", email);
 
 					// Execution de la requête
 					ExecTask rt = new ExecTask();
