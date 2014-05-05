@@ -22,7 +22,6 @@ import android.util.Log;
 public class Database {
 	
 	public void addUser(String prenom, String nom, String email, String password, String urlimage){
-		//the year data to send
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("firstname",prenom));
 		nameValuePairs.add(new BasicNameValuePair("lastname",nom));
@@ -386,7 +385,6 @@ public class Database {
 		}catch(Exception e){
 		        Log.e("log_tag", "Error converting result "+e.toString());
 		}
-        Log.i("TOTO",result);
 
 		//parse json data
 		try{

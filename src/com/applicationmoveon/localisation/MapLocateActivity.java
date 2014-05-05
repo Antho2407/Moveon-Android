@@ -84,7 +84,7 @@ public class MapLocateActivity extends FragmentActivity implements
 		tools = new ToolBox(this);
 		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		radius=Integer.parseInt(prefs.getString("prefKm", ""));
+		radius=Integer.parseInt(prefs.getString("prefKm", "10"));
 
 		listEvents = new HashMap<Location, EventAdapter.EventData>();
 		setContentView(R.layout.activity_map_locate);
